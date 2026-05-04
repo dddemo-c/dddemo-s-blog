@@ -2,6 +2,7 @@
 title: Hermes--一周测评
 date: 2026-05-04 9:30:00
 mathjax: true
+sticky: 2
 categories:
   - 信息学
   - 信息学/agent框架

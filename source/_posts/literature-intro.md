@@ -1,7 +1,7 @@
 ---
 title: 生日的一夜
 date: 2026-05-03 12:00:00
-sticky: 2
+sticky: 1
 categories:
   - 文理
   - 文理/诗歌
