@@ -1,0 +1,99 @@
+<%
+// 构建标签树
+const tagTree = {};
+const allTags = site.tags.toArray ? site.tags.toArray() : (Array.isArray(site.tags) ? site.tags : []);
+
+// 建立标签 path 索引
+var tagByFullPath = {};
+allTags.forEach(function(tag) {
+  tagByFullPath[tag.name] = tag;
+});
+
+allTags.forEach(function(tag) {
+  const name = tag.name;
+  const count = tag.posts.length;
+  
+  const parts = name.split('/');
+  let current = tagTree;
+  
+  parts.forEach(function(part, idx) {
+    if (!current[part]) {
+      current[part] = {
+        _name: part,
+        _fullPath: parts.slice(0, idx + 1).join('/'),
+        _count: 0,
+        _children: {},
+        _isLeaf: true,
+        _path: ''
+      };
+    }
+    if (idx === parts.length - 1) {
+      current[part]._count = count;
+      current[part]._fullPath = name;
+      current[part]._path = tag.path;
+    } else {
+      current[part]._isLeaf = false;
+    }
+    current = current[part]._children;
+  });
+});
+
+function accumulateCounts(node) {
+  let total = 0;
+  Object.keys(node).forEach(function(k) {
+    if (k.startsWith('_')) return;
+    total += accumulateCounts(node[k]);
+  });
+  if (node._isLeaf) {
+    total = node._count;
+  }
+  node._count = Math.max(node._count, total);
+  return node._count;
+}
+accumulateCounts(tagTree);
+
+// 获取标签 Hexo 实际路径
+function tagUrl(fullPath) {
+  var t = tagByFullPath[fullPath];
+  if (t && t.path) return url_for(t.path);
+  return url_for('/tags/' + fullPath + '/');
+}
+%>
+
+<div class="tags-overview-container">
+  <div class="tags-overview-header">
+    <div class="tags-overview-icon">#</div>
+    <h1 class="tags-overview-title">全部标签</h1>
+    <div class="tags-overview-count"><%= allTags.length %> 个标签</div>
+  </div>
+
+  <div class="tags-tree-full">
+    <div class="tags-tree-box">
+      <div class="tags-tree-title">标签树</div>
+      <div class="tags-tree-content" id="tagTree">
+        <% function renderTree(node, depth) { %>
+          <% Object.keys(node).forEach(function(k) { %>
+            <% if (k.startsWith('_')) return; %>
+            <% const child = node[k]; %>
+            <% const hasChildren = Object.keys(child._children).filter(function(kk) { return !kk.startsWith('_'); }).length > 0; %>
+            <div class="tree-branch" style="padding-left: <%= depth * 1.5 %>rem">
+              <a href="<%- tagUrl(child._fullPath) %>" class="tree-node <%= child._isLeaf ? 'tree-leaf' : 'tree-folder' %>">
+                <% if (!child._isLeaf && hasChildren) { %>
+                  <span class="tree-node-icon">⊞</span>
+                <% } else { %>
+                  <span class="tree-node-icon">#</span>
+                <% } %>
+                <span class="tree-node-name"><%= child._name %></span>
+                <span class="tree-node-count"><%= child._count %></span>
+              </a>
+              <% if (hasChildren) { %>
+                <% renderTree(child._children, depth + 1); %>
+              <% } %>
+            </div>
+          <% }); %>
+        <% } %>
+        <% renderTree(tagTree, 0); %>
+      </div>
+    </div>
+  </div>
+</div>

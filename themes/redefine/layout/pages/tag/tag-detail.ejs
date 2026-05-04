@@ -1,0 +1,205 @@
+<% 
+// 标签图标映射
+function tagIcon(name) {
+  var m = {
+    '文理': '⊛', '诗歌': '♪', '散文': '◇', '政治分析': '§',
+    '数理': '⊡', '数论': '∑', '概率论': '∫', '线性代数': 'β',
+    '信息学': '◈', '算法': 'λ', '数据结构': '∅',
+    '日常': '○', 'AI安全': '☠', '大模型': '∞',
+  };
+  return m[name] || '⊞';
+}
+const posts = page.posts.toArray ? page.posts.toArray() : page.posts;
+const tagName = page.tag;
+
+// 收集属于这个大标签的所有子标签（格式：大标签/子标签）
+const subTags = new Set();
+const postData = [];
+
+posts.forEach(post => {
+  const postTags = post.tags && post.tags.data ? post.tags.data : (post.tags || []);
+  const tagNames = Array.isArray(postTags) ? postTags.map(t => typeof t === 'string' ? t : t.name) : [];
+  
+  // 收集子标签（斜杠格式）
+  tagNames.forEach(t => {
+    if (t.startsWith(tagName + '/')) {
+      subTags.add(t);
+    }
+  });
+  
+  // 收集文章数据（给 JS 用）
+  postData.push({
+    title: post.title,
+    path: post.path,
+    date: post.date ? post.date.valueOf() : 0,
+    dateStr: post.date ? date(post.date, 'YYYY年MM月DD日') : '',
+    excerpt: post.excerpt ? post.excerpt.replace(/<[^>]*>/g, '').trim().substring(0, 200) : '',
+    tags: tagNames,
+    cover: post.cover || ''
+  });
+});
+
+const subTagsArr = Array.from(subTags).sort();
+%>
+
+<div class="tag-detail-container" 
+     data-tag-name="<%= tagName %>"
+     data-posts='<%= JSON.stringify(postData).replace(/'/g, "&#39;") %>'
+     data-subtags='<%= JSON.stringify(subTagsArr).replace(/'/g, "&#39;") %>'>
+  
+  <!-- 大标签标题区 -->
+  <div class="tag-detail-header">
+    <div class="tag-detail-icon"><%= tagIcon(tagName) %></div>
+    <h1 class="tag-detail-name" id="tagMainTitle"><%= tagName %></h1>
+    <div class="tag-detail-count" id="tagPostCount"><%= posts.length %> 篇文章</div>
+  </div>
+
+  <!-- 细分小标签（仅在有子标签时显示） -->
+  <% if (subTagsArr.length > 0) { %>
+  <div class="tag-subtags">
+    <button class="tag-subtag active" data-filter="all">全部</button>
+    <% subTagsArr.forEach(st => { %>
+      <% const shortName = st.split('/').pop(); %>
+      <button class="tag-subtag" data-filter="<%= st %>"><%= shortName %></button>
+    <% }) %>
+  </div>
+  <% } %>
+
+  <!-- 文章列表 -->
+  <div class="tag-detail-posts" id="tagPostList">
+    <% posts.sort((a,b) => (a.date > b.date ? -1 : 1)).forEach(post => { %>
+      <% 
+        const postTags = post.tags && post.tags.data ? post.tags.data : (post.tags || []);
+        const tagNames = Array.isArray(postTags) ? postTags.map(t => typeof t === 'string' ? t : t.name) : [];
+        const excerpt = post.excerpt ? post.excerpt.replace(/<[^>]*>/g, '').trim().substring(0, 200) : '';
+        const formattedDate = post.date ? date(post.date, 'YYYY年MM月DD日') : '';
+        // 检测文章前引
+        var contentTrimmed = post.content ? post.content.trim() : '';
+        var epigraphMatch = contentTrimmed.match(/^<blockquote>\s*<p>\s*(.+?)<\/p>/);
+        var epigraph = epigraphMatch ? epigraphMatch[1] : '';
+      %>
+      <article class="tag-post-card" data-tags='<%= JSON.stringify(tagNames) %>'>
+        <a href="<%- url_for(post.path) %>" class="tag-post-link">
+          <h2 class="tag-post-title"><%= post.title %></h2>
+          <div class="tag-post-meta">
+            <time class="tag-post-date"><%= formattedDate %></time>
+            <div class="tag-post-badges">
+              <% tagNames.forEach(t => { %>
+                <span class="tag-badge"><%= t %></span>
+              <% }) %>
+            </div>
+          </div>
+          <% if (epigraph) { %>
+            <p class="tag-post-excerpt tag-epigraph-excerpt"><%= epigraph %></p>
+          <% } else if (excerpt) { %>
+            <p class="tag-post-excerpt"><%= excerpt %></p>
+          <% } %>
+        </a>
+      </article>
+    <% }) %>
+  </div>
+</div>
+
+<script>
+(function() {
+  var container = document.querySelector('.tag-detail-container');
+  if (!container) return;
+  
+  var allPosts = JSON.parse(container.getAttribute('data-posts') || '[]');
+  var subTags = JSON.parse(container.getAttribute('data-subtags') || '[]');
+  var mainTag = container.getAttribute('data-tag-name') || '';
+  var titleEl = document.getElementById('tagMainTitle');
+  var countEl = document.getElementById('tagPostCount');
+  var listEl = document.getElementById('tagPostList');
+  
+  // 当前筛选状态：null = 全部，否则是子标签名
+  var currentFilter = null;
+
+  function renderPosts(filterTag) {
+    var filtered = allPosts;
+    if (filterTag) {
+      filtered = allPosts.filter(function(p) {
+        return p.tags.indexOf(filterTag) !== -1;
+      });
+    }
+    
+    // 更新标题
+    if (filterTag && filterTag !== mainTag) {
+      var shortName = filterTag.split('/').pop();
+      titleEl.textContent = mainTag + ' · ' + shortName;
+    } else {
+      titleEl.textContent = mainTag;
+    }
+    countEl.textContent = filtered.length + ' 篇文章';
+    
+    // 重建列表
+    listEl.innerHTML = '';
+    filtered.sort(function(a, b) { return b.date - a.date; });
+    
+    filtered.forEach(function(post) {
+      var card = document.createElement('article');
+      card.className = 'tag-post-card';
+      
+      var link = document.createElement('a');
+      link.href = post.path;
+      link.className = 'tag-post-link';
+      
+      var title = document.createElement('h2');
+      title.className = 'tag-post-title';
+      title.textContent = post.title;
+      link.appendChild(title);
+      
+      var meta = document.createElement('div');
+      meta.className = 'tag-post-meta';
+      
+      var time = document.createElement('time');
+      time.className = 'tag-post-date';
+      time.textContent = post.dateStr;
+      meta.appendChild(time);
+      
+      var badges = document.createElement('div');
+      badges.className = 'tag-post-badges';
+      post.tags.forEach(function(t) {
+        var badge = document.createElement('span');
+        badge.className = 'tag-badge';
+        badge.textContent = t;
+        badges.appendChild(badge);
+      });
+      meta.appendChild(badges);
+      link.appendChild(meta);
+      
+      if (post.excerpt) {
+        var excerpt = document.createElement('p');
+        excerpt.className = 'tag-post-excerpt';
+        excerpt.textContent = post.excerpt;
+        link.appendChild(excerpt);
+      }
+      
+      card.appendChild(link);
+      listEl.appendChild(card);
+    });
+    
+    // 更新小标签 active 状态
+    var subtagBtns = document.querySelectorAll('.tag-subtag');
+    subtagBtns.forEach(function(btn) {
+      btn.classList.remove('active');
+      if ((!filterTag && btn.getAttribute('data-filter') === 'all') ||
+          (filterTag && btn.getAttribute('data-filter') === filterTag)) {
+        btn.classList.add('active');
+      }
+    });
+  }
+
+  // 绑定小标签点击
+  document.querySelectorAll('.tag-subtag').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      var filter = this.getAttribute('data-filter');
+      if (filter === 'all') {
+        renderPosts(null);
+      } else {
+        renderPosts(filter);
+      }
+    });
+  });
+})();
+</script>

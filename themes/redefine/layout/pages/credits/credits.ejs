@@ -1,0 +1,72 @@
+<div class="credits-wrapper">
+  <div class="linux-corner-deco">
+    <div class="linux-dot linux-dot-red"></div>
+    <div class="linux-dot linux-dot-yellow"></div>
+    <div class="linux-dot linux-dot-green"></div>
+    <span class="linux-label">~/credits</span>
+  </div>
+
+  <div class="credits-page">
+    <!-- 背景光晕 -->
+    <div class="credits-glow"></div>
+
+    <!-- 头部 -->
+    <div class="credits-header">
+      <div class="credits-heart">♥</div>
+      <h1 class="credits-title">致谢</h1>
+      <p class="credits-subtitle">感谢每一位让这个博客存在的人</p>
+      <div class="credits-divider"></div>
+    </div>
+
+    <!-- 赞助者列表 -->
+    <div class="credits-body">
+      <div class="credits-card">
+        <div class="credits-card-header">
+          <span class="credits-card-icon">✦</span>
+          赞助朋友
+        </div>
+
+        <%
+        // ===== 赞助者数据 =====
+        // 在这里添加/删除/修改赞助者信息
+        // 格式：{ name: '称呼', img: '/images/xxx.jpg', bio: '简介文字' }
+        var patrons = [
+          { name: 'lzx',  img: '/images/lzx.jpg',  bio: '来去从容，轩然不惊' },
+          { name: 'Puppet',  img: '/images/puppet.jpg',  bio: '灯火阑珊处' },
+          { name: '任怀学',  img: '/images/rhx.jpg',  bio: '超脱世俗者' },
+          { name: '😠',  img: '/images/ds.jpg',  bio: 'ds只是不语' },
+          { name: '溪流亭馨',  img: '/images/溪流亭馨.jpg',  bio: '高手已经在打瓦了' },
+          { name: '忆佳时乄航',  img: '/images/yjs.jpg',  bio: '土豆会证明一切' },
+          { name: '深椿',  img: '/images/sc.jpg',  bio: '宇智波' },
+
+        ];
+        %>
+
+        <!-- 空状态 -->
+        <div class="credits-empty" style="display: <%= patrons.length === 0 ? '' : 'none' %>;">
+          <div class="credits-empty-icon">⋯</div>
+          <p class="credits-empty-text">暂时没有赞助记录</p>
+          <p class="credits-empty-hint">如果你觉得这个博客有价值，欢迎赞助支持</p>
+        </div>
+
+        <!-- 赞助者条目 -->
+        <div class="credits-patrons-grid">
+          <% patrons.forEach(function(p) { %>
+            <div class="credits-patron-card">
+              <div class="credits-patron-avatar">
+                <img src="<%= p.img %>" alt="<%= p.name %>">
+              </div>
+              <div class="credits-patron-card-name"><%= p.name %></div>
+              <div class="credits-patron-card-bio"><%= p.bio %></div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部 -->
+    <div class="credits-footer">
+      <p class="credits-footer-text">每一份支持都值得被记住</p>
+    </div>
+  </div>
+</div>

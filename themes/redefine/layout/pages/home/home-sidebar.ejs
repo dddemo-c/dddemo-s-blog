@@ -1,0 +1,126 @@
+<div class="home-sidebar-container">
+    <div class="sticky-container sticky">
+        <%
+            const hasSidebarLinks = theme.home.sidebar.links !== null;
+            const hasSidebarAnnouncement = theme.home.sidebar.announcement !== null;
+        %>
+        <% if (theme.home.sidebar.first_item === "info") { %>
+            <div class="sidebar-content">
+                <%- partial("components/sidebar/avatar") %>
+                <%- partial("components/sidebar/author") %>
+                <%- partial('components/sidebar/statistics')%>
+            </div>
+            <% if (hasSidebarLinks || hasSidebarAnnouncement) {%>
+                <div class="sidebar-links"  <% if (hasSidebarLinks || hasSidebarAnnouncement) { %> marginTop <% } %>>
+                    <div class="site-info">
+                        <div class="site-name"><%= theme.info.title || config.title %></div>
+                        <% if (hasSidebarAnnouncement && hasSidebarLinks) { %>
+                            <div class="announcement">
+                                <%- theme.home.sidebar.announcement %>
+                            </div>
+                        <% } %>
+                    </div>
+                    <% if (hasSidebarLinks) {%>
+                        <% for (let i in theme.home.sidebar.links) { %>
+                            <% if (theme.home.sidebar.links[i].path === 'none') {} else {%>
+                                <a class="links" href="<%= url_for(theme.home.sidebar.links[i].path) %>">
+                                    <% if (theme.home.sidebar.links[i].icon) { %>
+                                        <i class="<%- theme.home.sidebar.links[i].icon %> icon-space"></i>
+                                    <% } %>
+                                    <span class="link-name"><%= __(i) %></span>
+                                </a>
+                            <% } %>
+                        <% } %>
+                    <% } else {%>
+                        <div class="announcement-outside">
+                            <%- theme.home.sidebar.announcement %>
+                        </div>
+                    <% } %>
+                </div>
+            <% } %>
+        <% } else { %>
+            <% if (hasSidebarLinks || hasSidebarAnnouncement) {%>
+                <div class="sidebar-links">
+                    <div class="site-info">
+                        <div class="site-name"><%= theme.info.title || config.title %></div>
+                        <% if (hasSidebarAnnouncement && hasSidebarLinks) { %>
+                            <div class="announcement">
+                                <%- theme.home.sidebar.announcement %>
+                            </div>
+                        <% } %>
+                    </div>
+                    <% if (hasSidebarLinks) {%>
+                        <% for (let i in theme.home.sidebar.links) { %>
+                            <% if (theme.home.sidebar.links[i].path === 'none') {} else {%>
+                                <a class="links" href="<%= url_for(theme.home.sidebar.links[i].path) %>">
+                                    <% if (theme.home.sidebar.links[i].icon) { %>
+                                        <i class="<%- theme.home.sidebar.links[i].icon %> icon-space"></i>
+                                    <% } %>
+                                    <span class="link-name"><%= __(i) %></span>
+                                </a>
+                            <% } %>
+                        <% } %>
+                    <% } else {%>
+                        <div class="announcement-outside">
+                            <%- theme.home.sidebar.announcement %>
+                        </div>
+                    <% } %>
+                </div>
+            <% } %>
+            <div class="sidebar-content" <% if (hasSidebarLinks || hasSidebarAnnouncement) { %> marginTop <% } %>>
+                <%- partial("components/sidebar/avatar") %>
+                <%- partial("components/sidebar/author") %>
+                <%- partial('components/sidebar/statistics')%>
+            </div>
+        <% } %>
+
+        <!-- 标签框（手风琴悬停展开） -->
+        <div class="sidebar-tags-card">
+            <div class="tags-card-header">
+                <span>TAGS</span>
+                <a class="tags-card-all" href="/tags/">全部</a>
+            </div>
+            <div class="tags-card-body">
+                <div class="tags-accordion-group">
+                    <a class="tags-card-item" href="/tags/文理/">文理</a>
+                    <div class="tags-sub-list">
+                        <a class="tags-sub-item" href="/tags/文理-诗歌/">诗歌</a>
+                    </div>
+                </div>
+                <div class="tags-accordion-group">
+                    <a class="tags-card-item" href="/tags/信息学/">信息学</a>
+                    <div class="tags-sub-list">
+                        <a class="tags-sub-item" href="/tags/信息学-算法/">算法</a>
+                        <a class="tags-sub-item" href="/tags/信息学-Linux运维/">Linux运维</a>
+                        <a class="tags-sub-item" href="/tags/信息学-前端/">前端</a>
+                    </div>
+                </div>
+                <div class="tags-accordion-group">
+                    <a class="tags-card-item" href="/tags/数理/">数理</a>
+                    <div class="tags-sub-list">
+                        <a class="tags-sub-item" href="/tags/数理-数论/">数论</a>
+                        <a class="tags-sub-item" href="/tags/数理-概率论/">概率论</a>
+                        <a class="tags-sub-item" href="/tags/数理-线性代数/">线性代数</a>
+                    </div>
+                </div>
+                <a class="tags-card-item" href="/tags/日常/">日常</a>
+            </div>
+        </div>
+
+        <!-- 联系方式 -->
+        <div class="contact-section">
+            <div class="contact-title">CONTACT</div>
+            <div class="contact-list">
+                <a class="contact-item" href="mailto:Sophisticated_table@outlook.com" title="发邮件">
+                    <span class="contact-item-icon"><i class="fa-regular fa-envelope"></i></span>
+                    <span class="contact-item-label">Outlook</span>
+                </a>
+                <a class="contact-item" href="https://github.com/dddemo-c" target="_blank" rel="noopener" title="GitHub">
+                    <span class="contact-item-icon"><i class="fa-brands fa-github"></i></span>
+                    <span class="contact-item-label">GitHub</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

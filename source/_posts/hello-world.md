@@ -1,38 +1,15 @@
 ---
-title: Hello World
+title: 公告板
+date: 2026-05-02 23:16:14
+sticky: 3
+tags: noen
 ---
-Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
+> 我们在这里发布最新公告!
 
-## Quick Start
+这里用来发布新功能、重要通知和其他事项。
 
-### Create a new post
+暂无新公告。
 
-``` bash
-$ hexo new "My New Post"
-```
+---
 
-More info: [Writing](https://hexo.io/docs/writing.html)
-
-### Run server
-
-``` bash
-$ hexo server
-```
-
-More info: [Server](https://hexo.io/docs/server.html)
-
-### Generate static files
-
-``` bash
-$ hexo generate
-```
-
-More info: [Generating](https://hexo.io/docs/generating.html)
-
-### Deploy to remote sites
-
-``` bash
-$ hexo deploy
-```
-
-More info: [Deployment](https://hexo.io/docs/one-command-deployment.html)
+If you find any bugs or have any suggestions, feel free to contact me at: **Sophisticated_table@outlook.com**

@@ -1,0 +1,194 @@
+<%
+// 分类图标映射
+function catIcon(name) {
+  var m = {
+    '文理': '⊛', '诗歌': '♪', '散文': '◇', '政治分析': '§',
+    '数理': '⊡', '数论': '∑', '概率论': '∫', '线性代数': 'β',
+    '信息学': '◈', '算法': 'λ', '数据结构': '∅',
+    '日常': '○',
+  };
+  return m[name] || '⊗';
+}
+const posts = page.posts.toArray ? page.posts.toArray() : page.posts;
+const catName = page.category;
+
+// 收集子分类
+const subCats = new Set();
+const postData = [];
+
+posts.forEach(function(post) {
+  const postCats = post.categories && post.categories.data ? post.categories.data : (post.categories || []);
+  const catNames = Array.isArray(postCats) ? postCats.map(function(c) { return typeof c === 'string' ? c : c.name; }) : [];
+  
+  catNames.forEach(function(c) {
+    if (c.startsWith(catName + '/')) {
+      subCats.add(c);
+    }
+  });
+  
+  const excerpt = post.excerpt ? post.excerpt.replace(/<[^>]*>/g, '').trim().substring(0, 200) : '';
+  postData.push({
+    title: post.title,
+    path: post.path,
+    date: post.date ? post.date.valueOf() : 0,
+    dateStr: post.date ? date(post.date, 'YYYY年MM月DD日') : '',
+    excerpt: excerpt,
+    categories: catNames,
+    cover: post.cover || ''
+  });
+});
+
+const subCatsArr = Array.from(subCats).sort();
+%>
+
+<div class="tag-detail-container" 
+     data-cat-name="<%= catName %>"
+     data-posts='<%= JSON.stringify(postData).replace(/'/g, "&#39;") %>'
+     data-subcats='<%= JSON.stringify(subCatsArr).replace(/'/g, "&#39;") %>'>
+  
+  <div class="tag-detail-header">
+    <div class="tag-detail-icon"><%= catIcon(catName) %></div>
+    <h1 class="tag-detail-name" id="catMainTitle"><%= catName %></h1>
+    <div class="tag-detail-count" id="catPostCount"><%= posts.length %> 篇文章</div>
+  </div>
+
+  <% if (subCatsArr.length > 0) { %>
+  <div class="tag-subtags">
+    <button class="tag-subtag active" data-filter="all">全部</button>
+    <% subCatsArr.forEach(function(sc) { %>
+      <% const shortName = sc.split('/').pop(); %>
+      <button class="tag-subtag" data-filter="<%= sc %>"><%= shortName %></button>
+    <% }); %>
+  </div>
+  <% } %>
+
+  <div class="tag-detail-posts" id="catPostList">
+    <% posts.sort(function(a,b) { return a.date > b.date ? -1 : 1; }).forEach(function(post) { %>
+      <% 
+        const postCats = post.categories && post.categories.data ? post.categories.data : (post.categories || []);
+        const catNames = Array.isArray(postCats) ? postCats.map(function(c) { return typeof c === 'string' ? c : c.name; }) : [];
+        const excerpt = post.excerpt ? post.excerpt.replace(/<[^>]*>/g, '').trim().substring(0, 200) : '';
+        const formattedDate = post.date ? date(post.date, 'YYYY年MM月DD日') : '';
+        // 检测文章前引
+        var contentTrimmed = post.content ? post.content.trim() : '';
+        var epigraphMatch = contentTrimmed.match(/^<blockquote>\s*<p>\s*(.+?)<\/p>/);
+        var epigraph = epigraphMatch ? epigraphMatch[1] : '';
+      %>
+      <article class="tag-post-card" data-cats='<%= JSON.stringify(catNames) %>'>
+        <a href="<%- url_for(post.path) %>" class="tag-post-link">
+          <h2 class="tag-post-title"><%= post.title %></h2>
+          <div class="tag-post-meta">
+            <time class="tag-post-date"><%= formattedDate %></time>
+            <div class="tag-post-badges">
+              <% catNames.forEach(function(c) { %>
+                <span class="tag-badge"><%= c %></span>
+              <% }); %>
+            </div>
+          </div>
+          <% if (epigraph) { %>
+            <p class="tag-post-excerpt tag-epigraph-excerpt"><%= epigraph %></p>
+          <% } else if (excerpt) { %>
+            <p class="tag-post-excerpt"><%= excerpt %></p>
+          <% } %>
+        </a>
+      </article>
+    <% }); %>
+  </div>
+</div>
+
+<script>
+(function() {
+  var container = document.querySelector('.tag-detail-container');
+  if (!container) return;
+  
+  var allPosts = JSON.parse(container.getAttribute('data-posts') || '[]');
+  var subCats = JSON.parse(container.getAttribute('data-subcats') || '[]');
+  var mainCat = container.getAttribute('data-cat-name') || '';
+  var titleEl = document.getElementById('catMainTitle');
+  var countEl = document.getElementById('catPostCount');
+  var listEl = document.getElementById('catPostList');
+
+  function renderPosts(filterCat) {
+    var filtered = allPosts;
+    if (filterCat) {
+      filtered = allPosts.filter(function(p) {
+        return p.categories.indexOf(filterCat) !== -1;
+      });
+    }
+    
+    if (filterCat && filterCat !== mainCat) {
+      var shortName = filterCat.split('/').pop();
+      titleEl.textContent = mainCat + ' · ' + shortName;
+    } else {
+      titleEl.textContent = mainCat;
+    }
+    countEl.textContent = filtered.length + ' 篇文章';
+    
+    listEl.innerHTML = '';
+    filtered.sort(function(a, b) { return b.date - a.date; });
+    
+    filtered.forEach(function(post) {
+      var card = document.createElement('article');
+      card.className = 'tag-post-card';
+      
+      var link = document.createElement('a');
+      link.href = post.path;
+      link.className = 'tag-post-link';
+      
+      var title = document.createElement('h2');
+      title.className = 'tag-post-title';
+      title.textContent = post.title;
+      link.appendChild(title);
+      
+      var meta = document.createElement('div');
+      meta.className = 'tag-post-meta';
+      
+      var time = document.createElement('time');
+      time.className = 'tag-post-date';
+      time.textContent = post.dateStr;
+      meta.appendChild(time);
+      
+      var badges = document.createElement('div');
+      badges.className = 'tag-post-badges';
+      post.categories.forEach(function(c) {
+        var badge = document.createElement('span');
+        badge.className = 'tag-badge';
+        badge.textContent = c;
+        badges.appendChild(badge);
+      });
+      meta.appendChild(badges);
+      link.appendChild(meta);
+      
+      if (post.excerpt) {
+        var excerpt = document.createElement('p');
+        excerpt.className = 'tag-post-excerpt';
+        excerpt.textContent = post.excerpt;
+        link.appendChild(excerpt);
+      }
+      
+      card.appendChild(link);
+      listEl.appendChild(card);
+    });
+    
+    var subtagBtns = document.querySelectorAll('.tag-subtag');
+    subtagBtns.forEach(function(btn) {
+      btn.classList.remove('active');
+      if ((!filterCat && btn.getAttribute('data-filter') === 'all') ||
+          (filterCat && btn.getAttribute('data-filter') === filterCat)) {
+        btn.classList.add('active');
+      }
+    });
+  }
+
+  document.querySelectorAll('.tag-subtag').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      var filter = this.getAttribute('data-filter');
+      if (filter === 'all') {
+        renderPosts(null);
+      } else {
+        renderPosts(filter);
+      }
+    });
+  });
+})();
+</script>

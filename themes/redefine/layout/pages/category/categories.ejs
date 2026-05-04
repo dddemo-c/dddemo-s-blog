@@ -1,0 +1,149 @@
+<%
+// 分类图标映射
+function catIcon(name) {
+  var m = {
+    '文理': '⊛', '诗歌': '♪', '散文': '◇', '政治分析': '§',
+    '数理': '⊡', '数论': '∑', '概率论': '∫', '线性代数': 'β',
+    '信息学': '◈', '算法': 'λ', '数据结构': '∅',
+    '日常': '○',
+  };
+  return m[name] || '⊗';
+}
+
+// 先把所有分类按 name 建立索引，方便查 path
+var catByFullPath = {};
+var allCats = site.categories.toArray ? site.categories.toArray() : (Array.isArray(site.categories) ? site.categories : []);
+allCats.forEach(function(cat) {
+  catByFullPath[cat.name] = cat;
+});
+
+// 构建分类树
+const catTree = {};
+
+allCats.forEach(function(cat) {
+  const name = cat.name;
+  const count = cat.posts.length;
+  
+  const parts = name.split('/');
+  let current = catTree;
+  
+  parts.forEach(function(part, idx) {
+    if (!current[part]) {
+      current[part] = {
+        _name: part,
+        _fullPath: parts.slice(0, idx + 1).join('/'),
+        _count: 0,
+        _children: {},
+        _isLeaf: true,
+        _path: '' // will set on leaf
+      };
+    }
+    if (idx === parts.length - 1) {
+      current[part]._count = count;
+      current[part]._fullPath = name;
+      current[part]._path = cat.path;
+    } else {
+      current[part]._isLeaf = false;
+    }
+    current = current[part]._children;
+  });
+});
+
+function accumulateCounts(node) {
+  let total = 0;
+  Object.keys(node).forEach(function(k) {
+    if (k.startsWith('_')) return;
+    total += accumulateCounts(node[k]);
+  });
+  if (node._isLeaf) {
+    total = node._count;
+  }
+  node._count = Math.max(node._count, total);
+  return node._count;
+}
+accumulateCounts(catTree);
+
+// 收集顶级分类用于右侧卡片展示
+function getTopCats(node, depth) {
+  const result = [];
+  Object.keys(node).forEach(function(k) {
+    if (k.startsWith('_')) return;
+    const child = node[k];
+    result.push(child);
+    if (depth < 1) {
+      result.push.apply(result, getTopCats(child._children, depth + 1));
+    }
+  });
+  return result;
+}
+const topCats = getTopCats(catTree, 0);
+
+// 函数：获取分类 Hexo 路径（自动处理 /categories/文理/文理-诗歌/ 这类 URL）
+function catUrl(fullPath) {
+  var c = catByFullPath[fullPath];
+  if (c && c.path) return url_for(c.path);
+  // fallback: 手动构建（虽然不完美但至少能用）
+  return url_for('/categories/' + fullPath + '/');
+}
+%>
+
+<div class="tags-overview-container">
+  <div class="allposts-hero">
+    <div class="allposts-hero-glow"></div>
+    <h1 class="allposts-hero-title">全部分类</h1>
+    <div class="allposts-hero-line"></div>
+    <div class="allposts-hero-meta">
+      <span class="allposts-hero-count"><%= allCats.length %> 个分类</span>
+      <span class="allposts-hero-dot">·</span>
+      <span class="allposts-hero-sub"><%= site.posts.length %> 篇文章</span>
+    </div>
+  </div>
+
+  <div class="tags-overview-layout">
+    <!-- 左侧：分类树 -->
+    <div class="tags-tree-column">
+      <div class="categories-tree-card">
+        <div class="categories-tree-card-title">
+          <span class="ctc-icon"><%= catIcon('文理') %></span>
+          分类导航
+        </div>
+        <div class="tags-tree-content">
+          <% function renderTree(node, depth) { %>
+            <% Object.keys(node).forEach(function(k) { %>
+              <% if (k.startsWith('_')) return; %>
+              <% const child = node[k]; %>
+              <% const hasChildren = Object.keys(child._children).filter(function(kk) { return !kk.startsWith('_'); }).length > 0; %>
+              <div class="tree-branch" style="padding-left: <%= depth * 1.5 %>rem">
+                <a href="<%- catUrl(child._fullPath) %>" class="tree-node <%= child._isLeaf ? 'tree-leaf' : 'tree-folder' %>">
+                  <span class="tree-node-icon"><%= catIcon(child._name) %></span>
+                  <span class="tree-node-name"><%= child._name %></span>
+                  <span class="tree-node-count"><%= child._count %></span>
+                </a>
+                <% if (hasChildren) { %>
+                  <% renderTree(child._children, depth + 1); %>
+                <% } %>
+              </div>
+            <% }); %>
+          <% } %>
+          <% renderTree(catTree, 0); %>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧：分类卡片概览 -->
+    <div class="tags-posts-column">
+      <div class="categories-grid">
+        <% topCats.forEach(function(cat) { %>
+          <a href="<%- catUrl(cat._fullPath) %>" class="cat-grid-card">
+            <div class="cat-grid-card-icon"><%= catIcon(cat._name) %></div>
+            <div class="cat-grid-card-name"><%= cat._fullPath %></div>
+            <div class="cat-grid-card-count"><%= cat._count %> 篇</div>
+          </a>
+        <% }); %>
+      </div>
+      <div class="categories-welcome">
+        <p class="categories-welcome-text">也可从左侧分类树深度导航</p>
+      </div>
+    </div>
+  </div>
+</div>

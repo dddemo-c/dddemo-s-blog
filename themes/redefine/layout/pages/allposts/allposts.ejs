@@ -1,0 +1,51 @@
+<div class="home-content-container">
+    <div class="allposts-hero">
+        <div class="allposts-hero-glow"></div>
+        <h1 class="allposts-hero-title"><%= page.title || '文章' %></h1>
+        <div class="allposts-hero-line"></div>
+        <div class="allposts-hero-meta">
+            <span class="allposts-hero-count"><%= site.posts.length %> 篇文章</span>
+            <span class="allposts-hero-dot">·</span>
+            <span class="allposts-hero-sub">全部内容</span>
+        </div>
+    </div>
+
+    <ul class="home-article-list">
+        <% 
+        const allPosts = site.posts.toArray ? site.posts.toArray() : (Array.isArray(site.posts) ? site.posts : []);
+        allPosts.sort(function(a,b) { return a.date > b.date ? -1 : 1; });
+        allPosts.forEach(function(post) { 
+        %>
+            <li class="home-article-item">
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="<%- url_for(post.path) %>">
+                            <%= post.title %>
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body allposts-e-excerpt">
+                        <% 
+                        // 检测文章是否以 blockquote 开头（前引）
+                        var contentFirstLines = post.content ? post.content.trim() : '';
+                        var epigraphMatch = contentFirstLines.match(/^<blockquote>\s*<p>\s*(.+?)<\/p>/);
+                        if (epigraphMatch) { 
+                        %>
+                          <blockquote class="allposts-epigraph"><%= epigraphMatch[1] %></blockquote>
+                        <% } else if (post.excerpt && post.excerpt == "false") { %>
+                        <% } else if (post.excerpt && post.excerpt !== "false") { %>
+                            <%- render(post.excerpt, "markdown") %>
+                        <% } else { %>
+                            <%
+                                const excerptLength = theme.home.excerpt_length || 200;
+                            %>
+                            <%- truncate(strip_html(post.content), {length: excerptLength}) %>
+                        <% } %>
+                    </div>
+
+                    <%- partial('pages/home/home-article', {post: post}) %>
+                </div>
+            </li>
+        <% }); %>
+    </ul>
+</div>

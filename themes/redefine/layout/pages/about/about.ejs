@@ -1,0 +1,66 @@
+<div class="about-wrapper">
+  <div class="linux-corner-deco">
+    <div class="linux-dot linux-dot-red"></div>
+    <div class="linux-dot linux-dot-yellow"></div>
+    <div class="linux-dot linux-dot-green"></div>
+    <span class="linux-label">~/about</span>
+  </div>
+
+  <div class="about-page">
+    <!-- 背景装饰 -->
+    <div class="about-bg-deco about-bg-deco-1"></div>
+    <div class="about-bg-deco about-bg-deco-2"></div>
+
+    <div class="about-hero">
+      <div class="about-hero-glow"></div>
+      <div class="about-avatar-frame">
+        <img class="about-avatar-img" src="<%= url_for(theme.defaults.avatar) %>" alt="avatar">
+      </div>
+      <h1 class="about-hero-name">dddemo</h1>
+      <p class="about-hero-bio">一个脱离了高级趣味的人</p>
+      <div class="about-hero-line"></div>
+    </div>
+
+    <!-- Quote -->
+    <div class="about-quote-card">
+      <div class="about-quote-mark">"</div>
+      <p class="about-quote-text">Less is more.</p>
+    </div>
+
+    <!-- 内容区 -->
+    <div class="about-body">
+      <div class="about-card">
+        <div class="about-card-header">📝 关于我</div>
+        <p class="about-card-text">
+          我是dddemo，上不知天文，下不知地理。
+        </p>
+        <p class="about-card-text">
+          一个爱好coding但被混沌魔王困在生活的普通人<br>
+          这里什么都有，也什么都没有，乱七八糟<br>
+          不用等我更新，听天由命，不知道什么时候我就会偷偷改点东西<br>
+          欢迎联系我，可以给我发邮件
+        </p>
+      </div>
+
+      <div class="about-card">
+        <div class="about-card-header">🔗 联系方式</div>
+        <div class="about-links">
+          <div class="contact-list">
+            <a class="contact-item" href="mailto:Sophisticated_table@outlook.com" title="发邮件">
+              <span class="contact-item-icon"><i class="fa-regular fa-envelope"></i></span>
+              <span class="contact-item-label">Outlook</span>
+              <span class="contact-item-addr">Sophisticated_table@outlook.com</span>
+            </a>
+            <a class="contact-item" href="https://github.com/dddemo-c" target="_blank" rel="noopener" title="GitHub">
+              <span class="contact-item-icon"><i class="fa-brands fa-github"></i></span>
+              <span class="contact-item-label">GitHub</span>
+              <span class="contact-item-addr">github.com/dddemo-c</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <% /* 你可以继续在这里加卡片 */ %>
+    </div>
+  </div>
+</div>

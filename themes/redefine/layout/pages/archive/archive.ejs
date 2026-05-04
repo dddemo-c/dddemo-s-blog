@@ -1,0 +1,45 @@
+<div class="archive-container">
+  <div class="archive-header">
+    <div class="archive-header-icon">📦</div>
+    <h1 class="archive-header-title"><%= page.title || '归档' %></h1>
+    <div class="archive-header-count"><%= site.posts.length %> 篇文章</div>
+  </div>
+
+  <%
+  const allPosts = site.posts.toArray ? site.posts.toArray() : (Array.isArray(site.posts) ? site.posts : []);
+  const years = {};
+  allPosts.forEach(function(post) {
+    const y = post.date ? post.date.format('YYYY') : '';
+    if (!years[y]) years[y] = [];
+    years[y].push(post);
+  });
+  const sortedYears = Object.keys(years).sort(function(a,b) { return b - a; });
+  %>
+
+  <div class="archive-timeline">
+    <% sortedYears.forEach(function(year) { %>
+      <section class="archive-year-group">
+        <div class="archive-year-head">
+          <span class="archive-year-badge"><%= year %></span>
+          <span class="archive-year-count"><%= years[year].length %> 篇</span>
+        </div>
+        <div class="archive-year-line">
+          <% years[year].sort(function(a,b) { return a.date > b.date ? -1 : 1; }).forEach(function(post) { %>
+            <div class="archive-post-item">
+              <div class="archive-post-dot"></div>
+              <time class="archive-post-date"><%= post.date ? date(post.date, 'MM-DD') : '' %></time>
+              <a href="<%- url_for(post.path) %>" class="archive-post-title"><%= post.title %></a>
+              <% if (post.categories && post.categories.length > 0) { %>
+                <span class="archive-post-cat">
+                  <% post.categories.each(function(cat) { %>
+                    <a href="<%- url_for(cat.path) %>"><%= cat.name %></a>
+                  <% }); %>
+                </span>
+              <% } %>
+            </div>
+          <% }); %>
+        </div>
+      </section>
+    <% }); %>
+  </div>
+</div>
