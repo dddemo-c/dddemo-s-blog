@@ -364,7 +364,6 @@ export const initLocalSearchGlobals = ({ signal } = {}) => {
   const searchPath = ensureSearchPath();
   if (!searchPath) {
     if (!warnedMissing) {
-      console.warn("`hexo-generator-searchdb` plugin is not installed!");
       warnedMissing = true;
     }
     return;
@@ -390,7 +389,6 @@ export const initLocalSearchPage = () => {
   const searchPath = ensureSearchPath();
   if (!searchPath) {
     if (!warnedMissing) {
-      console.warn("`hexo-generator-searchdb` plugin is not installed!");
       warnedMissing = true;
     }
     return;
