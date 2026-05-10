@@ -113,3 +113,4 @@ search:
   path: search.xml
   field: post
   content: true
+updated_option: mtime
