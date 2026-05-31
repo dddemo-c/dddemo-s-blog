@@ -1,7 +1,6 @@
 ---
 title: CC-BOS 框架详解
 date: 2026-05-02 11:00:00
-sticky: 1
 mathjax: true
 categories:
   - 信息学

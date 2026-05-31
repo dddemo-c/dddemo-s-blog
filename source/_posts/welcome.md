@@ -1,6 +1,6 @@
 ---
 title: 欢迎
-sticky: 4
+sticky: 1
 date: 2026-05-02 10:40:00
 categories:
   - 日常
