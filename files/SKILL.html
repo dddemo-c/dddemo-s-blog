@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="blog">
 <meta property="og:description" content="Use when encountering any bug, test failure, or unexpected behavior. 4-phase root cause investigation — NO fixes without understanding the problem first.">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-05-09T14:43:55.550Z">
+<meta property="article:published_time" content="2026-05-10T04:05:32.554Z">
 <meta property="article:modified_time" content="2026-05-09T14:43:55.550Z">
 <meta name="twitter:card" content="summary">
   
@@ -75,7 +75,7 @@
         <section id="main"><article id="page-" class="h-entry article article-type-page" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/files/SKILL.html" class="article-date">
-  <time class="dt-published" datetime="2026-05-09T14:43:55.550Z" itemprop="datePublished">2026-05-09</time>
+  <time class="dt-published" datetime="2026-05-10T04:05:32.554Z" itemprop="datePublished">2026-05-10</time>
 </a>
     
   </div>
@@ -87,7 +87,7 @@
         <h1 id="Systematic-Debugging"><a href="#Systematic-Debugging" class="headerlink" title="Systematic Debugging"></a>Systematic Debugging</h1><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Random fixes waste time and create new bugs. Quick patches mask underlying issues.</p>
 <p><strong>Core principle:</strong> ALWAYS find root cause before attempting fixes. Symptom fixes are failure.</p>
 <p><strong>Violating the letter of this process is violating the spirit of debugging.</strong></p>
-<h2 id="The-Iron-Law"><a href="#The-Iron-Law" class="headerlink" title="The Iron Law"></a>The Iron Law</h2><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST</span><br></pre></td></tr></table></figure></div>
+<h2 id="The-Iron-Law"><a href="#The-Iron-Law" class="headerlink" title="The Iron Law"></a>The Iron Law</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST</span><br></pre></td></tr></table></figure>
 
 <p>If you haven’t completed Phase 1, you cannot propose fixes.</p>
 <h2 id="When-to-Use"><a href="#When-to-Use" class="headerlink" title="When to Use"></a>When to Use</h2><p>Use for ANY technical issue:</p>
@@ -130,7 +130,7 @@
 <li>If not reproducible → gather more data, don’t guess</li>
 </ul>
 <p><strong>Action:</strong> Use the <code>terminal</code> tool to run the failing test or trigger the bug:</p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Run specific failing test</span></span><br><span class="line">pytest tests/test_module.py::test_name -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># Run with verbose output</span></span><br><span class="line">pytest tests/test_module.py -v --tb=long</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Run specific failing test</span></span><br><span class="line">pytest tests/test_module.py::test_name -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># Run with verbose output</span></span><br><span class="line">pytest tests/test_module.py -v --tb=long</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-Check-Recent-Changes"><a href="#3-Check-Recent-Changes" class="headerlink" title="3. Check Recent Changes"></a>3. Check Recent Changes</h3><ul>
 <li>What changed that could cause this?</li>
@@ -138,7 +138,7 @@
 <li>New dependencies, config changes</li>
 </ul>
 <p><strong>Action:</strong></p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Recent commits</span></span><br><span class="line">git <span class="built_in">log</span> --oneline -10</span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncommitted changes</span></span><br><span class="line">git diff</span><br><span class="line"></span><br><span class="line"><span class="comment"># Changes in specific file</span></span><br><span class="line">git <span class="built_in">log</span> -p --follow src/problematic_file.py | <span class="built_in">head</span> -100</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Recent commits</span></span><br><span class="line">git <span class="built_in">log</span> --oneline -10</span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncommitted changes</span></span><br><span class="line">git diff</span><br><span class="line"></span><br><span class="line"><span class="comment"># Changes in specific file</span></span><br><span class="line">git <span class="built_in">log</span> -p --follow src/problematic_file.py | <span class="built_in">head</span> -100</span><br></pre></td></tr></table></figure>
 
 <h3 id="4-Gather-Evidence-in-Multi-Component-Systems"><a href="#4-Gather-Evidence-in-Multi-Component-Systems" class="headerlink" title="4. Gather Evidence in Multi-Component Systems"></a>4. Gather Evidence in Multi-Component Systems</h3><p><strong>WHEN system has multiple components (API → service → database, CI → build → deploy):</strong></p>
 <p><strong>BEFORE proposing fixes, add diagnostic instrumentation:</strong></p>
@@ -158,7 +158,7 @@
 <li>Fix at the source, not at the symptom</li>
 </ul>
 <p><strong>Action:</strong> Use <code>search_files</code> to trace references:</p>
-<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Find where the function is called</span></span><br><span class="line">search_files(<span class="string">&quot;function_name(&quot;</span>, path=<span class="string">&quot;src/&quot;</span>, file_glob=<span class="string">&quot;*.py&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Find where the variable is set</span></span><br><span class="line">search_files(<span class="string">&quot;variable_name\\s*=&quot;</span>, path=<span class="string">&quot;src/&quot;</span>, file_glob=<span class="string">&quot;*.py&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Find where the function is called</span></span><br><span class="line">search_files(<span class="string">&quot;function_name(&quot;</span>, path=<span class="string">&quot;src/&quot;</span>, file_glob=<span class="string">&quot;*.py&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Find where the variable is set</span></span><br><span class="line">search_files(<span class="string">&quot;variable_name\\s*=&quot;</span>, path=<span class="string">&quot;src/&quot;</span>, file_glob=<span class="string">&quot;*.py&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <h3 id="Phase-1-Completion-Checklist"><a href="#Phase-1-Completion-Checklist" class="headerlink" title="Phase 1 Completion Checklist"></a>Phase 1 Completion Checklist</h3><ul>
 <li><input disabled="" type="checkbox"> Error messages fully read and understood</li>
@@ -176,7 +176,7 @@
 <li>What works that’s similar to what’s broken?</li>
 </ul>
 <p><strong>Action:</strong> Use <code>search_files</code> to find comparable patterns:</p>
-<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search_files(<span class="string">&quot;similar_pattern&quot;</span>, path=<span class="string">&quot;src/&quot;</span>, file_glob=<span class="string">&quot;*.py&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search_files(<span class="string">&quot;similar_pattern&quot;</span>, path=<span class="string">&quot;src/&quot;</span>, file_glob=<span class="string">&quot;*.py&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-Compare-Against-References"><a href="#2-Compare-Against-References" class="headerlink" title="2. Compare Against References"></a>2. Compare Against References</h3><ul>
 <li>If implementing a pattern, read the reference implementation COMPLETELY</li>
@@ -230,7 +230,7 @@
 <li>No “while I’m here” improvements</li>
 <li>No bundled refactoring</li>
 </ul>
-<h3 id="3-Verify-Fix"><a href="#3-Verify-Fix" class="headerlink" title="3. Verify Fix"></a>3. Verify Fix</h3><div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Run the specific regression test</span></span><br><span class="line">pytest tests/test_module.py::test_regression -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># Run full suite — no regressions</span></span><br><span class="line">pytest tests/ -q</span><br></pre></td></tr></table></figure></div>
+<h3 id="3-Verify-Fix"><a href="#3-Verify-Fix" class="headerlink" title="3. Verify Fix"></a>3. Verify Fix</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Run the specific regression test</span></span><br><span class="line">pytest tests/test_module.py::test_regression -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># Run full suite — no regressions</span></span><br><span class="line">pytest tests/ -q</span><br></pre></td></tr></table></figure>
 
 <h3 id="4-If-Fix-Doesn’t-Work-—-The-Rule-of-Three"><a href="#4-If-Fix-Doesn’t-Work-—-The-Rule-of-Three" class="headerlink" title="4. If Fix Doesn’t Work — The Rule of Three"></a>4. If Fix Doesn’t Work — The Rule of Three</h3><ul>
 <li><strong>STOP.</strong></li>
@@ -347,7 +347,7 @@
 <li><strong><code>web_search</code>&#x2F;<code>web_extract</code></strong> — Research error messages, library docs</li>
 </ul>
 <h3 id="With-delegate-task"><a href="#With-delegate-task" class="headerlink" title="With delegate_task"></a>With delegate_task</h3><p>For complex multi-component debugging, dispatch investigation subagents:</p>
-<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">delegate_task(</span><br><span class="line">    goal=<span class="string">&quot;Investigate why [specific test/behavior] fails&quot;</span>,</span><br><span class="line">    context=<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Follow systematic-debugging skill:</span></span><br><span class="line"><span class="string">    1. Read the error message carefully</span></span><br><span class="line"><span class="string">    2. Reproduce the issue</span></span><br><span class="line"><span class="string">    3. Trace the data flow to find root cause</span></span><br><span class="line"><span class="string">    4. Report findings — do NOT fix yet</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Error: [paste full error]</span></span><br><span class="line"><span class="string">    File: [path to failing code]</span></span><br><span class="line"><span class="string">    Test command: [exact command]</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span>,</span><br><span class="line">    toolsets=[<span class="string">&#x27;terminal&#x27;</span>, <span class="string">&#x27;file&#x27;</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">delegate_task(</span><br><span class="line">    goal=<span class="string">&quot;Investigate why [specific test/behavior] fails&quot;</span>,</span><br><span class="line">    context=<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Follow systematic-debugging skill:</span></span><br><span class="line"><span class="string">    1. Read the error message carefully</span></span><br><span class="line"><span class="string">    2. Reproduce the issue</span></span><br><span class="line"><span class="string">    3. Trace the data flow to find root cause</span></span><br><span class="line"><span class="string">    4. Report findings — do NOT fix yet</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Error: [paste full error]</span></span><br><span class="line"><span class="string">    File: [path to failing code]</span></span><br><span class="line"><span class="string">    Test command: [exact command]</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span>,</span><br><span class="line">    toolsets=[<span class="string">&#x27;terminal&#x27;</span>, <span class="string">&#x27;file&#x27;</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
 <h3 id="With-test-driven-development"><a href="#With-test-driven-development" class="headerlink" title="With test-driven-development"></a>With test-driven-development</h3><p>When fixing bugs:</p>
 <ol>
@@ -368,7 +368,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://example.com/files/SKILL.html" data-id="cuidXEn1pQ4plxsuRYCE00qOU" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="https://example.com/files/SKILL.html" data-id="cuidagkuNSlLVth2gOK092lqu" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
