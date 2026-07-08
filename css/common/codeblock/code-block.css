@@ -1,0 +1,80 @@
+.code-container {
+  background: var(--third-background-color);
+  border-radius: $redefine-border-radius-large;
+  box-shadow: var(--redefine-box-shadow-flat);
+  margin-top: 10px;
+  margin-bottom: 1.2rem;
+  position: relative;
+/* &::after 已关闭 — 改用 tailwind.css 的 ::before 画圆点 */
+}
+.code-container .folded {
+  height: 0 !important;
+}
+.code-container .folded figure {
+  height: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+}
+.code-container .copy-button {
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.8;
+  opacity: 0;
+  outline: 0;
+  padding: 6px 15px;
+  position: absolute;
+  vertical-align: middle;
+  white-space: nowrap;
+  right: 0;
+  bottom: 0;
+  transition-property: color, background, box-shadow, border-color, opacity;
+  transition-delay: 0s, 0s, 0s, 0s, 0s;
+  transition-duration: 0.2s, 0.2s, 0.2s, 0.2s, 0.2s;
+  transition-timing-function: ease, ease, ease, ease, ease-in-out;
+  font-size: 1rem;
+  color: var(--default-text-color);
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.code-container .copy-button:hover {
+  border-radius: 6px;
+  color: var(--primary-color);
+  background: var(--third-background-color);
+}
+.code-container .fold-button {
+  cursor: pointer;
+  border-radius: 0 0 0 0;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.8;
+  opacity: 0;
+  outline: 0;
+  padding: 6px 15px;
+  position: absolute;
+  vertical-align: middle;
+  white-space: nowrap;
+  top: 0;
+  right: 0;
+  transition-property: color, background, box-shadow, border-color, opacity;
+  transition-delay: 0s, 0s, 0s, 0s, 0s;
+  transition-duration: 0.2s, 0.2s, 0.2s, 0.2s, 0.2s;
+  transition-timing-function: ease, ease, ease, ease, ease-in-out;
+  font-size: 1rem;
+  color: var(--default-text-color);
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.code-container .fold-button:hover {
+  border-radius: 6px;
+  color: var(--primary-color);
+  background: var(--third-background-color);
+}
+.code-container:hover .copy-button,
+.code-container:hover .fold-button {
+  opacity: 1;
+}

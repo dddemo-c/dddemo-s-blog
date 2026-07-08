@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Use when encountering any bug, test failure, or unexpected behavior. 4-phase root cause investigation — NO fixes without understanding the problem first.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="blog">
+<meta property="og:url" content="https://example.com/files/SKILL.html">
+<meta property="og:site_name" content="blog">
+<meta property="og:description" content="Use when encountering any bug, test failure, or unexpected behavior. 4-phase root cause investigation — NO fixes without understanding the problem first.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-09T14:43:55.550Z">
+<meta property="article:modified_time" content="2026-05-09T14:43:55.550Z">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="page-" class="h-entry article article-type-page" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/files/SKILL.html" class="article-date">
+  <time class="dt-published" datetime="2026-05-09T14:43:55.550Z" itemprop="datePublished">2026-05-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Systematic-Debugging"><a href="#Systematic-Debugging" class="headerlink" title="Systematic Debugging"></a>Systematic Debugging</h1><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Random fixes waste time and create new bugs. Quick patches mask underlying issues.</p>
+<p><strong>Core principle:</strong> ALWAYS find root cause before attempting fixes. Symptom fixes are failure.</p>
+<p><strong>Violating the letter of this process is violating the spirit of debugging.</strong></p>
+<h2 id="The-Iron-Law"><a href="#The-Iron-Law" class="headerlink" title="The Iron Law"></a>The Iron Law</h2><div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST</span><br></pre></td></tr></table></figure></div>
+
+<p>If you haven’t completed Phase 1, you cannot propose fixes.</p>
+<h2 id="When-to-Use"><a href="#When-to-Use" class="headerlink" title="When to Use"></a>When to Use</h2><p>Use for ANY technical issue:</p>
+<ul>
+<li>Test failures</li>
+<li>Bugs in production</li>
+<li>Unexpected behavior</li>
+<li>Performance problems</li>
+<li>Build failures</li>
+<li>Integration issues</li>
+</ul>
+<p><strong>Use this ESPECIALLY when:</strong></p>
+<ul>
+<li>Under time pressure (emergencies make guessing tempting)</li>
+<li>“Just one quick fix” seems obvious</li>
+<li>You’ve already tried multiple fixes</li>
+<li>Previous fix didn’t work</li>
+<li>You don’t fully understand the issue</li>
+</ul>
+<p><strong>Don’t skip when:</strong></p>
+<ul>
+<li>Issue seems simple (simple bugs have root causes too)</li>
+<li>You’re in a hurry (rushing guarantees rework)</li>
+<li>Someone wants it fixed NOW (systematic is faster than thrashing)</li>
+</ul>
+<h2 id="The-Four-Phases"><a href="#The-Four-Phases" class="headerlink" title="The Four Phases"></a>The Four Phases</h2><p>You MUST complete each phase before proceeding to the next.</p>
+<hr>
+<h2 id="Phase-1-Root-Cause-Investigation"><a href="#Phase-1-Root-Cause-Investigation" class="headerlink" title="Phase 1: Root Cause Investigation"></a>Phase 1: Root Cause Investigation</h2><p><strong>BEFORE attempting ANY fix:</strong></p>
+<h3 id="1-Read-Error-Messages-Carefully"><a href="#1-Read-Error-Messages-Carefully" class="headerlink" title="1. Read Error Messages Carefully"></a>1. Read Error Messages Carefully</h3><ul>
+<li>Don’t skip past errors or warnings</li>
+<li>They often contain the exact solution</li>
+<li>Read stack traces completely</li>
+<li>Note line numbers, file paths, error codes</li>
+</ul>
+<p><strong>Action:</strong> Use <code>read_file</code> on the relevant source files. Use <code>search_files</code> to find the error string in the codebase.</p>
+<h3 id="2-Reproduce-Consistently"><a href="#2-Reproduce-Consistently" class="headerlink" title="2. Reproduce Consistently"></a>2. Reproduce Consistently</h3><ul>
+<li>Can you trigger it reliably?</li>
+<li>What are the exact steps?</li>
+<li>Does it happen every time?</li>
+<li>If not reproducible → gather more data, don’t guess</li>
+</ul>
+<p><strong>Action:</strong> Use the <code>terminal</code> tool to run the failing test or trigger the bug:</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Run specific failing test</span></span><br><span class="line">pytest tests/test_module.py::test_name -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># Run with verbose output</span></span><br><span class="line">pytest tests/test_module.py -v --tb=long</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="3-Check-Recent-Changes"><a href="#3-Check-Recent-Changes" class="headerlink" title="3. Check Recent Changes"></a>3. Check Recent Changes</h3><ul>
+<li>What changed that could cause this?</li>
+<li>Git diff, recent commits</li>
+<li>New dependencies, config changes</li>
+</ul>
+<p><strong>Action:</strong></p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Recent commits</span></span><br><span class="line">git <span class="built_in">log</span> --oneline -10</span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncommitted changes</span></span><br><span class="line">git diff</span><br><span class="line"></span><br><span class="line"><span class="comment"># Changes in specific file</span></span><br><span class="line">git <span class="built_in">log</span> -p --follow src/problematic_file.py | <span class="built_in">head</span> -100</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="4-Gather-Evidence-in-Multi-Component-Systems"><a href="#4-Gather-Evidence-in-Multi-Component-Systems" class="headerlink" title="4. Gather Evidence in Multi-Component Systems"></a>4. Gather Evidence in Multi-Component Systems</h3><p><strong>WHEN system has multiple components (API → service → database, CI → build → deploy):</strong></p>
+<p><strong>BEFORE proposing fixes, add diagnostic instrumentation:</strong></p>
+<p>For EACH component boundary:</p>
+<ul>
+<li>Log what data enters the component</li>
+<li>Log what data exits the component</li>
+<li>Verify environment&#x2F;config propagation</li>
+<li>Check state at each layer</li>
+</ul>
+<p>Run once to gather evidence showing WHERE it breaks.<br>THEN analyze evidence to identify the failing component.<br>THEN investigate that specific component.</p>
+<h3 id="5-Trace-Data-Flow"><a href="#5-Trace-Data-Flow" class="headerlink" title="5. Trace Data Flow"></a>5. Trace Data Flow</h3><p><strong>WHEN error is deep in the call stack:</strong></p>
+<ul>
+<li>Where does the bad value originate?</li>
+<li>What called this function with the bad value?</li>
+<li>Keep tracing upstream until you find the source</li>
+<li>Fix at the source, not at the symptom</li>
+</ul>
+<p><strong>Action:</strong> Use <code>search_files</code> to trace references:</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Find where the function is called</span></span><br><span class="line">search_files(<span class="string">&quot;function_name(&quot;</span>, path=<span class="string">&quot;src/&quot;</span>, file_glob=<span class="string">&quot;*.py&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Find where the variable is set</span></span><br><span class="line">search_files(<span class="string">&quot;variable_name\\s*=&quot;</span>, path=<span class="string">&quot;src/&quot;</span>, file_glob=<span class="string">&quot;*.py&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Phase-1-Completion-Checklist"><a href="#Phase-1-Completion-Checklist" class="headerlink" title="Phase 1 Completion Checklist"></a>Phase 1 Completion Checklist</h3><ul>
+<li><input disabled="" type="checkbox"> Error messages fully read and understood</li>
+<li><input disabled="" type="checkbox"> Issue reproduced consistently</li>
+<li><input disabled="" type="checkbox"> Recent changes identified and reviewed</li>
+<li><input disabled="" type="checkbox"> Evidence gathered (logs, state, data flow)</li>
+<li><input disabled="" type="checkbox"> Problem isolated to specific component&#x2F;code</li>
+<li><input disabled="" type="checkbox"> Root cause hypothesis formed</li>
+</ul>
+<p><strong>STOP:</strong> Do not proceed to Phase 2 until you understand WHY it’s happening.</p>
+<hr>
+<h2 id="Phase-2-Pattern-Analysis"><a href="#Phase-2-Pattern-Analysis" class="headerlink" title="Phase 2: Pattern Analysis"></a>Phase 2: Pattern Analysis</h2><p><strong>Find the pattern before fixing:</strong></p>
+<h3 id="1-Find-Working-Examples"><a href="#1-Find-Working-Examples" class="headerlink" title="1. Find Working Examples"></a>1. Find Working Examples</h3><ul>
+<li>Locate similar working code in the same codebase</li>
+<li>What works that’s similar to what’s broken?</li>
+</ul>
+<p><strong>Action:</strong> Use <code>search_files</code> to find comparable patterns:</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search_files(<span class="string">&quot;similar_pattern&quot;</span>, path=<span class="string">&quot;src/&quot;</span>, file_glob=<span class="string">&quot;*.py&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="2-Compare-Against-References"><a href="#2-Compare-Against-References" class="headerlink" title="2. Compare Against References"></a>2. Compare Against References</h3><ul>
+<li>If implementing a pattern, read the reference implementation COMPLETELY</li>
+<li>Don’t skim — read every line</li>
+<li>Understand the pattern fully before applying</li>
+</ul>
+<h3 id="3-Identify-Differences"><a href="#3-Identify-Differences" class="headerlink" title="3. Identify Differences"></a>3. Identify Differences</h3><ul>
+<li>What’s different between working and broken?</li>
+<li>List every difference, however small</li>
+<li>Don’t assume “that can’t matter”</li>
+</ul>
+<h3 id="4-Understand-Dependencies"><a href="#4-Understand-Dependencies" class="headerlink" title="4. Understand Dependencies"></a>4. Understand Dependencies</h3><ul>
+<li>What other components does this need?</li>
+<li>What settings, config, environment?</li>
+<li>What assumptions does it make?</li>
+</ul>
+<hr>
+<h2 id="Phase-3-Hypothesis-and-Testing"><a href="#Phase-3-Hypothesis-and-Testing" class="headerlink" title="Phase 3: Hypothesis and Testing"></a>Phase 3: Hypothesis and Testing</h2><p><strong>Scientific method:</strong></p>
+<h3 id="1-Form-a-Single-Hypothesis"><a href="#1-Form-a-Single-Hypothesis" class="headerlink" title="1. Form a Single Hypothesis"></a>1. Form a Single Hypothesis</h3><ul>
+<li>State clearly: “I think X is the root cause because Y”</li>
+<li>Write it down</li>
+<li>Be specific, not vague</li>
+</ul>
+<h3 id="2-Test-Minimally"><a href="#2-Test-Minimally" class="headerlink" title="2. Test Minimally"></a>2. Test Minimally</h3><ul>
+<li>Make the SMALLEST possible change to test the hypothesis</li>
+<li>One variable at a time</li>
+<li>Don’t fix multiple things at once</li>
+</ul>
+<h3 id="3-Verify-Before-Continuing"><a href="#3-Verify-Before-Continuing" class="headerlink" title="3. Verify Before Continuing"></a>3. Verify Before Continuing</h3><ul>
+<li>Did it work? → Phase 4</li>
+<li>Didn’t work? → Form NEW hypothesis</li>
+<li>DON’T add more fixes on top</li>
+</ul>
+<h3 id="4-When-You-Don’t-Know"><a href="#4-When-You-Don’t-Know" class="headerlink" title="4. When You Don’t Know"></a>4. When You Don’t Know</h3><ul>
+<li>Say “I don’t understand X”</li>
+<li>Don’t pretend to know</li>
+<li>Ask the user for help</li>
+<li>Research more</li>
+</ul>
+<hr>
+<h2 id="Phase-4-Implementation"><a href="#Phase-4-Implementation" class="headerlink" title="Phase 4: Implementation"></a>Phase 4: Implementation</h2><p><strong>Fix the root cause, not the symptom:</strong></p>
+<h3 id="1-Create-Failing-Test-Case"><a href="#1-Create-Failing-Test-Case" class="headerlink" title="1. Create Failing Test Case"></a>1. Create Failing Test Case</h3><ul>
+<li>Simplest possible reproduction</li>
+<li>Automated test if possible</li>
+<li>MUST have before fixing</li>
+<li>Use the <code>test-driven-development</code> skill</li>
+</ul>
+<h3 id="2-Implement-Single-Fix"><a href="#2-Implement-Single-Fix" class="headerlink" title="2. Implement Single Fix"></a>2. Implement Single Fix</h3><ul>
+<li>Address the root cause identified</li>
+<li>ONE change at a time</li>
+<li>No “while I’m here” improvements</li>
+<li>No bundled refactoring</li>
+</ul>
+<h3 id="3-Verify-Fix"><a href="#3-Verify-Fix" class="headerlink" title="3. Verify Fix"></a>3. Verify Fix</h3><div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Run the specific regression test</span></span><br><span class="line">pytest tests/test_module.py::test_regression -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># Run full suite — no regressions</span></span><br><span class="line">pytest tests/ -q</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="4-If-Fix-Doesn’t-Work-—-The-Rule-of-Three"><a href="#4-If-Fix-Doesn’t-Work-—-The-Rule-of-Three" class="headerlink" title="4. If Fix Doesn’t Work — The Rule of Three"></a>4. If Fix Doesn’t Work — The Rule of Three</h3><ul>
+<li><strong>STOP.</strong></li>
+<li>Count: How many fixes have you tried?</li>
+<li>If &lt; 3: Return to Phase 1, re-analyze with new information</li>
+<li><strong>If ≥ 3: STOP and question the architecture (step 5 below)</strong></li>
+<li>DON’T attempt Fix #4 without architectural discussion</li>
+</ul>
+<h3 id="5-If-3-Fixes-Failed-Question-Architecture"><a href="#5-If-3-Fixes-Failed-Question-Architecture" class="headerlink" title="5. If 3+ Fixes Failed: Question Architecture"></a>5. If 3+ Fixes Failed: Question Architecture</h3><p><strong>Pattern indicating an architectural problem:</strong></p>
+<ul>
+<li>Each fix reveals new shared state&#x2F;coupling in a different place</li>
+<li>Fixes require “massive refactoring” to implement</li>
+<li>Each fix creates new symptoms elsewhere</li>
+</ul>
+<p><strong>STOP and question fundamentals:</strong></p>
+<ul>
+<li>Is this pattern fundamentally sound?</li>
+<li>Are we “sticking with it through sheer inertia”?</li>
+<li>Should we refactor the architecture vs. continue fixing symptoms?</li>
+</ul>
+<p><strong>Discuss with the user before attempting more fixes.</strong></p>
+<p>This is NOT a failed hypothesis — this is a wrong architecture.</p>
+<hr>
+<h2 id="Red-Flags-—-STOP-and-Follow-Process"><a href="#Red-Flags-—-STOP-and-Follow-Process" class="headerlink" title="Red Flags — STOP and Follow Process"></a>Red Flags — STOP and Follow Process</h2><p>If you catch yourself thinking:</p>
+<ul>
+<li>“Quick fix for now, investigate later”</li>
+<li>“Just try changing X and see if it works”</li>
+<li>“Add multiple changes, run tests”</li>
+<li>“Skip the test, I’ll manually verify”</li>
+<li>“It’s probably X, let me fix that”</li>
+<li>“I don’t fully understand but this might work”</li>
+<li>“Pattern says X but I’ll adapt it differently”</li>
+<li>“Here are the main problems: [lists fixes without investigation]”</li>
+<li>Proposing solutions before tracing data flow</li>
+<li><strong>“One more fix attempt” (when already tried 2+)</strong></li>
+<li><strong>Each fix reveals a new problem in a different place</strong></li>
+</ul>
+<p><strong>ALL of these mean: STOP. Return to Phase 1.</strong></p>
+<p><strong>If 3+ fixes failed:</strong> Question the architecture (Phase 4 step 5).</p>
+<h2 id="Common-Rationalizations"><a href="#Common-Rationalizations" class="headerlink" title="Common Rationalizations"></a>Common Rationalizations</h2><table>
+<thead>
+<tr>
+<th>Excuse</th>
+<th>Reality</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“Issue is simple, don’t need process”</td>
+<td>Simple issues have root causes too. Process is fast for simple bugs.</td>
+</tr>
+<tr>
+<td>“Emergency, no time for process”</td>
+<td>Systematic debugging is FASTER than guess-and-check thrashing.</td>
+</tr>
+<tr>
+<td>“Just try this first, then investigate”</td>
+<td>First fix sets the pattern. Do it right from the start.</td>
+</tr>
+<tr>
+<td>“I’ll write test after confirming fix works”</td>
+<td>Untested fixes don’t stick. Test first proves it.</td>
+</tr>
+<tr>
+<td>“Multiple fixes at once saves time”</td>
+<td>Can’t isolate what worked. Causes new bugs.</td>
+</tr>
+<tr>
+<td>“Reference too long, I’ll adapt the pattern”</td>
+<td>Partial understanding guarantees bugs. Read it completely.</td>
+</tr>
+<tr>
+<td>“I see the problem, let me fix it”</td>
+<td>Seeing symptoms ≠ understanding root cause.</td>
+</tr>
+<tr>
+<td>“One more fix attempt” (after 2+ failures)</td>
+<td>3+ failures &#x3D; architectural problem. Question the pattern, don’t fix again.</td>
+</tr>
+</tbody></table>
+<h2 id="Quick-Reference"><a href="#Quick-Reference" class="headerlink" title="Quick Reference"></a>Quick Reference</h2><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Key Activities</th>
+<th>Success Criteria</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. Root Cause</strong></td>
+<td>Read errors, reproduce, check changes, gather evidence, trace data flow</td>
+<td>Understand WHAT and WHY</td>
+</tr>
+<tr>
+<td><strong>2. Pattern</strong></td>
+<td>Find working examples, compare, identify differences</td>
+<td>Know what’s different</td>
+</tr>
+<tr>
+<td><strong>3. Hypothesis</strong></td>
+<td>Form theory, test minimally, one variable at a time</td>
+<td>Confirmed or new hypothesis</td>
+</tr>
+<tr>
+<td><strong>4. Implementation</strong></td>
+<td>Create regression test, fix root cause, verify</td>
+<td>Bug resolved, all tests pass</td>
+</tr>
+</tbody></table>
+<h2 id="Hermes-Agent-Integration"><a href="#Hermes-Agent-Integration" class="headerlink" title="Hermes Agent Integration"></a>Hermes Agent Integration</h2><h3 id="Investigation-Tools"><a href="#Investigation-Tools" class="headerlink" title="Investigation Tools"></a>Investigation Tools</h3><p>Use these Hermes tools during Phase 1:</p>
+<ul>
+<li><strong><code>search_files</code></strong> — Find error strings, trace function calls, locate patterns</li>
+<li><strong><code>read_file</code></strong> — Read source code with line numbers for precise analysis</li>
+<li><strong><code>terminal</code></strong> — Run tests, check git history, reproduce bugs</li>
+<li><strong><code>web_search</code>&#x2F;<code>web_extract</code></strong> — Research error messages, library docs</li>
+</ul>
+<h3 id="With-delegate-task"><a href="#With-delegate-task" class="headerlink" title="With delegate_task"></a>With delegate_task</h3><p>For complex multi-component debugging, dispatch investigation subagents:</p>
+<div class="code-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">delegate_task(</span><br><span class="line">    goal=<span class="string">&quot;Investigate why [specific test/behavior] fails&quot;</span>,</span><br><span class="line">    context=<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Follow systematic-debugging skill:</span></span><br><span class="line"><span class="string">    1. Read the error message carefully</span></span><br><span class="line"><span class="string">    2. Reproduce the issue</span></span><br><span class="line"><span class="string">    3. Trace the data flow to find root cause</span></span><br><span class="line"><span class="string">    4. Report findings — do NOT fix yet</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Error: [paste full error]</span></span><br><span class="line"><span class="string">    File: [path to failing code]</span></span><br><span class="line"><span class="string">    Test command: [exact command]</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span>,</span><br><span class="line">    toolsets=[<span class="string">&#x27;terminal&#x27;</span>, <span class="string">&#x27;file&#x27;</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="With-test-driven-development"><a href="#With-test-driven-development" class="headerlink" title="With test-driven-development"></a>With test-driven-development</h3><p>When fixing bugs:</p>
+<ol>
+<li>Write a test that reproduces the bug (RED)</li>
+<li>Debug systematically to find root cause</li>
+<li>Fix the root cause (GREEN)</li>
+<li>The test proves the fix and prevents regression</li>
+</ol>
+<h2 id="Real-World-Impact"><a href="#Real-World-Impact" class="headerlink" title="Real-World Impact"></a>Real-World Impact</h2><p>From debugging sessions:</p>
+<ul>
+<li>Systematic approach: 15-30 minutes to fix</li>
+<li>Random fixes approach: 2-3 hours of thrashing</li>
+<li>First-time fix rate: 95% vs 40%</li>
+<li>New bugs introduced: Near zero vs common</li>
+</ul>
+<p><strong>No shortcuts. No guessing. Systematic always wins.</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://example.com/files/SKILL.html" data-id="cuidXEn1pQ4plxsuRYCE00qOU" data-title="" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/">信息学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-Linux%E8%BF%90%E7%BB%B4/">信息学/Linux运维</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-Linux%E8%BF%90%E7%BB%B4/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E5%89%8D%E7%AB%AF/">信息学/前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-Linux%E8%BF%90%E7%BB%B4/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E5%89%8D%E7%AB%AF/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E7%AE%97%E6%B3%95/">信息学/算法</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/">信息学/agent框架</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E7%AE%97%E6%B3%95/">信息学/算法</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E7%90%86/">数理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E7%90%86/%E6%95%B0%E7%90%86-%E6%95%B0%E8%AE%BA/">数理/数论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E7%90%86/%E6%95%B0%E7%90%86-%E6%A6%82%E7%8E%87%E8%AE%BA/">数理/概率论</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E7%90%86/%E6%95%B0%E7%90%86-%E6%A6%82%E7%8E%87%E8%AE%BA/%E6%95%B0%E7%90%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">数理/线性代数</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E7%90%86/%E6%95%B0%E7%90%86-%E6%A6%82%E7%8E%87%E8%AE%BA/%E6%95%B0%E7%90%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E6%95%B0%E7%90%86-%E6%95%B0%E8%AE%BA/">数理/数论</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E7%90%86/">文理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E7%90%86/%E6%96%87%E7%90%86-%E8%AF%97%E6%AD%8C/">文理/诗歌</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A5%E5%B8%B8/">日常</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI%E5%AE%89%E5%85%A8/" rel="tag">AI安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Typescript/" rel="tag">Typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/noen/" rel="tag">noen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6/" rel="tag">信息学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-Linux%E8%BF%90%E7%BB%B4/" rel="tag">信息学&#x2F;Linux运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/" rel="tag">信息学&#x2F;agent框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E5%89%8D%E7%AB%AF/" rel="tag">信息学&#x2F;前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E7%AE%97%E6%B3%95/" rel="tag">信息学&#x2F;算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag">大模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%90%86/" rel="tag">数理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%90%86-%E6%95%B0%E8%AE%BA/" rel="tag">数理&#x2F;数论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%90%86-%E6%A6%82%E7%8E%87%E8%AE%BA/" rel="tag">数理&#x2F;概率论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%90%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">数理&#x2F;线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E7%90%86/" rel="tag">文理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E7%90%86-%E8%AF%97%E6%AD%8C/" rel="tag">文理&#x2F;诗歌</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8/" rel="tag">日常</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI%E5%AE%89%E5%85%A8/" style="font-size: 10px;">AI安全</a> <a href="/tags/Typescript/" style="font-size: 10px;">Typescript</a> <a href="/tags/noen/" style="font-size: 10px;">noen</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6/" style="font-size: 20px;">信息学</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-Linux%E8%BF%90%E7%BB%B4/" style="font-size: 10px;">信息学/Linux运维</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">信息学/agent框架</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">信息学/前端</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E7%AE%97%E6%B3%95/" style="font-size: 20px;">信息学/算法</a> <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" style="font-size: 15px;">大模型</a> <a href="/tags/%E6%95%B0%E7%90%86/" style="font-size: 15px;">数理</a> <a href="/tags/%E6%95%B0%E7%90%86-%E6%95%B0%E8%AE%BA/" style="font-size: 15px;">数理/数论</a> <a href="/tags/%E6%95%B0%E7%90%86-%E6%A6%82%E7%8E%87%E8%AE%BA/" style="font-size: 10px;">数理/概率论</a> <a href="/tags/%E6%95%B0%E7%90%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 10px;">数理/线性代数</a> <a href="/tags/%E6%96%87%E7%90%86/" style="font-size: 15px;">文理</a> <a href="/tags/%E6%96%87%E7%90%86-%E8%AF%97%E6%AD%8C/" style="font-size: 15px;">文理/诗歌</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 10px;">日常</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">五月 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/07/03/test-4/">test</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/03/test-3/">test</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/03/test-2/">test</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/03/test-1/">test</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/03/test/">test</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 blog<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
