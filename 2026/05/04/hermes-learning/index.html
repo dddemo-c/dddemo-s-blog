@@ -1,54 +1,182 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hermes一周测评 | blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="我进行了一次为期一周的hermes实际体验测评!  hermes——优化工作流的神力从openclaw开始————架构提到openclaw，我们都并不陌生，作为现在许多企业与个人开发者的agent框架，在优化企业职能与个人开发者工作流中占市场比很大，直到今天，其内在的一些不足之处，网上对其的吐槽数不计数，大致分为两种：一是说它token浪费严重，二是说它上下文能力弱，其实本质来说就是它上下文能力">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    
+    <meta name="author" content="dddemo">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes ASAP (before DOMContentLoaded)
+            (function() {
+                const addBodyClass = () => {
+                    const b = document.body;
+                    if (!b) return false;
+                    b.classList.add(theme + "-mode");
+                    return true;
+                };
+
+                // Try immediately
+                if (addBodyClass()) return;
+
+                // Observe until body exists
+                const mo = new MutationObserver(() => {
+                    if (addBodyClass()) mo.disconnect();
+                });
+                mo.observe(document.documentElement, { childList: true, subtree: true });
+            })();
+        })();
+    </script>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://www.dddemo.top/2026/05/04/hermes-learning/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+        
+        <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hermes一周测评">
-<meta property="og:url" content="https://example.com/2026/05/04/hermes-learning/index.html">
-<meta property="og:site_name" content="blog">
-<meta property="og:description" content="我进行了一次为期一周的hermes实际体验测评!  hermes——优化工作流的神力从openclaw开始————架构提到openclaw，我们都并不陌生，作为现在许多企业与个人开发者的agent框架，在优化企业职能与个人开发者工作流中占市场比很大，直到今天，其内在的一些不足之处，网上对其的吐槽数不计数，大致分为两种：一是说它token浪费严重，二是说它上下文能力弱，其实本质来说就是它上下文能力">
+<meta property="og:url" content="http://www.dddemo.top/2026/05/04/hermes-learning/index.html">
+<meta property="og:site_name" content="dddemo Blog">
+<meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://example.com/images/ask.png">
-<meta property="og:image" content="https://example.com/images/oput.png">
-<meta property="og:image" content="https://example.com/images/boid.png">
-<meta property="og:image" content="https://example.com/images/hermes-ppt.png">
-<meta property="og:image" content="https://example.com/images/ppt1.png">
-<meta property="og:image" content="https://example.com/images/ppt2.png">
-<meta property="og:image" content="https://example.com/images/ppt3.png">
-<meta property="og:image" content="https://example.com/images/ppt4.png">
-<meta property="og:image" content="https://example.com/images/ppt5.png">
-<meta property="og:image" content="https://example.com/images/ppt6.png">
+<meta property="og:image" content="http://www.dddemo.top/images/redefine-og.webp">
 <meta property="article:published_time" content="2026-05-04T01:30:00.000Z">
 <meta property="article:modified_time" content="2026-05-10T05:00:00.000Z">
+<meta property="article:author" content="CC">
 <meta property="article:tag" content="Typescript">
 <meta property="article:tag" content="信息学">
 <meta property="article:tag" content="信息学&#x2F;agent框架">
 <meta property="article:tag" content="大模型">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://example.com/images/ask.png">
-  
-    <link rel="alternate" href="/atom.xml" title="blog" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
+<meta name="twitter:image" content="http://www.dddemo.top/images/redefine-og.webp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/ddfavicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/ddfavicon.svg">
+    <meta name="theme-color" content="#1a1a2e">
+    <link rel="shortcut icon" href="/images/ddfavicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Hermes一周测评 | dddemo Blog
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
 <link rel="stylesheet" href="/css/style.css">
 
-  
+
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
 
-  
-  
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+    
 
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+    
+    
+        
+<script src="/js/build/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"www.dddemo.top","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":6,"number":false,"expand":true,"init_open":true},"copyright":{"enable":false,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#1a1a2e","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":false},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":true,"custom_message":"dddemo"},"side_tools":{"gear_rotation":true,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/redefine-og.webp","description":"Hexo Theme Redefine, Redefine Your Hexo Journey."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"dddemo Blog","subtitle":{"text":["A quiet corner for code, ideas, and building things that matter."],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"subtitle_enable":true,"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"center","links":[],"qrs":[{"icon":"fa-brands fa-weixin","qr":null},{"icon":"/images/custom-icon.svg","qr":null}]}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1","theme":{"light":"default","dark":"dark"}}},"version":"2.9.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Posts":{"path":"/posts","icon":"fa-regular fa-newspaper"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"关于我":{"path":"/about","icon":"fa-regular fa-user"},"致谢":{"path":"/credits","icon":"fa-regular fa-heart"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur","masonry":{"batch_size":12,"initial_batch_size":24}},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footer":{"runtime":true,"icon":"","start":"2026/05/02 10:40:00","statistics":true,"customize":null,"icp":{"enable":false,"number":null,"url":null}},"footerStart":"2026/05/02 10:40:00","mermaid":{"style":{"light":"default","dark":"dark"}}};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.i18n = {"search":"站内搜索您需要的内容...","toc":"目录","prev":"上一页","next":"下一页","prev_posts":"上一篇","next_posts":"下一篇","page":"第 %d 页","recent_posts":"最新文章","share":"分享","powered_by":"由 %s 驱动","theme":"主题","rss_feed":"RSS Feed","category":"分类","categories":"分类","tag":"标签","tags":"标签","post":"文章","posts":"文章","tagcloud":"标签云","comment":"评论","comments":"评论","top":"置顶","sticky":"置顶","go-back-home":"回到首页","masonry_loading":"照片加载中...","image_viewer":"图片查看器","close":"关闭","exif":{"title":"EXIF","cards":{"camera":"相机","lens":"镜头","exposure":"曝光","other":"其他"},"fields":{"make":"品牌","model":"机型","date_taken":"拍摄时间","lens_model":"镜头","focal_length":"焦距","focus_mode":"对焦模式","shutter":"快门","aperture":"光圈","iso":"感光度","exposure_program":"曝光程序","exposure_compensation":"曝光补偿","metering_mode":"测光模式","flash":"闪光灯","white_balance":"白平衡","latitude":"纬度","longitude":"经度","altitude":"海拔"},"status":{"loading":"加载中...","no_exif":"无 EXIF 信息","library_missing":"EXIF 库未加载","image_source_missing":"图片地址不可用","unavailable":"EXIF 不可用（可能被 CORS 阻止或缺少元数据）","flag_unavailable":"EXIF 不可用"}},"home":"首页","archive":"归档","archives":"归档","about":"关于","links":"链接","link":"链接","friends":"友情链接","friend":"友情链接","timeline":"时间轴","shuoshuo":"说说","bookmarks":"书签","site_uv":"访问人数","site_pv":"总访问量","read_more":"阅读全文","wordcount":"字","min2read":"分钟","changelog":"更新日志","status":"状态","runtime":"博客已运行","days":"天","hours":"小时","minutes":"分钟","seconds":"秒","optimized_by":"并由 Evan 进行优化","rights":"版权所有","site_posts":"共撰写了 %s 篇文章","site_wordcount":"共 %s 字","copyright":{"title":"标题","author":"作者","link":"链接","create_time":"创建于","update_time":"更新于","license_title":"版权声明","license_content":"本文章采用 %s 进行许可。","all_rights_reserved":"版权所有 &#169 %s，禁止转载。","public_domain":"本文为公有领域作品，可自由转载、引用。"},"ago":{"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"},"create_time":"创建","update_time":"更新","expired":"这篇文章最后更新于 %s 天前，内容可能已经过时。"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
 <meta name="generator" content="Hexo 8.1.1"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
@@ -163,69 +291,630 @@ mjx-container[display="true"] + br {
 }
 </style></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">blog</a>
-      </h1>
-      
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<style>
+:root {
+  --loader-bg: #fafafa;
+  --loader-text: #1a1a2e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --loader-bg: #0f0f1a;
+    --loader-text: #e0def4;
+  }
+}
+
+.loader-overlay {
+  position: fixed; inset: 0;
+  z-index: 9999;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: var(--loader-bg);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.loader-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ---- Canvas particles ---- */
+#loaderCanvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+/* ---- Inner content ---- */
+.loader-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* ---- Geometric spinner: three rotating rings ---- */
+.geo-spinner {
+  position: relative;
+  width: 64px; height: 64px;
+}
+.geo-spinner .ring {
+  position: absolute; inset: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+}
+.geo-spinner .ring:nth-child(1) {
+  border-top-color: var(--loader-text);
+  animation: spin1 1.2s cubic-bezier(.4,0,.2,1) infinite;
+}
+.geo-spinner .ring:nth-child(2) {
+  inset: 6px;
+  border-right-color: var(--loader-text);
+  opacity: .5;
+  animation: spin2 1.8s cubic-bezier(.4,0,.2,1) infinite;
+}
+.geo-spinner .ring:nth-child(3) {
+  inset: 12px;
+  border-bottom-color: var(--loader-text);
+  opacity: .25;
+  animation: spin3 2.4s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes spin1 { to { transform: rotate(360deg) } }
+@keyframes spin2 { to { transform: rotate(-360deg) } }
+@keyframes spin3 { to { transform: rotate(360deg) } }
+
+/* ---- Brand text ---- */
+.loader-brand {
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: .15em;
+  color: var(--loader-text);
+  font-family: 'Chillax-Variable','Inter',sans-serif;
+  text-transform: uppercase;
+  opacity: .7;
+}
+
+/* ---- Fade-in for the whole content ---- */
+.loader-inner {
+  animation: lfadeIn 0.8s ease both;
+}
+@keyframes lfadeIn {
+  from { opacity: 0; transform: translateY(8px) }
+  to   { opacity: 1; transform: translateY(0) }
+}
+</style>
+
+<div class="loader-overlay" id="loader">
+  <canvas id="loaderCanvas"></canvas>
+  <div class="loader-inner">
+    <div class="geo-spinner">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://example.com"></form>
-      </div>
-    </div>
+    <div class="loader-brand">dddemo</div>
   </div>
+
+  <script>
+  (function() {
+    var loader = document.getElementById('loader');
+    var canvas = document.getElementById('loaderCanvas');
+    var ctx = canvas.getContext('2d');
+    var W, H;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Determine colors based on theme
+    function isDark() {
+      try {
+        var saved = localStorage.getItem('REDEFINE-THEME-STATUS');
+        if (saved) return JSON.parse(saved).isDark;
+      } catch(e) {}
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    var dark = isDark();
+    var particleColor = dark
+      ? function() {
+          var colors = ['99,140,255', '140,110,255', '200,140,230', '130,210,180'];
+          return colors[Math.floor(Math.random() * colors.length)];
+        }
+      : function() {
+          var colors = ['37,99,235', '124,58,237', '168,85,247', '59,130,246'];
+          return colors[Math.floor(Math.random() * colors.length)];
+        };
+
+    if (dark) {
+      document.documentElement.style.setProperty('--loader-bg', '#0f0f1a');
+      document.documentElement.style.setProperty('--loader-text', '#e0def4');
+    }
+
+    // ---- Particles ----
+    var particles = [];
+    var COUNT = 40;
+
+    for (var i = 0; i < COUNT; i++) {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 2 + 0.5,
+        color: particleColor(),
+        alpha: Math.random() * 0.35 + 0.08
+      });
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < -10) p.x = W + 10;
+        if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10;
+        if (p.y > H + 10) p.y = -10;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + p.color + ',' + p.alpha + ')';
+        ctx.fill();
+
+        // Subtle connections
+        for (var j = i + 1; j < particles.length; j++) {
+          var p2 = particles[j];
+          var dx = p.x - p2.x;
+          var dy = p.y - p2.y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = 'rgba(' + p.color + ',' + (1 - dist / 100) * 0.06 + ')';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    // ---- Block scroll ----
+    document.documentElement.style.overflow = 'hidden';
+
+    // ---- Hide loader ----
+    function hideLoader() {
+      if (loader.classList.contains('hidden')) return;
+      loader.classList.add('hidden');
+      document.documentElement.style.overflow = '';
+      setTimeout(function() {
+        if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+      }, 700);
+    }
+
+    // Listen for full resource load
+    if (document.readyState === 'complete') {
+      setTimeout(hideLoader, 400);
+    } else {
+      window.addEventListener('load', function() {
+        setTimeout(hideLoader, 400);
+      });
+    }
+
+    // Fallback: hide after 6s
+    setTimeout(function() {
+      if (!loader.classList.contains('hidden')) hideLoader();
+    }, 6000);
+  })();
+  </script>
+</div>
+
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                dddemo Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/posts"
+                                        >
+                                    <i class="fa-regular fa-newspaper fa-fw"></i>
+                                    文章
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于我
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/credits"
+                                        >
+                                    <i class="fa-regular fa-heart fa-fw"></i>
+                                    致谢
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/posts"
+                        >
+                            <span>
+                                文章
+                            </span>
+                            
+                                <i class="fa-regular fa-newspaper fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                关于我
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/credits"
+                        >
+                            <span>
+                                致谢
+                            </span>
+                            
+                                <i class="fa-regular fa-heart fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">18</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">15</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/posts">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
 </header>
 
-      <div class="outer">
-        <section id="main"><article id="post-hermes-learning" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/05/04/hermes-learning/" class="article-date">
-  <time class="dt-published" datetime="2026-05-04T01:30:00.000Z" itemprop="datePublished">2026-05-04</time>
-</a>
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+  <!-- 左侧边栏：目录（字号缩小） -->
+  <div class="article-left-sidebar">
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/">信息学</a>►<a class="article-category-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/">信息学/agent框架</a>
+    <div class="als-toc als-toc-compact">
+      <div class="als-toc-title">目录</div>
+      <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hermes%E2%80%94%E2%80%94%E4%BC%98%E5%8C%96%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E7%A5%9E%E5%8A%9B"><span class="nav-text">hermes——优化工作流的神力</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8Eopenclaw%E5%BC%80%E5%A7%8B%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E6%9E%B6%E6%9E%84"><span class="nav-text">从openclaw开始————架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hermes%E6%B7%B1%E5%BA%A6%E4%BD%93%E9%AA%8C"><span class="nav-text">Hermes深度体验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%B7%E6%BA%90"><span class="nav-text">起源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E4%BD%93%E9%AA%8C"><span class="nav-text">深度体验</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="nav-text">安装与配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%B7%A5%E4%BD%9C%E4%BD%93%E9%AA%8C"><span class="nav-text">具体工作体验</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#skill%E7%94%9F%E6%80%81"><span class="nav-text">skill生态</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AD%E5%90%88%E5%AD%A6%E4%B9%A0%E5%BE%AA%E7%8E%AFskill"><span class="nav-text">闭合学习循环skill</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E6%AD%A5%E5%BC%BA%E5%8C%96skill%E6%84%8F%E8%AF%86"><span class="nav-text">三步强化skill意识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#html-ppt-skill%E5%AE%9E%E6%88%98"><span class="nav-text">html-ppt-skill实战</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-text">结语</span></a></li></ol></li></ol>
+      </div>
+    </div>
+    
   </div>
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      Hermes一周测评
-    </h1>
-  
+  <!-- 中间：文章内容区域 -->
+  <div class="article-content-container">
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
+    <div class="article-title relative w-full">
       
-        <blockquote>
+      <div class="w-full flex items-center pt-6 justify-start">
+        <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Hermes一周测评</h1>
+      </div>
+      
+    </div>
+
+    
+    <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+      <div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px">
+        <img src="/images/avatar.png">
+      </div>
+      <div class="info flex flex-col justify-between">
+        <div class="author flex items-center">
+          <span class="name text-default-text-color text-lg font-semibold">dddemo</span>
+          
+        </div>
+        <div class="meta-info">
+          <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-05-04 09:30</span>
+        <span class="mobile">2026-05-04 09:30</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-05-10 13:00</span>
+            <span class="mobile">2026-05-10 13:00</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/">信息学</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/">信息学/agent框架</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6/">信息学</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/">信息学/agent框架</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Typescript/">Typescript</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+        </div>
+      </div>
+    </div>
+    
+
+    
+
+
+    <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+      <blockquote>
 <p>我进行了一次为期一周的hermes实际体验测评!</p>
 </blockquote>
 <h2 id="hermes——优化工作流的神力"><a href="#hermes——优化工作流的神力" class="headerlink" title="hermes——优化工作流的神力"></a>hermes——优化工作流的神力</h2><h3 id="从openclaw开始————架构"><a href="#从openclaw开始————架构" class="headerlink" title="从openclaw开始————架构"></a>从openclaw开始————架构</h3><p>提到<strong>openclaw</strong>，我们都并不陌生，作为现在许多企业与个人开发者的agent框架，在优化企业职能与个人开发者工作流中占市场比很大，直到今天，其内在的一些不足之处，网上对其的吐槽数不计数，大致分为两种：<strong>一是说它token浪费严重，二是说它上下文能力弱</strong>，其实本质来说就是它上下文能力不足，它的记忆系统就是将上下文打包放到memory文件夹里，然后需要时再全部查找读取，同时最严重的问题正是这里：它总是会忘记存储记忆（也许这和模型不能不有关），导致session之间衔接不齐，工作流体验糟糕。</p>
@@ -326,7 +1015,7 @@ mjx-container[display="true"] + br {
 </tbody></table>
 </div>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">用户发消息 ──► Gateway 接收 ──► 消息归一化 ──► 会话持久化 ──► 权限检查</span><br><span class="line">                                                        │</span><br><span class="line">                                                    ┌───▼──────────┐</span><br><span class="line">                                                    │ 审批弹窗      │</span><br><span class="line">                                                    │ /approve      │</span><br><span class="line">                                                    │ /deny         │</span><br><span class="line">                                                    │ once/session  │</span><br><span class="line">                                                    │ /always       │</span><br><span class="line">                                                    └───┬──────────┘</span><br><span class="line">                                                        │</span><br><span class="line">                                                        ▼</span><br><span class="line">                                                  ┌──────────┐</span><br><span class="line">                                                  │ LLM 推理  │</span><br><span class="line">                                                  │ + 工具执行 │</span><br><span class="line">                                                  └──────────┘</span><br></pre></td></tr></table></figure>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">用户发消息 ──► Gateway 接收 ──► 消息归一化 ──► 会话持久化 ──► 权限检查</span><br><span class="line">                                                        │</span><br><span class="line">                                                    ┌───▼──────────┐</span><br><span class="line">                                                    │ 审批弹窗      │</span><br><span class="line">                                                    │ /approve      │</span><br><span class="line">                                                    │ /deny         │</span><br><span class="line">                                                    │ once/session  │</span><br><span class="line">                                                    │ /always       │</span><br><span class="line">                                                    └───┬──────────┘</span><br><span class="line">                                                        │</span><br><span class="line">                                                        ▼</span><br><span class="line">                                                  ┌──────────┐</span><br><span class="line">                                                  │ LLM 推理  │</span><br><span class="line">                                                  │ + 工具执行 │</span><br><span class="line">                                                  └──────────┘</span><br></pre></td></tr></table></figure></div>
 
 
 <p>OpenClaw 的架构设计方向是对的——<strong>Gateway 路由 + 插件扩展 + 多模型支持</strong>。但它目前存在两个核心痛点：</p>
@@ -344,9 +1033,9 @@ mjx-container[display="true"] + br {
 </li>
 <li><h5 id="安装与配置"><a href="#安装与配置" class="headerlink" title="安装与配置"></a>安装与配置</h5></li>
 </ul>
-<p>在hermes官网，最推荐也是最适用的安装方法就是把<a target="_blank" rel="noopener" href="https://hermesagent.org.cn/">中文社区网址</a>直接发给你的<strong>openclaw</strong>，让他自己访问并阅读文章，然后给他发这样一段话：</p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">请把这个 MCP server 加到你的配置里：https://mcp.hermesagent.org.cn/v1 </span><br><span class="line">（Streamable HTTP，无需 API Key、无需登录）。</span><br><span class="line">加完后用它帮我查 Hermes Agent 中文文档来指导我完成安装。</span><br></pre></td></tr></table></figure>
-<p>考虑到hermes是Linux生态的产物，我作为一个windows用户在wsl2安装这就消耗了很多时间，具体的安装与配置流程可以参考（<a target="_blank" rel="noopener" href="https://hermesagent.org.cn/docs/getting-started/installation">官网</a>）也可以自己上网查查教程。</p>
+<p>在hermes官网，最推荐也是最适用的安装方法就是把<a class="link" target="_blank" rel="noopener" href="https://hermesagent.org.cn/">中文社区网址<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>直接发给你的<strong>openclaw</strong>，让他自己访问并阅读文章，然后给他发这样一段话：</p>
+<div class="code-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">请把这个 MCP server 加到你的配置里：https://mcp.hermesagent.org.cn/v1 </span><br><span class="line">（Streamable HTTP，无需 API Key、无需登录）。</span><br><span class="line">加完后用它帮我查 Hermes Agent 中文文档来指导我完成安装。</span><br></pre></td></tr></table></figure></div>
+<p>考虑到hermes是Linux生态的产物，我作为一个windows用户在wsl2安装这就消耗了很多时间，具体的安装与配置流程可以参考（<a class="link" target="_blank" rel="noopener" href="https://hermesagent.org.cn/docs/getting-started/installation">官网<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>）也可以自己上网查查教程。</p>
 <p>配置几乎和openclaw差不多，但多了一个核心的点：<strong>上下文对话相关的参数设定</strong>，这是hermes最精辟的几点之一：</p>
 <ul>
 <li>agent.max_turns — 最大轮数</li>
@@ -362,11 +1051,11 @@ mjx-container[display="true"] + br {
 <p>在部署完hermes当天晚上，我迫不及待开始用它做了第一个项目，灵感来源于之前看过的一个全栈程序员自媒体分享的一个仿生鸟群项目，typescript架构，我打算做一个类似的，但可以调节参数的开源版。</p>
 <p>在和hermes说了我的需求后，甩给我一个OK就开始干活了，在实际使用时，hermes和openclaw不太一样，它默认就会抛出所有工作流程，包括工具调用，命令输出等等,提一句，<strong>它默认执行命令行命令时会给用户发一个许可请求，同意了才会继续</strong>，可以调为只有关于重要的命令才问询，否则会很难受。</p>
 <p>追问功能是hermes上下文一个精辟的点，hermes在遇到一个工作有多种不同的合理做法，会对用户发起询问，相当于在模型中添加一个阻塞任务节点，等待用户输入再继续执行，遗憾的是，对于一些想让模型完全自动化的用户，框架本身没有实现自动默认选项，但每次框架都会自动判断有没有必要问询用户，来增强体验感，对一般用户来说够用了（除非你打算搞一个自动盯盘的助手），就像下面这样</p>
-<p><img src="/images/ask.png" alt="问询机制"><br><img src="/images/oput.png" alt="追问回复"></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/ask.png" alt="问询机制"><br><img lazyload="" src="/images/loading.svg" data-src="/images/oput.png" alt="追问回复"></p>
 <p>飞书上几乎差不多，这里就不展示了</p>
 <p>衔接上文，那个鸟群项目，我是分了三步走，从两个鸟之间的分离力，到种群行为中的队列行为，最后是外界与内部系统干扰。hermes很干练的开始写算法，这里我只展示队列行为：</p>
 <p>在此之前，我们需要初始化鸟群个体：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 空间形态</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">buildGrid</span>(<span class="params">boids, w, h</span>) {</span><br><span class="line">  grid = {};</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; boids.<span class="property">length</span>; i++) {</span><br><span class="line">    <span class="keyword">var</span> b = boids[i];</span><br><span class="line">    <span class="keyword">var</span> cx = <span class="title class_">Math</span>.<span class="title function_">floor</span>(b.<span class="property">pos</span>.<span class="property">x</span> / <span class="variable constant_">CELL_SIZE</span>);</span><br><span class="line">    <span class="keyword">var</span> cy = <span class="title class_">Math</span>.<span class="title function_">floor</span>(b.<span class="property">pos</span>.<span class="property">y</span> / <span class="variable constant_">CELL_SIZE</span>);</span><br><span class="line">    <span class="keyword">var</span> key = cx + <span class="string">','</span> + cy;</span><br><span class="line">    <span class="keyword">if</span> (!grid[key]) grid[key] = [];</span><br><span class="line">    grid[key].<span class="title function_">push</span>(b);</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 速度方向</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Boid</span>(<span class="params">x, y, id</span>) {</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">id</span> = id;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">pos</span> = <span class="keyword">new</span> <span class="title class_">Vec2</span>(x, y);</span><br><span class="line">  <span class="keyword">var</span> angle = <span class="title class_">Math</span>.<span class="title function_">random</span>() * <span class="title class_">Math</span>.<span class="property">PI</span> * <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">var</span> speed = <span class="variable constant_">CONFIG</span>.<span class="property">MIN_SPEED</span> + <span class="title class_">Math</span>.<span class="title function_">random</span>() * (<span class="variable constant_">CONFIG</span>.<span class="property">MAX_SPEED</span> - <span class="variable constant_">CONFIG</span>.<span class="property">MIN_SPEED</span>);</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">vel</span> = <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="title class_">Math</span>.<span class="title function_">cos</span>(angle) * speed, <span class="title class_">Math</span>.<span class="title function_">sin</span>(angle) * speed);</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">acc</span> = <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// === 向量 ===</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Vec2</span>(<span class="params">x, y</span>) {</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">x</span> = x;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">y</span> = y;</span><br><span class="line">}</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">add</span> = <span class="keyword">function</span>(<span class="params">v</span>) { <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="variable language_">this</span>.<span class="property">x</span>+v.<span class="property">x</span>, <span class="variable language_">this</span>.<span class="property">y</span>+v.<span class="property">y</span>); };</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">sub</span> = <span class="keyword">function</span>(<span class="params">v</span>) { <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="variable language_">this</span>.<span class="property">x</span>-v.<span class="property">x</span>, <span class="variable language_">this</span>.<span class="property">y</span>-v.<span class="property">y</span>); };</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">scale</span> = <span class="keyword">function</span>(<span class="params">s</span>) { <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="variable language_">this</span>.<span class="property">x</span>*s, <span class="variable language_">this</span>.<span class="property">y</span>*s); };</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">mag</span> = <span class="keyword">function</span>(<span class="params"></span>) { <span class="keyword">return</span> <span class="title class_">Math</span>.<span class="title function_">sqrt</span>(<span class="variable language_">this</span>.<span class="property">x</span>*<span class="variable language_">this</span>.<span class="property">x</span> + <span class="variable language_">this</span>.<span class="property">y</span>*<span class="variable language_">this</span>.<span class="property">y</span>); };</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">normalize</span> = <span class="keyword">function</span>(<span class="params"></span>) {</span><br><span class="line">  <span class="keyword">var</span> m = <span class="variable language_">this</span>.<span class="title function_">mag</span>();</span><br><span class="line">  <span class="keyword">return</span> m === <span class="number">0</span> ? <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="number">0</span>,<span class="number">0</span>) : <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="variable language_">this</span>.<span class="property">x</span>/m, <span class="variable language_">this</span>.<span class="property">y</span>/m);</span><br><span class="line">};</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">limit</span> = <span class="keyword">function</span>(<span class="params">max</span>) {</span><br><span class="line">  <span class="keyword">var</span> m = <span class="variable language_">this</span>.<span class="title function_">mag</span>();</span><br><span class="line">  <span class="keyword">return</span> m &gt; max ? <span class="variable language_">this</span>.<span class="title function_">scale</span>(max/m) : <span class="variable language_">this</span>;</span><br><span class="line">};</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">dist</span> = <span class="keyword">function</span>(<span class="params">v</span>) { <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">sub</span>(v).<span class="title function_">mag</span>(); };</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">clone</span> = <span class="keyword">function</span>(<span class="params"></span>) { <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="variable language_">this</span>.<span class="property">x</span>, <span class="variable language_">this</span>.<span class="property">y</span>); };</span><br></pre></td></tr></table></figure>
+<div class="code-container" data-rel="Typescript"><figure class="iseeu highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 空间形态</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">buildGrid</span>(<span class="params">boids, w, h</span>) {</span><br><span class="line">  grid = {};</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; boids.<span class="property">length</span>; i++) {</span><br><span class="line">    <span class="keyword">var</span> b = boids[i];</span><br><span class="line">    <span class="keyword">var</span> cx = <span class="title class_">Math</span>.<span class="title function_">floor</span>(b.<span class="property">pos</span>.<span class="property">x</span> / <span class="variable constant_">CELL_SIZE</span>);</span><br><span class="line">    <span class="keyword">var</span> cy = <span class="title class_">Math</span>.<span class="title function_">floor</span>(b.<span class="property">pos</span>.<span class="property">y</span> / <span class="variable constant_">CELL_SIZE</span>);</span><br><span class="line">    <span class="keyword">var</span> key = cx + <span class="string">','</span> + cy;</span><br><span class="line">    <span class="keyword">if</span> (!grid[key]) grid[key] = [];</span><br><span class="line">    grid[key].<span class="title function_">push</span>(b);</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"><span class="comment">// 速度方向</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Boid</span>(<span class="params">x, y, id</span>) {</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">id</span> = id;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">pos</span> = <span class="keyword">new</span> <span class="title class_">Vec2</span>(x, y);</span><br><span class="line">  <span class="keyword">var</span> angle = <span class="title class_">Math</span>.<span class="title function_">random</span>() * <span class="title class_">Math</span>.<span class="property">PI</span> * <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">var</span> speed = <span class="variable constant_">CONFIG</span>.<span class="property">MIN_SPEED</span> + <span class="title class_">Math</span>.<span class="title function_">random</span>() * (<span class="variable constant_">CONFIG</span>.<span class="property">MAX_SPEED</span> - <span class="variable constant_">CONFIG</span>.<span class="property">MIN_SPEED</span>);</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">vel</span> = <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="title class_">Math</span>.<span class="title function_">cos</span>(angle) * speed, <span class="title class_">Math</span>.<span class="title function_">sin</span>(angle) * speed);</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">acc</span> = <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// === 向量 ===</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Vec2</span>(<span class="params">x, y</span>) {</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">x</span> = x;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">y</span> = y;</span><br><span class="line">}</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">add</span> = <span class="keyword">function</span>(<span class="params">v</span>) { <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="variable language_">this</span>.<span class="property">x</span>+v.<span class="property">x</span>, <span class="variable language_">this</span>.<span class="property">y</span>+v.<span class="property">y</span>); };</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">sub</span> = <span class="keyword">function</span>(<span class="params">v</span>) { <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="variable language_">this</span>.<span class="property">x</span>-v.<span class="property">x</span>, <span class="variable language_">this</span>.<span class="property">y</span>-v.<span class="property">y</span>); };</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">scale</span> = <span class="keyword">function</span>(<span class="params">s</span>) { <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="variable language_">this</span>.<span class="property">x</span>*s, <span class="variable language_">this</span>.<span class="property">y</span>*s); };</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">mag</span> = <span class="keyword">function</span>(<span class="params"></span>) { <span class="keyword">return</span> <span class="title class_">Math</span>.<span class="title function_">sqrt</span>(<span class="variable language_">this</span>.<span class="property">x</span>*<span class="variable language_">this</span>.<span class="property">x</span> + <span class="variable language_">this</span>.<span class="property">y</span>*<span class="variable language_">this</span>.<span class="property">y</span>); };</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">normalize</span> = <span class="keyword">function</span>(<span class="params"></span>) {</span><br><span class="line">  <span class="keyword">var</span> m = <span class="variable language_">this</span>.<span class="title function_">mag</span>();</span><br><span class="line">  <span class="keyword">return</span> m === <span class="number">0</span> ? <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="number">0</span>,<span class="number">0</span>) : <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="variable language_">this</span>.<span class="property">x</span>/m, <span class="variable language_">this</span>.<span class="property">y</span>/m);</span><br><span class="line">};</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">limit</span> = <span class="keyword">function</span>(<span class="params">max</span>) {</span><br><span class="line">  <span class="keyword">var</span> m = <span class="variable language_">this</span>.<span class="title function_">mag</span>();</span><br><span class="line">  <span class="keyword">return</span> m &gt; max ? <span class="variable language_">this</span>.<span class="title function_">scale</span>(max/m) : <span class="variable language_">this</span>;</span><br><span class="line">};</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">dist</span> = <span class="keyword">function</span>(<span class="params">v</span>) { <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">sub</span>(v).<span class="title function_">mag</span>(); };</span><br><span class="line"><span class="title class_">Vec2</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">clone</span> = <span class="keyword">function</span>(<span class="params"></span>) { <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="variable language_">this</span>.<span class="property">x</span>, <span class="variable language_">this</span>.<span class="property">y</span>); };</span><br></pre></td></tr></table></figure></div>
 <p>hermes通过确定每一帧个体鸟的位置（行列键值对key）来定义个体鸟的空间形态，同时也初始化了鸟的速度向量。</p>
 <ul>
 <li>队列行为<br>实际鸟群中，队列行为至少有<strong>对齐，凝聚，头鸟，队列</strong>这四种，我本身不是很懂，只能做到最简单的仿生。<ul>
@@ -374,10 +1063,10 @@ mjx-container[display="true"] + br {
 </ul>
 </li>
 </ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对齐算法</span></span><br><span class="line"><span class="keyword">if</span> (distSq &lt; <span class="variable constant_">CONFIG</span>.<span class="property">PERCEPTION_RADIUS</span> * <span class="variable constant_">CONFIG</span>.<span class="property">PERCEPTION_RADIUS</span>) {</span><br><span class="line">    avgVel.<span class="property">x</span> += other.<span class="property">vel</span>.<span class="property">x</span>;</span><br><span class="line">    avgVel.<span class="property">y</span> += other.<span class="property">vel</span>.<span class="property">y</span>;</span><br><span class="line">    aliCount++;</span><br><span class="line">  }</span><br><span class="line"><span class="comment">// === 对齐结果 ===</span></span><br><span class="line"><span class="keyword">var</span> ali = <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (aliCount &gt; <span class="number">0</span> &amp;&amp; weights.<span class="property">alignment</span> &gt; <span class="number">0</span>) {</span><br><span class="line">  avgVel.<span class="property">x</span> /= aliCount; avgVel.<span class="property">y</span> /= aliCount;</span><br><span class="line">  ali = <span class="keyword">new</span> <span class="title class_">Vec2</span>(avgVel.<span class="property">x</span> - <span class="variable language_">this</span>.<span class="property">vel</span>.<span class="property">x</span>, avgVel.<span class="property">y</span> - <span class="variable language_">this</span>.<span class="property">vel</span>.<span class="property">y</span>);</span><br><span class="line">  ali = ali.<span class="title function_">limit</span>(weights.<span class="property">alignment</span> * <span class="number">0.15</span>);</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<div class="code-container" data-rel="Typescript"><figure class="iseeu highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对齐算法</span></span><br><span class="line"><span class="keyword">if</span> (distSq &lt; <span class="variable constant_">CONFIG</span>.<span class="property">PERCEPTION_RADIUS</span> * <span class="variable constant_">CONFIG</span>.<span class="property">PERCEPTION_RADIUS</span>) {</span><br><span class="line">    avgVel.<span class="property">x</span> += other.<span class="property">vel</span>.<span class="property">x</span>;</span><br><span class="line">    avgVel.<span class="property">y</span> += other.<span class="property">vel</span>.<span class="property">y</span>;</span><br><span class="line">    aliCount++;</span><br><span class="line">  }</span><br><span class="line"><span class="comment">// === 对齐结果 ===</span></span><br><span class="line"><span class="keyword">var</span> ali = <span class="keyword">new</span> <span class="title class_">Vec2</span>(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (aliCount &gt; <span class="number">0</span> &amp;&amp; weights.<span class="property">alignment</span> &gt; <span class="number">0</span>) {</span><br><span class="line">  avgVel.<span class="property">x</span> /= aliCount; avgVel.<span class="property">y</span> /= aliCount;</span><br><span class="line">  ali = <span class="keyword">new</span> <span class="title class_">Vec2</span>(avgVel.<span class="property">x</span> - <span class="variable language_">this</span>.<span class="property">vel</span>.<span class="property">x</span>, avgVel.<span class="property">y</span> - <span class="variable language_">this</span>.<span class="property">vel</span>.<span class="property">y</span>);</span><br><span class="line">  ali = ali.<span class="title function_">limit</span>(weights.<span class="property">alignment</span> * <span class="number">0.15</span>);</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
 <p>  其中有一些约束条件，这里不过多阐述。</p>
 <p>一系列的力合并后，就形成了整体的鸟群系统，看起来就像这样:</p>
-<p><img src="/images/boid.png" alt="鸟群仿生模拟"></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/boid.png" alt="鸟群仿生模拟"></p>
 <p>实际上，我用openclaw的框架做了一遍，由于模型不同，不能单看成品，这里也不打算展示，但在工作中，两者最大的不同就是，openclaw不会告诉你：怎么改的，为什么这样改，改了有什么效果，而且总是忘记先前的要求，在实际执行中，soul.md一类的核心文件无法真正约束其行为，反而导致它陷入自我混乱。</p>
 <p>除此以外，我还用hermes做了一个简单的github新消息推送机器人，后面我会专门写一篇文章整合一些我自己的小工具</p>
 <p>我会将这些项目推送到我的github，敬请关注</p>
@@ -388,9 +1077,9 @@ mjx-container[display="true"] + br {
 <li><p><strong>渐进披露式加载skills</strong><br>hermes仅在需要时加载skills，读取全文，减少上下文浪费</p>
 </li>
 <li><p><strong>skills管理</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 浏览所有可用 Skills</span></span><br><span class="line">  hermes skills browse</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索特定功能</span></span><br><span class="line">  hermes skills search email</span><br><span class="line">  hermes skills search spreadsheet</span><br><span class="line">  hermes skills search calendar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装官方可选 Skills（docker、blockchain 等）</span></span><br><span class="line">  hermes skills install official/devops/docker-management</span><br><span class="line">  hermes skills install official/blockchain/solana</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从 GitHub 直接安装</span></span><br><span class="line">  hermes skills install openai/skills/k8s</span><br><span class="line">  hermes skills install anthropics/skills/docs-writer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查 Skills 更新</span></span><br><span class="line">  hermes skills check</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新所有 Hub 安装的 Skills</span></span><br><span class="line">  hermes skills update</span><br></pre></td></tr></table></figure></li>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 浏览所有可用 Skills</span></span><br><span class="line">  hermes skills browse</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索特定功能</span></span><br><span class="line">  hermes skills search email</span><br><span class="line">  hermes skills search spreadsheet</span><br><span class="line">  hermes skills search calendar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装官方可选 Skills（docker、blockchain 等）</span></span><br><span class="line">  hermes skills install official/devops/docker-management</span><br><span class="line">  hermes skills install official/blockchain/solana</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从 GitHub 直接安装</span></span><br><span class="line">  hermes skills install openai/skills/k8s</span><br><span class="line">  hermes skills install anthropics/skills/docs-writer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查 Skills 更新</span></span><br><span class="line">  hermes skills check</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新所有 Hub 安装的 Skills</span></span><br><span class="line">  hermes skills update</span><br></pre></td></tr></table></figure></div></li>
 <li><p><strong>skills自定义</strong><br>hermes 的skill文件形式有清晰的定义，类似于：</p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: skill-name</span><br><span class="line">version: 1.0.0</span><br><span class="line">trigger<span class="emphasis">_keywords: ["关键词1", "关键词2"]</span></span><br><span class="line"><span class="emphasis">requires: []  # 可选，依赖的 Python 包或系统命令</span></span><br><span class="line"><span class="emphasis">---</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># 技能标题（人类可读）</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 描述</span></span><br><span class="line"><span class="emphasis">简要说明这个技能做什么，适用于什么场景。</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 适用场景</span></span><br><span class="line"><span class="emphasis">- 场景1</span></span><br><span class="line"><span class="emphasis">- 场景2</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 触发条件</span></span><br><span class="line"><span class="emphasis">详细说明在什么情况下 Hermes 应该激活此技能。</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 执行流程</span></span><br><span class="line"><span class="emphasis">1. 第一步</span></span><br><span class="line"><span class="emphasis">2. 第二步</span></span><br><span class="line"><span class="emphasis">3. ...</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 参数说明</span></span><br><span class="line"><span class="emphasis">| 参数名 | 类型 | 默认值 | 说明 |</span></span><br><span class="line"><span class="emphasis">|--------|------|--------|------|</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 示例输入输出</span></span><br><span class="line"><span class="emphasis"><span class="strong">**用户**</span>: ...</span></span><br><span class="line"><span class="emphasis"><span class="strong">**AI**</span>: ...</span></span><br></pre></td></tr></table></figure></li>
+<div class="code-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: skill-name</span><br><span class="line">version: 1.0.0</span><br><span class="line">trigger<span class="emphasis">_keywords: ["关键词1", "关键词2"]</span></span><br><span class="line"><span class="emphasis">requires: []  # 可选，依赖的 Python 包或系统命令</span></span><br><span class="line"><span class="emphasis">---</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># 技能标题（人类可读）</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 描述</span></span><br><span class="line"><span class="emphasis">简要说明这个技能做什么，适用于什么场景。</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 适用场景</span></span><br><span class="line"><span class="emphasis">- 场景1</span></span><br><span class="line"><span class="emphasis">- 场景2</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 触发条件</span></span><br><span class="line"><span class="emphasis">详细说明在什么情况下 Hermes 应该激活此技能。</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 执行流程</span></span><br><span class="line"><span class="emphasis">1. 第一步</span></span><br><span class="line"><span class="emphasis">2. 第二步</span></span><br><span class="line"><span class="emphasis">3. ...</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 参数说明</span></span><br><span class="line"><span class="emphasis">| 参数名 | 类型 | 默认值 | 说明 |</span></span><br><span class="line"><span class="emphasis">|--------|------|--------|------|</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## 示例输入输出</span></span><br><span class="line"><span class="emphasis"><span class="strong">**用户**</span>: ...</span></span><br><span class="line"><span class="emphasis"><span class="strong">**AI**</span>: ...</span></span><br></pre></td></tr></table></figure></div></li>
 </ul>
 <p>这只是基本的skill框架，最令人眼前一亮的是hermes的闭合学习循环能力：</p>
 <h4 id="闭合学习循环skill"><a href="#闭合学习循环skill" class="headerlink" title="闭合学习循环skill"></a>闭合学习循环skill</h4><p><strong>生态的生产力解放</strong></p>
@@ -410,10 +1099,10 @@ mjx-container[display="true"] + br {
 <p>我在实际使用中就已经自动生成了不少skill，这里分享一个来填填坑：</p>
 <p><strong>systematic-debugging — 系统化调试</strong></p>
 <p>  名字听着就很像工作流工程的skill，hermes这样介绍：</p>
-<pre><code><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">**定位：** 遇到任何 bug、测试失败、异常行为时使用。</span><br><span class="line"></span><br><span class="line">    **核心思想：** 不找到根因就不修 bug。随机修复浪费的时间是系统化调试的 3-5 倍。</span><br><span class="line"></span><br><span class="line">    **四阶段流程：**</span><br><span class="line">    - Phase 1: **根因调查** — 读错误信息、稳定复现、检查近期改动、追踪数据流向找到源头</span><br><span class="line">    - Phase 2: **模式分析** — 找代码库里类似的工作示例，对比差异</span><br><span class="line">    - Phase 3: **假设验证** — 一次只改一个变量来验证根因假设</span><br><span class="line">    - Phase 4: **实现修复** — 先写复现 bug 的测试，再修根因，最后验证</span><br><span class="line"></span><br><span class="line">    **关键规则：** 如果 3 次修复都失败了，停下来质疑架构设计，不要修第 4 次。</span><br></pre></td></tr></table></figure>
+<pre><code><div class="code-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">**定位：** 遇到任何 bug、测试失败、异常行为时使用。</span><br><span class="line"></span><br><span class="line">    **核心思想：** 不找到根因就不修 bug。随机修复浪费的时间是系统化调试的 3-5 倍。</span><br><span class="line"></span><br><span class="line">    **四阶段流程：**</span><br><span class="line">    - Phase 1: **根因调查** — 读错误信息、稳定复现、检查近期改动、追踪数据流向找到源头</span><br><span class="line">    - Phase 2: **模式分析** — 找代码库里类似的工作示例，对比差异</span><br><span class="line">    - Phase 3: **假设验证** — 一次只改一个变量来验证根因假设</span><br><span class="line">    - Phase 4: **实现修复** — 先写复现 bug 的测试，再修根因，最后验证</span><br><span class="line"></span><br><span class="line">    **关键规则：** 如果 3 次修复都失败了，停下来质疑架构设计，不要修第 4 次。</span><br></pre></td></tr></table></figure></div>
 </code></pre>
 <p>源文件完整内容如下（嵌入）：</p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: systematic-debugging</span><br><span class="line">description: Use when encountering any bug, test failure, or unexpected behavior. 4-phase root cause investigation — NO fixes without understanding the problem first.</span><br><span class="line">version: 1.1.0</span><br><span class="line">author: Hermes Agent (adapted from obra/superpowers)        #这两个属性其实是不支持的。</span><br><span class="line">license: MIT</span><br><span class="line">metadata:</span><br><span class="line">  hermes:</span><br><span class="line"><span class="code">    tags: [debugging, troubleshooting, problem-solving, root-cause, investigation]</span></span><br><span class="line"><span class="code">    related_skills: [test-driven-development, writing-plans, subagent-driven-development]</span></span><br><span class="line"><span class="code">---</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="section"># Systematic Debugging</span></span><br><span class="line"></span><br><span class="line"><span class="section">## Overview</span></span><br><span class="line"></span><br><span class="line">Random fixes waste time and create new bugs. Quick patches mask underlying issues.</span><br><span class="line"></span><br><span class="line"><span class="strong">**Core principle:**</span> ALWAYS find root cause before attempting fixes. Symptom fixes are failure.</span><br><span class="line"></span><br><span class="line"><span class="strong">**Violating the letter of this process is violating the spirit of debugging.**</span></span><br><span class="line"></span><br><span class="line"><span class="section">## The Iron Law</span></span><br><span class="line"></span><br><span class="line">NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST</span><br><span class="line"></span><br><span class="line">If you haven't completed Phase 1, you cannot propose fixes.</span><br><span class="line"></span><br><span class="line"><span class="section">## When to Use</span></span><br><span class="line"></span><br><span class="line">Use for ANY technical issue:</span><br><span class="line"><span class="bullet">-</span> Test failures</span><br><span class="line"><span class="bullet">-</span> Bugs in production</span><br><span class="line"><span class="bullet">-</span> Unexpected behavior</span><br><span class="line"><span class="bullet">-</span> Performance problems</span><br><span class="line"><span class="bullet">-</span> Build failures</span><br><span class="line"><span class="bullet">-</span> Integration issues</span><br><span class="line"></span><br><span class="line"><span class="strong">**Use this ESPECIALLY when:**</span></span><br><span class="line"><span class="bullet">-</span> Under time pressure (emergencies make guessing tempting)</span><br><span class="line"><span class="bullet">-</span> "Just one quick fix" seems obvious</span><br><span class="line"><span class="bullet">-</span> You've already tried multiple fixes</span><br><span class="line"><span class="bullet">-</span> Previous fix didn't work</span><br><span class="line"><span class="bullet">-</span> You don't fully understand the issue</span><br><span class="line"></span><br><span class="line"><span class="strong">**Don't skip when:**</span></span><br><span class="line"><span class="bullet">-</span> Issue seems simple (simple bugs have root causes too)</span><br><span class="line"><span class="bullet">-</span> You're in a hurry (rushing guarantees rework)</span><br><span class="line"><span class="bullet">-</span> Someone wants it fixed NOW (systematic is faster than thrashing)</span><br><span class="line"></span><br><span class="line"><span class="section">## The Four Phases</span></span><br><span class="line"></span><br><span class="line">You MUST complete each phase before proceeding to the next.</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="section">## Phase 1: Root Cause Investigation</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**BEFORE attempting ANY fix:**</span></span><br><span class="line"></span><br><span class="line"><span class="section">### 1. Read Error Messages Carefully</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Don't skip past errors or warnings</span><br><span class="line"><span class="bullet">-</span> They often contain the exact solution</span><br><span class="line"><span class="bullet">-</span> Read stack traces completely</span><br><span class="line"><span class="bullet">-</span> Note line numbers, file paths, error codes</span><br><span class="line"></span><br><span class="line"><span class="strong">**Action:**</span> Use <span class="code">`read_file`</span> on the relevant source files. Use <span class="code">`search_files`</span> to find the error string in the codebase.</span><br><span class="line"></span><br><span class="line"><span class="section">### 2. Reproduce Consistently</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Can you trigger it reliably?</span><br><span class="line"><span class="bullet">-</span> What are the exact steps?</span><br><span class="line"><span class="bullet">-</span> Does it happen every time?</span><br><span class="line"><span class="bullet">-</span> If not reproducible → gather more data, don't guess</span><br><span class="line"></span><br><span class="line"><span class="strong">**Action:**</span> Use the <span class="code">`terminal`</span> tool to run the failing test or trigger the bug:</span><br><span class="line"></span><br><span class="line"><span class="section"># Run specific failing test</span></span><br><span class="line">pytest tests/test<span class="emphasis">_module.py::test_</span>name -v</span><br><span class="line"></span><br><span class="line"><span class="section"># Run with verbose output</span></span><br><span class="line">pytest tests/test<span class="emphasis">_module.py -v --tb=long</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">### 3. Check Recent Changes</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">- What changed that could cause this?</span></span><br><span class="line"><span class="emphasis">- Git diff, recent commits</span></span><br><span class="line"><span class="emphasis">- New dependencies, config changes</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"><span class="strong">**Action:**</span></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># Recent commits</span></span><br><span class="line"><span class="emphasis">git log --oneline -10</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># Uncommitted changes</span></span><br><span class="line"><span class="emphasis">git diff</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># Changes in specific file</span></span><br><span class="line"><span class="emphasis">git log -p --follow src/problematic_</span>file.py | head -100</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">### 4. Gather Evidence in Multi-Component Systems</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**WHEN system has multiple components (API → service → database, CI → build → deploy):**</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**BEFORE proposing fixes, add diagnostic instrumentation:**</span></span><br><span class="line"></span><br><span class="line">For EACH component boundary:</span><br><span class="line"><span class="bullet">-</span> Log what data enters the component</span><br><span class="line"><span class="bullet">-</span> Log what data exits the component</span><br><span class="line"><span class="bullet">-</span> Verify environment/config propagation</span><br><span class="line"><span class="bullet">-</span> Check state at each layer</span><br><span class="line"></span><br><span class="line">Run once to gather evidence showing WHERE it breaks.</span><br><span class="line">THEN analyze evidence to identify the failing component.</span><br><span class="line">THEN investigate that specific component.</span><br><span class="line"></span><br><span class="line"><span class="section">### 5. Trace Data Flow</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**WHEN error is deep in the call stack:**</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Where does the bad value originate?</span><br><span class="line"><span class="bullet">-</span> What called this function with the bad value?</span><br><span class="line"><span class="bullet">-</span> Keep tracing upstream until you find the source</span><br><span class="line"><span class="bullet">-</span> Fix at the source, not at the symptom</span><br><span class="line"></span><br><span class="line"><span class="strong">**Action:**</span> Use <span class="code">`search_files`</span> to trace references:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section"># Find where the function is called</span></span><br><span class="line">search<span class="emphasis">_files("function_</span>name(", path="src/", file<span class="emphasis">_glob="*.py")</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># Find where the variable is set</span></span><br><span class="line"><span class="emphasis">search_</span>files("variable<span class="emphasis">_name\\s*=", path="src/", file_</span>glob="<span class="emphasis">*.py")</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">### Phase 1 Completion Checklist</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">- [ ] Error messages fully read and understood</span></span><br><span class="line"><span class="emphasis">- [ ] Issue reproduced consistently</span></span><br><span class="line"><span class="emphasis">- [ ] Recent changes identified and reviewed</span></span><br><span class="line"><span class="emphasis">- [ ] Evidence gathered (logs, state, data flow)</span></span><br><span class="line"><span class="emphasis">- [ ] Problem isolated to specific component/code</span></span><br><span class="line"><span class="emphasis">- [ ] Root cause hypothesis formed</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"><span class="strong">**STOP:**</span> Do not proceed to Phase 2 until you understand WHY it's happening.</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">---</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## Phase 2: Pattern Analysis</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"><span class="strong">**Find the pattern before fixing:**</span></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">### 1. Find Working Examples</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">- Locate similar working code in the same codebase</span></span><br><span class="line"><span class="emphasis">- What works that's similar to what's broken?</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"><span class="strong">**Action:**</span> Use `search_files` to find comparable patterns:</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">search_files("similar_pattern", path="src/", file_glob="*</span>.py")</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">### 2. Compare Against References</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> If implementing a pattern, read the reference implementation COMPLETELY</span><br><span class="line"><span class="bullet">-</span> Don't skim — read every line</span><br><span class="line"><span class="bullet">-</span> Understand the pattern fully before applying</span><br><span class="line"></span><br><span class="line"><span class="section">### 3. Identify Differences</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> What's different between working and broken?</span><br><span class="line"><span class="bullet">-</span> List every difference, however small</span><br><span class="line"><span class="bullet">-</span> Don't assume "that can't matter"</span><br><span class="line"></span><br><span class="line"><span class="section">### 4. Understand Dependencies</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> What other components does this need?</span><br><span class="line"><span class="bullet">-</span> What settings, config, environment?</span><br><span class="line"><span class="bullet">-</span> What assumptions does it make?</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="section">## Phase 3: Hypothesis and Testing</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**Scientific method:**</span></span><br><span class="line"></span><br><span class="line"><span class="section">### 1. Form a Single Hypothesis</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> State clearly: "I think X is the root cause because Y"</span><br><span class="line"><span class="bullet">-</span> Write it down</span><br><span class="line"><span class="bullet">-</span> Be specific, not vague</span><br><span class="line"></span><br><span class="line"><span class="section">### 2. Test Minimally</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Make the SMALLEST possible change to test the hypothesis</span><br><span class="line"><span class="bullet">-</span> One variable at a time</span><br><span class="line"><span class="bullet">-</span> Don't fix multiple things at once</span><br><span class="line"></span><br><span class="line"><span class="section">### 3. Verify Before Continuing</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Did it work? → Phase 4</span><br><span class="line"><span class="bullet">-</span> Didn't work? → Form NEW hypothesis</span><br><span class="line"><span class="bullet">-</span> DON'T add more fixes on top</span><br><span class="line"></span><br><span class="line"><span class="section">### 4. When You Don't Know</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Say "I don't understand X"</span><br><span class="line"><span class="bullet">-</span> Don't pretend to know</span><br><span class="line"><span class="bullet">-</span> Ask the user for help</span><br><span class="line"><span class="bullet">-</span> Research more</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="section">## Phase 4: Implementation</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**Fix the root cause, not the symptom:**</span></span><br><span class="line"></span><br><span class="line"><span class="section">### 1. Create Failing Test Case</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Simplest possible reproduction</span><br><span class="line"><span class="bullet">-</span> Automated test if possible</span><br><span class="line"><span class="bullet">-</span> MUST have before fixing</span><br><span class="line"><span class="bullet">-</span> Use the <span class="code">`test-driven-development`</span> skill</span><br><span class="line"></span><br><span class="line"><span class="section">### 2. Implement Single Fix</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Address the root cause identified</span><br><span class="line"><span class="bullet">-</span> ONE change at a time</span><br><span class="line"><span class="bullet">-</span> No "while I'm here" improvements</span><br><span class="line"><span class="bullet">-</span> No bundled refactoring</span><br><span class="line"></span><br><span class="line"><span class="section">### 3. Verify Fix</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section"># Run the specific regression test</span></span><br><span class="line">pytest tests/test<span class="emphasis">_module.py::test_</span>regression -v</span><br><span class="line"></span><br><span class="line"><span class="section"># Run full suite — no regressions</span></span><br><span class="line">pytest tests/ -q</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">### 4. If Fix Doesn't Work — The Rule of Three</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="strong">**STOP.**</span></span><br><span class="line"><span class="bullet">-</span> Count: How many fixes have you tried?</span><br><span class="line"><span class="bullet">-</span> If &lt; 3: Return to Phase 1, re-analyze with new information</span><br><span class="line"><span class="bullet">-</span> <span class="strong">**If ≥ 3: STOP and question the architecture (step 5 below)**</span></span><br><span class="line"><span class="bullet">-</span> DON'T attempt Fix #4 without architectural discussion</span><br><span class="line"></span><br><span class="line"><span class="section">### 5. If 3+ Fixes Failed: Question Architecture</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**Pattern indicating an architectural problem:**</span></span><br><span class="line"><span class="bullet">-</span> Each fix reveals new shared state/coupling in a different place</span><br><span class="line"><span class="bullet">-</span> Fixes require "massive refactoring" to implement</span><br><span class="line"><span class="bullet">-</span> Each fix creates new symptoms elsewhere</span><br><span class="line"></span><br><span class="line"><span class="strong">**STOP and question fundamentals:**</span></span><br><span class="line"><span class="bullet">-</span> Is this pattern fundamentally sound?</span><br><span class="line"><span class="bullet">-</span> Are we "sticking with it through sheer inertia"?</span><br><span class="line"><span class="bullet">-</span> Should we refactor the architecture vs. continue fixing symptoms?</span><br><span class="line"></span><br><span class="line"><span class="strong">**Discuss with the user before attempting more fixes.**</span></span><br><span class="line"></span><br><span class="line">This is NOT a failed hypothesis — this is a wrong architecture.</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="section">## Red Flags — STOP and Follow Process</span></span><br><span class="line"></span><br><span class="line">If you catch yourself thinking:</span><br><span class="line"><span class="bullet">-</span> "Quick fix for now, investigate later"</span><br><span class="line"><span class="bullet">-</span> "Just try changing X and see if it works"</span><br><span class="line"><span class="bullet">-</span> "Add multiple changes, run tests"</span><br><span class="line"><span class="bullet">-</span> "Skip the test, I'll manually verify"</span><br><span class="line"><span class="bullet">-</span> "It's probably X, let me fix that"</span><br><span class="line"><span class="bullet">-</span> "I don't fully understand but this might work"</span><br><span class="line"><span class="bullet">-</span> "Pattern says X but I'll adapt it differently"</span><br><span class="line"><span class="bullet">-</span> "Here are the main problems: [lists fixes without investigation]"</span><br><span class="line"><span class="bullet">-</span> Proposing solutions before tracing data flow</span><br><span class="line"><span class="bullet">-</span> <span class="strong">**"One more fix attempt" (when already tried 2+)**</span></span><br><span class="line"><span class="bullet">-</span> <span class="strong">**Each fix reveals a new problem in a different place**</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**ALL of these mean: STOP. Return to Phase 1.**</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**If 3+ fixes failed:**</span> Question the architecture (Phase 4 step 5).</span><br><span class="line"></span><br><span class="line"><span class="section">## Common Rationalizations</span></span><br><span class="line"></span><br><span class="line">| Excuse | Reality |</span><br><span class="line">|--------|---------|</span><br><span class="line">| "Issue is simple, don't need process" | Simple issues have root causes too. Process is fast for simple bugs. |</span><br><span class="line">| "Emergency, no time for process" | Systematic debugging is FASTER than guess-and-check thrashing. |</span><br><span class="line">| "Just try this first, then investigate" | First fix sets the pattern. Do it right from the start. |</span><br><span class="line">| "I'll write test after confirming fix works" | Untested fixes don't stick. Test first proves it. |</span><br><span class="line">| "Multiple fixes at once saves time" | Can't isolate what worked. Causes new bugs. |</span><br><span class="line">| "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely. |</span><br><span class="line">| "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |</span><br><span class="line">| "One more fix attempt" (after 2+ failures) | 3+ failures = architectural problem. Question the pattern, don't fix again. |</span><br><span class="line"></span><br><span class="line"><span class="section">## Quick Reference</span></span><br><span class="line"></span><br><span class="line">| Phase | Key Activities | Success Criteria |</span><br><span class="line">|-------|---------------|------------------|</span><br><span class="line">| <span class="strong">**1. Root Cause**</span> | Read errors, reproduce, check changes, gather evidence, trace data flow | Understand WHAT and WHY |</span><br><span class="line">| <span class="strong">**2. Pattern**</span> | Find working examples, compare, identify differences | Know what's different |</span><br><span class="line">| <span class="strong">**3. Hypothesis**</span> | Form theory, test minimally, one variable at a time | Confirmed or new hypothesis |</span><br><span class="line">| <span class="strong">**4. Implementation**</span> | Create regression test, fix root cause, verify | Bug resolved, all tests pass |</span><br><span class="line"></span><br><span class="line"><span class="section">## Hermes Agent Integration</span></span><br><span class="line"></span><br><span class="line"><span class="section">### Investigation Tools</span></span><br><span class="line"></span><br><span class="line">Use these Hermes tools during Phase 1:</span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="strong">**`search<span class="emphasis">_files`** — Find error strings, trace function calls, locate patterns</span></span></span><br><span class="line"><span class="emphasis"><span class="strong">- **`read_</span>file`**</span> — Read source code with line numbers for precise analysis</span><br><span class="line"><span class="bullet">-</span> <span class="strong">**`terminal`**</span> — Run tests, check git history, reproduce bugs</span><br><span class="line"><span class="bullet">-</span> <span class="strong">**`web<span class="emphasis">_search`/`web_</span>extract`**</span> — Research error messages, library docs</span><br><span class="line"></span><br><span class="line"><span class="section">### With delegate<span class="emphasis">_task</span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section">For complex multi-component debugging, dispatch investigation subagents:</span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section">delegate_</span>task(</span></span><br><span class="line"><span class="code">    goal="Investigate why [specific test/behavior] fails",</span></span><br><span class="line"><span class="code">    context="""</span></span><br><span class="line"><span class="code">    Follow systematic-debugging skill:</span></span><br><span class="line"><span class="code">    1. Read the error message carefully</span></span><br><span class="line"><span class="code">    2. Reproduce the issue</span></span><br><span class="line"><span class="code">    3. Trace the data flow to find root cause</span></span><br><span class="line"><span class="code">    4. Report findings — do NOT fix yet</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">    Error: [paste full error]</span></span><br><span class="line"><span class="code">    File: [path to failing code]</span></span><br><span class="line"><span class="code">    Test command: [exact command]</span></span><br><span class="line"><span class="code">)</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"></span><br><span class="line"><span class="section">### With test-driven-development</span></span><br><span class="line"></span><br><span class="line">When fixing bugs:</span><br><span class="line"><span class="bullet">1.</span> Write a test that reproduces the bug (RED)</span><br><span class="line"><span class="bullet">2.</span> Debug systematically to find root cause</span><br><span class="line"><span class="bullet">3.</span> Fix the root cause (GREEN)</span><br><span class="line"><span class="bullet">4.</span> The test proves the fix and prevents regression</span><br><span class="line"></span><br><span class="line"><span class="section">## Real-World Impact</span></span><br><span class="line"></span><br><span class="line">From debugging sessions:</span><br><span class="line"><span class="bullet">-</span> Systematic approach: 15-30 minutes to fix</span><br><span class="line"><span class="bullet">-</span> Random fixes approach: 2-3 hours of thrashing</span><br><span class="line"><span class="bullet">-</span> First-time fix rate: 95% vs 40%</span><br><span class="line"><span class="bullet">-</span> New bugs introduced: Near zero vs common</span><br><span class="line"></span><br><span class="line"><span class="strong">**No shortcuts. No guessing. Systematic always wins.**</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<div class="code-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: systematic-debugging</span><br><span class="line">description: Use when encountering any bug, test failure, or unexpected behavior. 4-phase root cause investigation — NO fixes without understanding the problem first.</span><br><span class="line">version: 1.1.0</span><br><span class="line">author: Hermes Agent (adapted from obra/superpowers)        #这两个属性其实是不支持的。</span><br><span class="line">license: MIT</span><br><span class="line">metadata:</span><br><span class="line">  hermes:</span><br><span class="line"><span class="code">    tags: [debugging, troubleshooting, problem-solving, root-cause, investigation]</span></span><br><span class="line"><span class="code">    related_skills: [test-driven-development, writing-plans, subagent-driven-development]</span></span><br><span class="line"><span class="code">---</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="section"># Systematic Debugging</span></span><br><span class="line"></span><br><span class="line"><span class="section">## Overview</span></span><br><span class="line"></span><br><span class="line">Random fixes waste time and create new bugs. Quick patches mask underlying issues.</span><br><span class="line"></span><br><span class="line"><span class="strong">**Core principle:**</span> ALWAYS find root cause before attempting fixes. Symptom fixes are failure.</span><br><span class="line"></span><br><span class="line"><span class="strong">**Violating the letter of this process is violating the spirit of debugging.**</span></span><br><span class="line"></span><br><span class="line"><span class="section">## The Iron Law</span></span><br><span class="line"></span><br><span class="line">NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST</span><br><span class="line"></span><br><span class="line">If you haven't completed Phase 1, you cannot propose fixes.</span><br><span class="line"></span><br><span class="line"><span class="section">## When to Use</span></span><br><span class="line"></span><br><span class="line">Use for ANY technical issue:</span><br><span class="line"><span class="bullet">-</span> Test failures</span><br><span class="line"><span class="bullet">-</span> Bugs in production</span><br><span class="line"><span class="bullet">-</span> Unexpected behavior</span><br><span class="line"><span class="bullet">-</span> Performance problems</span><br><span class="line"><span class="bullet">-</span> Build failures</span><br><span class="line"><span class="bullet">-</span> Integration issues</span><br><span class="line"></span><br><span class="line"><span class="strong">**Use this ESPECIALLY when:**</span></span><br><span class="line"><span class="bullet">-</span> Under time pressure (emergencies make guessing tempting)</span><br><span class="line"><span class="bullet">-</span> "Just one quick fix" seems obvious</span><br><span class="line"><span class="bullet">-</span> You've already tried multiple fixes</span><br><span class="line"><span class="bullet">-</span> Previous fix didn't work</span><br><span class="line"><span class="bullet">-</span> You don't fully understand the issue</span><br><span class="line"></span><br><span class="line"><span class="strong">**Don't skip when:**</span></span><br><span class="line"><span class="bullet">-</span> Issue seems simple (simple bugs have root causes too)</span><br><span class="line"><span class="bullet">-</span> You're in a hurry (rushing guarantees rework)</span><br><span class="line"><span class="bullet">-</span> Someone wants it fixed NOW (systematic is faster than thrashing)</span><br><span class="line"></span><br><span class="line"><span class="section">## The Four Phases</span></span><br><span class="line"></span><br><span class="line">You MUST complete each phase before proceeding to the next.</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="section">## Phase 1: Root Cause Investigation</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**BEFORE attempting ANY fix:**</span></span><br><span class="line"></span><br><span class="line"><span class="section">### 1. Read Error Messages Carefully</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Don't skip past errors or warnings</span><br><span class="line"><span class="bullet">-</span> They often contain the exact solution</span><br><span class="line"><span class="bullet">-</span> Read stack traces completely</span><br><span class="line"><span class="bullet">-</span> Note line numbers, file paths, error codes</span><br><span class="line"></span><br><span class="line"><span class="strong">**Action:**</span> Use <span class="code">`read_file`</span> on the relevant source files. Use <span class="code">`search_files`</span> to find the error string in the codebase.</span><br><span class="line"></span><br><span class="line"><span class="section">### 2. Reproduce Consistently</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Can you trigger it reliably?</span><br><span class="line"><span class="bullet">-</span> What are the exact steps?</span><br><span class="line"><span class="bullet">-</span> Does it happen every time?</span><br><span class="line"><span class="bullet">-</span> If not reproducible → gather more data, don't guess</span><br><span class="line"></span><br><span class="line"><span class="strong">**Action:**</span> Use the <span class="code">`terminal`</span> tool to run the failing test or trigger the bug:</span><br><span class="line"></span><br><span class="line"><span class="section"># Run specific failing test</span></span><br><span class="line">pytest tests/test<span class="emphasis">_module.py::test_</span>name -v</span><br><span class="line"></span><br><span class="line"><span class="section"># Run with verbose output</span></span><br><span class="line">pytest tests/test<span class="emphasis">_module.py -v --tb=long</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">### 3. Check Recent Changes</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">- What changed that could cause this?</span></span><br><span class="line"><span class="emphasis">- Git diff, recent commits</span></span><br><span class="line"><span class="emphasis">- New dependencies, config changes</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"><span class="strong">**Action:**</span></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># Recent commits</span></span><br><span class="line"><span class="emphasis">git log --oneline -10</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># Uncommitted changes</span></span><br><span class="line"><span class="emphasis">git diff</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># Changes in specific file</span></span><br><span class="line"><span class="emphasis">git log -p --follow src/problematic_</span>file.py | head -100</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">### 4. Gather Evidence in Multi-Component Systems</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**WHEN system has multiple components (API → service → database, CI → build → deploy):**</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**BEFORE proposing fixes, add diagnostic instrumentation:**</span></span><br><span class="line"></span><br><span class="line">For EACH component boundary:</span><br><span class="line"><span class="bullet">-</span> Log what data enters the component</span><br><span class="line"><span class="bullet">-</span> Log what data exits the component</span><br><span class="line"><span class="bullet">-</span> Verify environment/config propagation</span><br><span class="line"><span class="bullet">-</span> Check state at each layer</span><br><span class="line"></span><br><span class="line">Run once to gather evidence showing WHERE it breaks.</span><br><span class="line">THEN analyze evidence to identify the failing component.</span><br><span class="line">THEN investigate that specific component.</span><br><span class="line"></span><br><span class="line"><span class="section">### 5. Trace Data Flow</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**WHEN error is deep in the call stack:**</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Where does the bad value originate?</span><br><span class="line"><span class="bullet">-</span> What called this function with the bad value?</span><br><span class="line"><span class="bullet">-</span> Keep tracing upstream until you find the source</span><br><span class="line"><span class="bullet">-</span> Fix at the source, not at the symptom</span><br><span class="line"></span><br><span class="line"><span class="strong">**Action:**</span> Use <span class="code">`search_files`</span> to trace references:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section"># Find where the function is called</span></span><br><span class="line">search<span class="emphasis">_files("function_</span>name(", path="src/", file<span class="emphasis">_glob="*.py")</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"># Find where the variable is set</span></span><br><span class="line"><span class="emphasis">search_</span>files("variable<span class="emphasis">_name\\s*=", path="src/", file_</span>glob="<span class="emphasis">*.py")</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">### Phase 1 Completion Checklist</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">- [ ] Error messages fully read and understood</span></span><br><span class="line"><span class="emphasis">- [ ] Issue reproduced consistently</span></span><br><span class="line"><span class="emphasis">- [ ] Recent changes identified and reviewed</span></span><br><span class="line"><span class="emphasis">- [ ] Evidence gathered (logs, state, data flow)</span></span><br><span class="line"><span class="emphasis">- [ ] Problem isolated to specific component/code</span></span><br><span class="line"><span class="emphasis">- [ ] Root cause hypothesis formed</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"><span class="strong">**STOP:**</span> Do not proceed to Phase 2 until you understand WHY it's happening.</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">---</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">## Phase 2: Pattern Analysis</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"><span class="strong">**Find the pattern before fixing:**</span></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">### 1. Find Working Examples</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">- Locate similar working code in the same codebase</span></span><br><span class="line"><span class="emphasis">- What works that's similar to what's broken?</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"><span class="strong">**Action:**</span> Use `search_files` to find comparable patterns:</span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis"></span></span><br><span class="line"><span class="emphasis">search_files("similar_pattern", path="src/", file_glob="*</span>.py")</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">### 2. Compare Against References</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> If implementing a pattern, read the reference implementation COMPLETELY</span><br><span class="line"><span class="bullet">-</span> Don't skim — read every line</span><br><span class="line"><span class="bullet">-</span> Understand the pattern fully before applying</span><br><span class="line"></span><br><span class="line"><span class="section">### 3. Identify Differences</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> What's different between working and broken?</span><br><span class="line"><span class="bullet">-</span> List every difference, however small</span><br><span class="line"><span class="bullet">-</span> Don't assume "that can't matter"</span><br><span class="line"></span><br><span class="line"><span class="section">### 4. Understand Dependencies</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> What other components does this need?</span><br><span class="line"><span class="bullet">-</span> What settings, config, environment?</span><br><span class="line"><span class="bullet">-</span> What assumptions does it make?</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="section">## Phase 3: Hypothesis and Testing</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**Scientific method:**</span></span><br><span class="line"></span><br><span class="line"><span class="section">### 1. Form a Single Hypothesis</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> State clearly: "I think X is the root cause because Y"</span><br><span class="line"><span class="bullet">-</span> Write it down</span><br><span class="line"><span class="bullet">-</span> Be specific, not vague</span><br><span class="line"></span><br><span class="line"><span class="section">### 2. Test Minimally</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Make the SMALLEST possible change to test the hypothesis</span><br><span class="line"><span class="bullet">-</span> One variable at a time</span><br><span class="line"><span class="bullet">-</span> Don't fix multiple things at once</span><br><span class="line"></span><br><span class="line"><span class="section">### 3. Verify Before Continuing</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Did it work? → Phase 4</span><br><span class="line"><span class="bullet">-</span> Didn't work? → Form NEW hypothesis</span><br><span class="line"><span class="bullet">-</span> DON'T add more fixes on top</span><br><span class="line"></span><br><span class="line"><span class="section">### 4. When You Don't Know</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Say "I don't understand X"</span><br><span class="line"><span class="bullet">-</span> Don't pretend to know</span><br><span class="line"><span class="bullet">-</span> Ask the user for help</span><br><span class="line"><span class="bullet">-</span> Research more</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="section">## Phase 4: Implementation</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**Fix the root cause, not the symptom:**</span></span><br><span class="line"></span><br><span class="line"><span class="section">### 1. Create Failing Test Case</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Simplest possible reproduction</span><br><span class="line"><span class="bullet">-</span> Automated test if possible</span><br><span class="line"><span class="bullet">-</span> MUST have before fixing</span><br><span class="line"><span class="bullet">-</span> Use the <span class="code">`test-driven-development`</span> skill</span><br><span class="line"></span><br><span class="line"><span class="section">### 2. Implement Single Fix</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Address the root cause identified</span><br><span class="line"><span class="bullet">-</span> ONE change at a time</span><br><span class="line"><span class="bullet">-</span> No "while I'm here" improvements</span><br><span class="line"><span class="bullet">-</span> No bundled refactoring</span><br><span class="line"></span><br><span class="line"><span class="section">### 3. Verify Fix</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section"># Run the specific regression test</span></span><br><span class="line">pytest tests/test<span class="emphasis">_module.py::test_</span>regression -v</span><br><span class="line"></span><br><span class="line"><span class="section"># Run full suite — no regressions</span></span><br><span class="line">pytest tests/ -q</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">### 4. If Fix Doesn't Work — The Rule of Three</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="strong">**STOP.**</span></span><br><span class="line"><span class="bullet">-</span> Count: How many fixes have you tried?</span><br><span class="line"><span class="bullet">-</span> If &lt; 3: Return to Phase 1, re-analyze with new information</span><br><span class="line"><span class="bullet">-</span> <span class="strong">**If ≥ 3: STOP and question the architecture (step 5 below)**</span></span><br><span class="line"><span class="bullet">-</span> DON'T attempt Fix #4 without architectural discussion</span><br><span class="line"></span><br><span class="line"><span class="section">### 5. If 3+ Fixes Failed: Question Architecture</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**Pattern indicating an architectural problem:**</span></span><br><span class="line"><span class="bullet">-</span> Each fix reveals new shared state/coupling in a different place</span><br><span class="line"><span class="bullet">-</span> Fixes require "massive refactoring" to implement</span><br><span class="line"><span class="bullet">-</span> Each fix creates new symptoms elsewhere</span><br><span class="line"></span><br><span class="line"><span class="strong">**STOP and question fundamentals:**</span></span><br><span class="line"><span class="bullet">-</span> Is this pattern fundamentally sound?</span><br><span class="line"><span class="bullet">-</span> Are we "sticking with it through sheer inertia"?</span><br><span class="line"><span class="bullet">-</span> Should we refactor the architecture vs. continue fixing symptoms?</span><br><span class="line"></span><br><span class="line"><span class="strong">**Discuss with the user before attempting more fixes.**</span></span><br><span class="line"></span><br><span class="line">This is NOT a failed hypothesis — this is a wrong architecture.</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="section">## Red Flags — STOP and Follow Process</span></span><br><span class="line"></span><br><span class="line">If you catch yourself thinking:</span><br><span class="line"><span class="bullet">-</span> "Quick fix for now, investigate later"</span><br><span class="line"><span class="bullet">-</span> "Just try changing X and see if it works"</span><br><span class="line"><span class="bullet">-</span> "Add multiple changes, run tests"</span><br><span class="line"><span class="bullet">-</span> "Skip the test, I'll manually verify"</span><br><span class="line"><span class="bullet">-</span> "It's probably X, let me fix that"</span><br><span class="line"><span class="bullet">-</span> "I don't fully understand but this might work"</span><br><span class="line"><span class="bullet">-</span> "Pattern says X but I'll adapt it differently"</span><br><span class="line"><span class="bullet">-</span> "Here are the main problems: [lists fixes without investigation]"</span><br><span class="line"><span class="bullet">-</span> Proposing solutions before tracing data flow</span><br><span class="line"><span class="bullet">-</span> <span class="strong">**"One more fix attempt" (when already tried 2+)**</span></span><br><span class="line"><span class="bullet">-</span> <span class="strong">**Each fix reveals a new problem in a different place**</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**ALL of these mean: STOP. Return to Phase 1.**</span></span><br><span class="line"></span><br><span class="line"><span class="strong">**If 3+ fixes failed:**</span> Question the architecture (Phase 4 step 5).</span><br><span class="line"></span><br><span class="line"><span class="section">## Common Rationalizations</span></span><br><span class="line"></span><br><span class="line">| Excuse | Reality |</span><br><span class="line">|--------|---------|</span><br><span class="line">| "Issue is simple, don't need process" | Simple issues have root causes too. Process is fast for simple bugs. |</span><br><span class="line">| "Emergency, no time for process" | Systematic debugging is FASTER than guess-and-check thrashing. |</span><br><span class="line">| "Just try this first, then investigate" | First fix sets the pattern. Do it right from the start. |</span><br><span class="line">| "I'll write test after confirming fix works" | Untested fixes don't stick. Test first proves it. |</span><br><span class="line">| "Multiple fixes at once saves time" | Can't isolate what worked. Causes new bugs. |</span><br><span class="line">| "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely. |</span><br><span class="line">| "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |</span><br><span class="line">| "One more fix attempt" (after 2+ failures) | 3+ failures = architectural problem. Question the pattern, don't fix again. |</span><br><span class="line"></span><br><span class="line"><span class="section">## Quick Reference</span></span><br><span class="line"></span><br><span class="line">| Phase | Key Activities | Success Criteria |</span><br><span class="line">|-------|---------------|------------------|</span><br><span class="line">| <span class="strong">**1. Root Cause**</span> | Read errors, reproduce, check changes, gather evidence, trace data flow | Understand WHAT and WHY |</span><br><span class="line">| <span class="strong">**2. Pattern**</span> | Find working examples, compare, identify differences | Know what's different |</span><br><span class="line">| <span class="strong">**3. Hypothesis**</span> | Form theory, test minimally, one variable at a time | Confirmed or new hypothesis |</span><br><span class="line">| <span class="strong">**4. Implementation**</span> | Create regression test, fix root cause, verify | Bug resolved, all tests pass |</span><br><span class="line"></span><br><span class="line"><span class="section">## Hermes Agent Integration</span></span><br><span class="line"></span><br><span class="line"><span class="section">### Investigation Tools</span></span><br><span class="line"></span><br><span class="line">Use these Hermes tools during Phase 1:</span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="strong">**`search<span class="emphasis">_files`** — Find error strings, trace function calls, locate patterns</span></span></span><br><span class="line"><span class="emphasis"><span class="strong">- **`read_</span>file`**</span> — Read source code with line numbers for precise analysis</span><br><span class="line"><span class="bullet">-</span> <span class="strong">**`terminal`**</span> — Run tests, check git history, reproduce bugs</span><br><span class="line"><span class="bullet">-</span> <span class="strong">**`web<span class="emphasis">_search`/`web_</span>extract`**</span> — Research error messages, library docs</span><br><span class="line"></span><br><span class="line"><span class="section">### With delegate<span class="emphasis">_task</span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section">For complex multi-component debugging, dispatch investigation subagents:</span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section"></span></span></span><br><span class="line"><span class="emphasis"><span class="section">delegate_</span>task(</span></span><br><span class="line"><span class="code">    goal="Investigate why [specific test/behavior] fails",</span></span><br><span class="line"><span class="code">    context="""</span></span><br><span class="line"><span class="code">    Follow systematic-debugging skill:</span></span><br><span class="line"><span class="code">    1. Read the error message carefully</span></span><br><span class="line"><span class="code">    2. Reproduce the issue</span></span><br><span class="line"><span class="code">    3. Trace the data flow to find root cause</span></span><br><span class="line"><span class="code">    4. Report findings — do NOT fix yet</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">    Error: [paste full error]</span></span><br><span class="line"><span class="code">    File: [path to failing code]</span></span><br><span class="line"><span class="code">    Test command: [exact command]</span></span><br><span class="line"><span class="code">)</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"></span><br><span class="line"><span class="section">### With test-driven-development</span></span><br><span class="line"></span><br><span class="line">When fixing bugs:</span><br><span class="line"><span class="bullet">1.</span> Write a test that reproduces the bug (RED)</span><br><span class="line"><span class="bullet">2.</span> Debug systematically to find root cause</span><br><span class="line"><span class="bullet">3.</span> Fix the root cause (GREEN)</span><br><span class="line"><span class="bullet">4.</span> The test proves the fix and prevents regression</span><br><span class="line"></span><br><span class="line"><span class="section">## Real-World Impact</span></span><br><span class="line"></span><br><span class="line">From debugging sessions:</span><br><span class="line"><span class="bullet">-</span> Systematic approach: 15-30 minutes to fix</span><br><span class="line"><span class="bullet">-</span> Random fixes approach: 2-3 hours of thrashing</span><br><span class="line"><span class="bullet">-</span> First-time fix rate: 95% vs 40%</span><br><span class="line"><span class="bullet">-</span> New bugs introduced: Near zero vs common</span><br><span class="line"></span><br><span class="line"><span class="strong">**No shortcuts. No guessing. Systematic always wins.**</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
 
 <p>通过这样的自我修订防止跳入循环的skill竟然也能自动化创建了，这个skill的亮点就是让ai拥有科学探究解决问题的能力，在最少试错次数中获得最大化回收效益，同时保证了输出质量，也确认不会犯<strong>记忆丢失，问牛答马</strong>式错误，ai的自检能力得到深化。</p>
 <p>那么，仅仅是有skill并不够，很多时候，agent难以发现或者说忘记skill的存在，hermes的skill执行框架是怎么样的呢？</p>
@@ -428,7 +1117,7 @@ mjx-container[display="true"] + br {
 <li><strong>隐式触发 — 系统 prompt 里的规则</strong></li>
 </ol>
 <ul>
-<li>每次对话开始的系统提示词（<em>system prompt</em>）里都有写：<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">If a skill matches or is even partially relevant to your task, you MUST load it with skill<span class="emphasis">_view(name) and</span></span><br><span class="line"><span class="emphasis">follow its instructions.</span></span><br></pre></td></tr></table></figure>
+<li>每次对话开始的系统提示词（<em>system prompt</em>）里都有写：<div class="code-container" data-rel="Md"><figure class="iseeu highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">If a skill matches or is even partially relevant to your task, you MUST load it with skill<span class="emphasis">_view(name) and</span></span><br><span class="line"><span class="emphasis">follow its instructions.</span></span><br></pre></td></tr></table></figure></div>
 这就是硬约束。</li>
 </ul>
 <ol start="3">
@@ -449,11 +1138,11 @@ mjx-container[display="true"] + br {
 <p>综上是hermes的skill框架，虽然有所不足，已经令人可喜了，下面我将给出一个实战案例</p>
 <h4 id="html-ppt-skill实战"><a href="#html-ppt-skill实战" class="headerlink" title="html-ppt-skill实战"></a>html-ppt-skill实战</h4><p>ppt制作是每一个上班族和教师的头疼之处，既要保证信息密度，又要保证布局与配色的着调，对于一个没有美术功底的人，无异于登天，html-ppt-skill是一个多平台skill，可以使得agent能够成为一个专业的ppt生成师：</p>
 <p>结合最近的gpt-image2的爆火，我们指定它作为宣传ppt对象，在一段时间的自动部署skill和制定计划执行之后，hermes输出了结果，同时将这个整合为一个新的skill：</p>
-<p><img src="/images/hermes-ppt.png" alt="hermes-ppt"></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/hermes-ppt.png" alt="hermes-ppt"></p>
 <p>下面是一部分制作的ppt，省去了一些内容大致相同以及目录页:    </p>
 <hr>
-<h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/ppt1.png" alt="ppt"><br><img src="/images/ppt2.png" alt="ppt"><br><img src="/images/ppt3.png" alt="ppt"><br><img src="/images/ppt4.png" alt="ppt"><br><img src="/images/ppt5.png" alt="ppt"><br><img src="/images/ppt6.png" alt="ppt"></h2><ul>
-<li><strong>如果有必要，你也可以参考<a target="_blank" rel="noopener" href="https://github.com/lewislulu/html-ppt-skill/">ppt-url</a>来自己动手</strong></li>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img lazyload="" src="/images/loading.svg" data-src="/images/ppt1.png" alt="ppt"><br><img lazyload="" src="/images/loading.svg" data-src="/images/ppt2.png" alt="ppt"><br><img lazyload="" src="/images/loading.svg" data-src="/images/ppt3.png" alt="ppt"><br><img lazyload="" src="/images/loading.svg" data-src="/images/ppt4.png" alt="ppt"><br><img lazyload="" src="/images/loading.svg" data-src="/images/ppt5.png" alt="ppt"><br><img lazyload="" src="/images/loading.svg" data-src="/images/ppt6.png" alt="ppt"></h2><ul>
+<li><strong>如果有必要，你也可以参考<a class="link" target="_blank" rel="noopener" href="https://github.com/lewislulu/html-ppt-skill/">ppt-url<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>来自己动手</strong></li>
 </ul>
 <h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><hr>
 <p>hermes的体验准确来说是一周半，从5/1到5/11中间几天在学校，体验感着实不错。</p>
@@ -467,157 +1156,378 @@ mjx-container[display="true"] + br {
 <li>同时也会引出对windowswsl2的局限性问题，到时候我还会做一些有趣的小项目，这也许会在暑假前完成。敬请期待。</li>
 </ul>
 
+    </div>
+
+    
+
+    
+    <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+      
+      <li class="tag-item mx-0.5">
+        <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6/">#信息学</a>&nbsp;
+      </li>
+      
+      <li class="tag-item mx-0.5">
+        <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">#大模型</a>&nbsp;
+      </li>
+      
+      <li class="tag-item mx-0.5">
+        <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/">#信息学/agent框架</a>&nbsp;
+      </li>
+      
+      <li class="tag-item mx-0.5">
+        <a href="/tags/Typescript/">#Typescript</a>&nbsp;
+      </li>
+      
+    </ul>
+    
+
+    
+
+    
+    <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+      
+      <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+        <a class="prev" rel="prev" href="/2026/05/20/love/">
+          <span class="left arrow-icon flex justify-center items-center">
+            <i class="fa-solid fa-chevron-left"></i>
+          </span>
+          <span class="title flex justify-center items-center">
+            <span class="post-nav-title-item truncate max-w-48">恋人</span>
+            <span class="post-nav-item">上一篇</span>
+          </span>
+        </a>
+      </div>
+      
+      
+      <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+        <a class="next" rel="next" href="/2026/05/04/hello-world/">
+          <span class="title flex justify-center items-center">
+            <span class="post-nav-title-item truncate max-w-48">公告板</span>
+            <span class="post-nav-item">下一篇</span>
+          </span>
+          <span class="right arrow-icon flex justify-center items-center">
+            <i class="fa-solid fa-chevron-right"></i>
+          </span>
+        </a>
+      </div>
       
     </div>
-    <footer class="article-footer">
-      <a data-url="https://example.com/2026/05/04/hermes-learning/" data-id="cuidaACVuUNnbzjjxINKiY-Zn" data-title="Hermes一周测评" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Typescript/" rel="tag">Typescript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6/" rel="tag">信息学</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/" rel="tag">信息学&#x2F;agent框架</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag">大模型</a></li></ul>
-
-    </footer>
-  </div>
-  
     
-<nav id="article-nav">
+
+
+    
+  </div>
+
   
-    <a href="/2026/05/20/love/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
+  <!-- 右侧边栏：分类 + 诗歌 + 标签 -->
+  <div class="article-right-sidebar">
+    <div class="ars-section">
+      <div class="als-section-title">分类</div>
+      <div class="ars-cat-list">
         
-          恋人
+            <a href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/" class="ars-cat-item">/ <span class="ars-cat-name">信息学</span></a>
+          
+            <a href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/" class="ars-cat-item">/ <span class="ars-cat-name">信息学/agent框架</span></a>
+          
+      </div>
+    </div>
+
+    <div class="ars-section ars-poem-section">
+      <div class="als-section-title">✧ 诗</div>
+      <div class="ars-poem-body">
+        
+        
+          <div class="ars-poem-content">
+            <div class="ars-poem-head">◈ 算法</div>
+            <div class="ars-poem-lines">
+              在 0 与 1 之间<br>
+              我寻找一个出口<br>
+              递归的尽头<br>
+              是另一个递归
+            </div>
+            <div class="ars-poem-author">—— 佚名</div>
+          </div>
         
       </div>
-    </a>
-  
-  
-    <a href="/2026/05/04/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">公告板</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">分类</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/">信息学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-Linux%E8%BF%90%E7%BB%B4/">信息学/Linux运维</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-Linux%E8%BF%90%E7%BB%B4/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E5%89%8D%E7%AB%AF/">信息学/前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-Linux%E8%BF%90%E7%BB%B4/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E5%89%8D%E7%AB%AF/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E7%AE%97%E6%B3%95/">信息学/算法</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/">信息学/agent框架</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E5%AD%A6/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E7%AE%97%E6%B3%95/">信息学/算法</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E7%90%86/">数理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E7%90%86/%E6%95%B0%E7%90%86-%E6%95%B0%E8%AE%BA/">数理/数论</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E7%90%86/%E6%95%B0%E7%90%86-%E6%A6%82%E7%8E%87%E8%AE%BA/">数理/概率论</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E7%90%86/%E6%95%B0%E7%90%86-%E6%A6%82%E7%8E%87%E8%AE%BA/%E6%95%B0%E7%90%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">数理/线性代数</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E7%90%86/%E6%95%B0%E7%90%86-%E6%A6%82%E7%8E%87%E8%AE%BA/%E6%95%B0%E7%90%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E6%95%B0%E7%90%86-%E6%95%B0%E8%AE%BA/">数理/数论</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E7%90%86/">文理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E7%90%86/%E6%96%87%E7%90%86-%E8%AF%97%E6%AD%8C/">文理/诗歌</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A5%E5%B8%B8/">日常</a></li></ul>
     </div>
-  </div>
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI%E5%AE%89%E5%85%A8/" rel="tag">AI安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Typescript/" rel="tag">Typescript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/noen/" rel="tag">noen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6/" rel="tag">信息学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-Linux%E8%BF%90%E7%BB%B4/" rel="tag">信息学&#x2F;Linux运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/" rel="tag">信息学&#x2F;agent框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E5%89%8D%E7%AB%AF/" rel="tag">信息学&#x2F;前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E7%AE%97%E6%B3%95/" rel="tag">信息学&#x2F;算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag">大模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%90%86/" rel="tag">数理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%90%86-%E6%95%B0%E8%AE%BA/" rel="tag">数理&#x2F;数论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%90%86-%E6%A6%82%E7%8E%87%E8%AE%BA/" rel="tag">数理&#x2F;概率论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E7%90%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">数理&#x2F;线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E7%90%86/" rel="tag">文理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E7%90%86-%E8%AF%97%E6%AD%8C/" rel="tag">文理&#x2F;诗歌</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E5%B8%B8/" rel="tag">日常</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签云</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI%E5%AE%89%E5%85%A8/" style="font-size: 10px;">AI安全</a> <a href="/tags/Typescript/" style="font-size: 10px;">Typescript</a> <a href="/tags/noen/" style="font-size: 10px;">noen</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6/" style="font-size: 20px;">信息学</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-Linux%E8%BF%90%E7%BB%B4/" style="font-size: 10px;">信息学/Linux运维</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/" style="font-size: 10px;">信息学/agent框架</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">信息学/前端</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-%E7%AE%97%E6%B3%95/" style="font-size: 20px;">信息学/算法</a> <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" style="font-size: 15px;">大模型</a> <a href="/tags/%E6%95%B0%E7%90%86/" style="font-size: 15px;">数理</a> <a href="/tags/%E6%95%B0%E7%90%86-%E6%95%B0%E8%AE%BA/" style="font-size: 15px;">数理/数论</a> <a href="/tags/%E6%95%B0%E7%90%86-%E6%A6%82%E7%8E%87%E8%AE%BA/" style="font-size: 10px;">数理/概率论</a> <a href="/tags/%E6%95%B0%E7%90%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 10px;">数理/线性代数</a> <a href="/tags/%E6%96%87%E7%90%86/" style="font-size: 15px;">文理</a> <a href="/tags/%E6%96%87%E7%90%86-%E8%AF%97%E6%AD%8C/" style="font-size: 15px;">文理/诗歌</a> <a href="/tags/%E6%97%A5%E5%B8%B8/" style="font-size: 10px;">日常</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">五月 2026</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">最新文章</h3>
-    <div class="widget">
-      <ul>
+    <div class="ars-section">
+      <div class="als-section-title">标签</div>
+      <div class="ars-tags">
         
-          <li>
-            <a href="/2026/05/20/love/">恋人</a>
-          </li>
-        
-          <li>
-            <a href="/2026/05/04/hermes-learning/">Hermes一周测评</a>
-          </li>
-        
-          <li>
-            <a href="/2026/05/04/hello-world/">公告板</a>
-          </li>
-        
-          <li>
-            <a href="/2026/05/03/literature-intro/">生日的一夜</a>
-          </li>
-        
-          <li>
-            <a href="/2026/05/02/informatics/">CC-BOS 框架详解</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+            <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6/" class="ars-tag-badge">信息学</a>
+          
+            <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="ars-tag-badge">大模型</a>
+          
+            <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AD%A6-agent%E6%A1%86%E6%9E%B6/" class="ars-tag-badge">信息学/agent框架</a>
+          
+            <a href="/tags/Typescript/" class="ars-tag-badge">Typescript</a>
+          
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2026 blog<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
+  
+</div>
+
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2026</span>
+              -
+            
+            2026&nbsp;&nbsp;<i class="fa-regular fa-computer-classic"></i>&nbsp;&nbsp;<a href="/">dddemo</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共撰写了 10 篇文章
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
 </footer>
+		</div>
+	</div>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="fa-regular fa-arrow-up"></i>
+		</li>
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog fa-spin"></i>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container" role="dialog" aria-modal="true" aria-label="图片查看器">
+	<button class="image-viewer-close" type="button" aria-label="关闭">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<button class="image-viewer-prev" type="button" aria-label="上一页">
+		<i class="fa-solid fa-chevron-left"></i>
+	</button>
+	<div class="image-viewer-frame">
+		<img src="" alt="">
+	</div>
+	<div class="image-viewer-exif-panel hidden absolute left-1/2 bottom-20 -translate-x-1/2 w-[min(92vw,420px)] max-h-[60vh] overflow-hidden rounded-2xl bg-background-color-transparent-80 p-4 text-left shadow-redefine-flat backdrop-blur-md" role="dialog" aria-label="EXIF" aria-hidden="true">
+		<div class="flex items-center justify-between mb-3">
+			<span class="text-sm font-semibold text-first-text-color">EXIF</span>
+			<button class="image-viewer-exif-close flex h-8 w-8 items-center justify-center rounded-full bg-background-color-transparent-80 text-first-text-color transition hover:bg-background-color-transparent-40" type="button" aria-label="关闭">
+				<i class="fa-solid fa-xmark text-[0.65rem]"></i>
+			</button>
+		</div>
+		<div class="image-viewer-exif-cards grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-hide"></div>
+		<template class="image-viewer-exif-card-template">
+			<div class="rounded-lg bg-background-color-transparent-40 px-3 py-2">
+				<div class="image-viewer-exif-card-header flex items-center gap-2 mb-1">
+					<i class="image-viewer-exif-card-icon fa-solid fa-circle-info text-xs text-third-text-color"></i>
+					<div class="image-viewer-exif-card-title text-xs font-semibold text-first-text-color"></div>
+				</div>
+				<div class="image-viewer-exif-card-items flex flex-col gap-1"></div>
+			</div>
+		</template>
+	</div>
+	<button class="image-viewer-exif-toggle flex items-center gap-2 hidden absolute left-1/2 bottom-6 -translate-x-1/2 rounded-full border border-border-color bg-background-color-transparent-80 px-4 py-2 text-first-text-color backdrop-blur-md transition hover:bg-background-color-transparent-40" type="button" aria-label="EXIF" aria-expanded="false">
+		<i class="fa-solid fa-circle-info text-xs"></i>
+		<span class="text-xs font-semibold uppercase tracking-wider">EXIF</span>
+	</button>
+	<button class="image-viewer-next" type="button" aria-label="下一页">
+		<i class="fa-solid fa-chevron-right"></i>
+	</button>
+</div>
+
+
+	
+	<div class="search-pop-overlay">
+	<div class="popup search-popup">
+		<div class="search-header">
+			<span class="search-input-field-pre">
+				<i class="fa-solid fa-keyboard"></i>
+			</span>
+			<div class="search-input-container">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="站内搜索您需要的内容..." spellcheck="false" type="search" class="search-input">
+			</div>
+			<span class="popup-btn-close">
+				<i class="fa-solid fa-times"></i>
+			</span>
+		</div>
+		<div id="search-result">
+			<div id="no-result">
+				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    window.swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+
+    window.dispatchEvent(
+        new CustomEvent("redefine:swup:ready", {
+            detail: {
+                swup: window.swup,
+            },
+        }),
+    );
+</script>
+
+
+
+
+	
+<script src="/js/build/main.js" type="module"></script>
+
+
+
     
+<script src="/js/build/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
 
 
-<script src="/js/jquery-3.6.4.min.js"></script>
+
+
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
+<script src="/js/build/libs/Typed.min.js"></script>
 
 
 
 
 
-  </div>
+
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+
+	
 </body>
+
 </html>
