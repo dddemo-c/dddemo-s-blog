@@ -107,7 +107,10 @@ mathjax:
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: git
+  repo: git@github.com:dddemo-c/dddemo-s-blog.git
+  branch: gh-pages
+  message: site updated {{ now('YYYY-MM-DD HH:mm:ss') }}
 
 search:
   path: search.xml
