@@ -175,7 +175,7 @@ home_banner:
   # Home banner social links
   social_links:
     # Whether to enable
-    enable: true
+    enable: false
     # Social links style
     style: center # default, reverse, center
     # Social links
@@ -529,7 +529,7 @@ page_banner:
 
   # 横幅带高度
   height:
-    home:    76vh   # 主页（需容纳标题 + 打字机 + 下滑箭头）
+    home:    100vh  # 主页（整屏铺满，避免下面内容露出一点点）
     desktop: 70vh   # 子页面
     mobile:  52vh   # 移动端
 
@@ -567,3 +567,27 @@ page_banner:
     archives:   /images/banners/home.webp       # 归档（若保留该页）
     default:    /images/banners/about.webp      # 兜底
 # PAGE BANNER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
+
+
+# CARD WATERMARK (首页卡片右侧竖排英文水印) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start
+# 取值优先级：文章 front-matter 的 watermark → 本表[分类末段] → 本表[标签末段] → default
+# 值建议 2–7 个大写字母；多词用空格（会渲染成竖排间隔）
+card_watermark:
+  数理: MATH
+  概率论: PROBABILITY
+  线性代数: ALGEBRA
+  数论: NUMBER
+  信息学: CS
+  算法: ALGORITHM
+  Linux运维: LINUX
+  前端: FRONTEND
+  文理: LETTERS
+  诗歌: POETRY
+  哲学: PHILOSOPHY
+  文学: LITERATURE
+  日常: DAILY
+  大模型: LLM
+  AI安全: AI SAFETY
+  歌德: GOETHE
+  default: ESSAY
+# CARD WATERMARK <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end

@@ -73,6 +73,41 @@
 	<%- partial('utils/local-search') %>
 	<% } %>
 
+	<%#
+	   navbar 变实时机
+	   主题自带的 navbarShrink.js 在 scrollTop > navbarHeight(70px) 就加 .navbar-shrink，
+	   导致导航栏刚压上横幅图就变实底。这里另设一个更晚的阈值：
+	   横幅底部越过导航栏底边时，才给 body 加 .navbar-solid。
+	%>
+	<script data-swup-reload-script>
+	(function () {
+		var threshold = 0;
+
+		function recompute() {
+			var banner = document.querySelector('.home-banner-container') ||
+			             document.querySelector('.page-banner');
+			var nav = document.querySelector('.main-content-header');
+			var bh = banner ? banner.getBoundingClientRect().height : 0;
+			var nh = nav ? nav.offsetHeight : 70;
+			// 横幅底部 - 导航栏高度 = 导航栏完全离开横幅的时刻
+			threshold = Math.max(nh, bh - nh);
+		}
+
+		function onScroll() {
+			if (!threshold) recompute();
+			document.body.classList.toggle('navbar-solid', window.scrollY >= threshold);
+		}
+
+		function boot() { recompute(); onScroll(); }
+
+		if (document.readyState === 'complete') boot();
+		else window.addEventListener('load', boot, { once: true });
+		window.addEventListener('resize', boot);
+		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('redefine:page:refresh', boot);
+	})();
+	</script>
+
 </main>
 
 <% if (theme.global.single_page !== false) { %>

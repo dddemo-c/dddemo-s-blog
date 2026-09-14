@@ -3,6 +3,34 @@
         <% page.posts.forEach(post => { %>
             <li class="home-article-item">
 
+                <%
+                /* 右侧竖排大字水印（英文）
+                   取值优先级：
+                     1. 文章 front-matter 的 watermark（可按篇指定）
+                     2. theme.card_watermark[分类末段]（「信息学/算法」→「算法」）
+                     3. theme.card_watermark[标签末段]
+                     4. theme.card_watermark.default
+                   英文短语用空格分隔，空格会渲染成竖排的间隔 */
+                var wmKey = '';
+                if (post.categories && post.categories.length) {
+                    wmKey = post.categories.toArray()[0].name || '';
+                } else if (post.tags && post.tags.length) {
+                    wmKey = post.tags.toArray()[0].name || '';
+                }
+                if (wmKey.indexOf('/') > -1) {
+                    var wmP = wmKey.split('/');
+                    wmKey = wmP[wmP.length - 1];
+                }
+                var wmMap  = theme.card_watermark || {};
+                var wmText = String(post.watermark || wmMap[wmKey] || wmMap['default'] || 'ESSAY').toUpperCase();
+                var wmChars = wmText ? wmText.split('') : [];
+                %>
+                <% if (wmChars.length) { %>
+                <div class="home-article-watermark" aria-hidden="true">
+                    <% wmChars.forEach(function (ch) { %><span><%= ch %></span><% }) %>
+                </div>
+                <% } %>
+
                 <% if (post.sticky) { %>
                     <div class="absolute top-[12px] right-[12px] text-[0.7rem] text-third-text-color rounded-medium bg-background-color-transparent-15 backdrop-blur-sm py-[2px] px-[10px] border border-border-color z-3 hover:text-first-text-color cursor-default">
                         <i class="fa-regular fa-thumbtack mr-[3px] text-[0.65rem]"></i><%- __('sticky') %>

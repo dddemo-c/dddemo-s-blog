@@ -63,6 +63,8 @@ $pb-hair-on     = ($pb-hair-tmp == false) ? false : true
   --pb-surface-5 rgba(red($pb-surf-l), green($pb-surf-l), blue($pb-surf-l), 0.5)
   --pb-surface-8 rgba(red($pb-surf-l), green($pb-surf-l), blue($pb-surf-l), 0.8)
   --pb-card      $pb-card-l
+  --pb-card-6    rgba(red($pb-card-l), green($pb-card-l), blue($pb-card-l), 0.62)
+  --pb-border    rgba(0, 0, 0, 0.08)
   background     $pb-surf-l
 
   .dark &
@@ -71,6 +73,8 @@ $pb-hair-on     = ($pb-hair-tmp == false) ? false : true
     --pb-surface-5 rgba(red($pb-surf-d), green($pb-surf-d), blue($pb-surf-d), 0.5)
     --pb-surface-8 rgba(red($pb-surf-d), green($pb-surf-d), blue($pb-surf-d), 0.8)
     --pb-card      $pb-card-d
+    --pb-card-6    rgba(red($pb-card-d), green($pb-card-d), blue($pb-card-d), 0.62)
+    --pb-border    rgba(255, 255, 255, 0.075)
     background     $pb-surf-d
 
 // ---------------------------------------------------------------------------
@@ -91,6 +95,14 @@ $pb-hair-on     = ($pb-hair-tmp == false) ? false : true
   position relative
   width 100%
   height $pb-h
+  // Typed.js 的光标是标题的【兄弟节点】，不是子节点 —— 必须挂在 .page-banner 上
+  .typed-cursor
+    margin-left 0.08em
+    font-weight 300
+    color var(--home-banner-text-color)
+    opacity 0.9
+    text-shadow 0 1px 3px rgba(0, 0, 0, 0.5)
+    animation pb-cursor-blink 1.1s steps(1, end) infinite
   background-size cover
   background-position center center
   background-repeat no-repeat
@@ -135,13 +147,6 @@ $pb-hair-on     = ($pb-hair-tmp == false) ? false : true
     // 亮图（如 /about/ 的白墙）上保证标题仍可读
     text-shadow 0 1px 3px rgba(0, 0, 0, 0.55),
                 0 2px 18px rgba(0, 0, 0, 0.45)
-
-    // Typed.js 光标（与主页打字机统一）
-    .typed-cursor
-      margin-left 0.06em
-      font-weight 300
-      opacity 0.85
-      animation pb-cursor-blink 1.05s steps(1, end) infinite
 
     +redefine-mobile()
       font-size 1.8rem
@@ -328,9 +333,9 @@ if $pb-hair-on
       &::before, &::after
         background var(--home-banner-text-color)
 
-// 滚动后（JS 在 scrollTop > navbarHeight 时给 body 加 .navbar-shrink）：
+// 滚动到「横幅完全越过导航栏」后（page.ejs 里的脚本给 body 加 .navbar-solid）：
 // 背景贴合成"页面纯色"，并用一条细线 + 轻投影与内容分层
-body.navbar-shrink
+body.navbar-solid
   .main-content-container.has-page-banner
     .navbar-container
       background var(--pb-surface)
@@ -350,3 +355,300 @@ body.navbar-shrink
 
         &::before, &::after
           background var(--default-text-color)
+
+
+// ============================================================================
+//  ⑨ 标签页 / 页面容器：框架与页面融合 + 错落排版
+//     ⚠️ .tags-* 系列原本定义在 tailwind.source.css，改动它需要 npm run build:css
+//        （@tailwindcss/cli 未安装，要联网）。这里用 .page-container 提高一级
+//        优先级、放在最后覆盖，零构建即可生效。
+// ============================================================================
+.page-container
+
+  // ---------- 页面容器：去掉终端窗口式的实底与投影 ----------
+  .page-template-container,
+  .tag-container,
+  .tag-detail-container,
+  .post-page-container
+    background transparent
+    box-shadow none
+    border none
+
+  // ---------- 标签总览：更宽、更透气 ----------
+  .tags-overview-container
+    max-width 1060px
+    margin 0 auto
+    padding 0 1.5rem 4rem
+
+  .tags-overview-header
+    text-align center
+    padding 3.5rem 0 2.5rem
+    border-bottom none
+
+  .tags-overview-icon
+    font-size 2.2rem
+    opacity 0.15
+    margin-bottom 0.15rem
+
+  .tags-overview-title
+    font-size 2.1rem
+    font-weight 600
+    letter-spacing 0.1em
+
+  .tags-overview-count
+    letter-spacing 0.08em
+    opacity 0.7
+
+  // ---------- 标签树：去掉实底卡片，与页面底色融合 ----------
+  .tags-tree-full
+    display block
+
+  .tags-tree-box
+    background transparent
+    border none
+    border-radius 0
+    padding 0
+    max-width none
+    width 100%
+
+  .tags-tree-title
+    text-align center
+    border-bottom none
+    margin-bottom 2rem
+    letter-spacing 0.24em
+    opacity 0.45
+
+  .tags-tree-content
+    font-size 0.95rem
+    line-height 2.2
+
+  // ---------- 错落：层级间距 + 尺寸分级 + 悬停轻移 ----------
+  .tree-branch
+    position relative
+
+  // 顶层分组给额外呼吸（模板里 depth 0 会输出 padding-left: 0rem）
+  .tree-branch[style*="padding-left: 0rem"]
+    margin-top 1.15rem
+
+  // 子级左侧加一条极淡的引导线，形成层次
+  .tree-branch[style*="padding-left: 1.5rem"],
+  .tree-branch[style*="padding-left: 3rem"]
+    position relative
+
+    &::before
+      content ''
+      position absolute
+      left calc(1.5rem - 0.55rem)
+      top 0
+      bottom 0
+      width 1px
+      background var(--border-color)
+      opacity 0.5
+
+  .tree-node
+    padding 0.2rem 0.6rem
+    border-radius 8px
+    transition opacity 0.2s ease, transform 0.2s ease
+
+    &:hover
+      background transparent
+      opacity 1
+      transform translateX(3px)
+
+  .tree-node-name
+    font-size 0.95rem
+    font-weight 400
+    letter-spacing 0.02em
+
+  .tree-node-count
+    background transparent
+    padding 0
+    font-size 0.72rem
+    opacity 0.5
+
+  // 分组名更大更重，叶子更轻更淡 → 形成视觉错落
+  .tree-folder .tree-node-name
+    font-size 1.06rem
+    font-weight 600
+    letter-spacing 0.05em
+
+  .tree-leaf .tree-node-name
+    font-weight 400
+    opacity 0.85
+
+  .tree-folder .tree-node-icon
+    opacity 0.35
+
+  .tree-leaf .tree-node-icon
+    opacity 0.45
+
+  +redefine-mobile()
+    .tags-overview-container
+      padding 0 1rem 3rem
+
+    .tags-overview-title
+      font-size 1.7rem
+
+    .tags-tree-content
+      line-height 2
+
+
+// ============================================================================
+//  ⑩ 文章页：静态「文艺」标题（不用打字机）
+//     同时隐藏正文里重复出现的标题 —— 横幅已有 <h1>，语义与 SEO 不受影响
+// ============================================================================
+.page-banner--post
+  .page-banner__art
+    display flex
+    flex-direction column
+    align-items center
+    gap 1.15rem
+    max-width 900px
+    padding 0 1.5rem
+
+  // 日期 · 分类 的小字 kicker
+  .page-banner__kicker
+    font-size 0.78rem
+    font-weight 400
+    letter-spacing 0.28em
+    text-transform uppercase
+    opacity 0.72
+    color var(--home-banner-text-color)
+    text-shadow 0 1px 3px rgba(0, 0, 0, 0.5)
+
+  // 主标题：中等字重 + 加大字距，安静而"文艺"
+  .page-banner__title--art
+    font-size 2.5rem
+    font-weight 500
+    line-height 1.4
+    letter-spacing 0.1em
+    text-indent 0.1em
+    max-width 100%
+    text-shadow 0 2px 4px rgba(0, 0, 0, 0.55),
+                0 4px 28px rgba(0, 0, 0, 0.45)
+
+  // 标题下方的细线
+  .page-banner__rule
+    width 3.25rem
+    height 1px
+    background currentColor
+    opacity 0.5
+
+  +redefine-mobile()
+    .page-banner__kicker
+      font-size 0.68rem
+      letter-spacing 0.2em
+
+    .page-banner__title--art
+      font-size 1.6rem
+      letter-spacing 0.06em
+
+// 隐藏正文里重复的标题（横幅已提供 h1）
+.page-container
+  .main-content-container.has-page-banner
+    .article-title-regular,
+    .article-title-cover
+      display none
+
+
+// ============================================================================
+//  ⑪ 首页文章卡片：隐式卡片 + 右侧竖排水印 + 悬停浮现
+//     设计意图（按作者草图）：
+//       · 左侧竖排：标题 / 简介 / 日期—标签，左侧一条竖线作层次暗示
+//       · 右侧竖排：与卡片色调融合的大字水印（取分类名，如「大模型」「歌德」）
+//       · 平时卡片底不露出来，只有极淡的分层
+//       · 悬停 / 触摸 / 聚焦时：卡片底浮现 + 阴影加深 + 轻微上浮 + 水印变亮
+// ============================================================================
+.page-container
+  .home-article-list
+    .home-article-item
+      position relative
+      overflow hidden
+      border-radius 18px
+      // 平时：不露底
+      background transparent !important
+      border 1px solid transparent
+      // 给右侧水印让位
+      padding-right 4.6rem
+      transition background 0.45s ease,
+                 box-shadow 0.5s cubic-bezier(0.22, 0.7, 0.24, 1),
+                 border-color 0.45s ease,
+                 transform 0.45s cubic-bezier(0.22, 0.7, 0.24, 1)
+
+      // 左侧竖线：平时很淡，作为"层次"的暗示
+      &::before
+        content ''
+        position absolute
+        left 0
+        top 1.6rem
+        bottom 1.6rem
+        width 2px
+        border-radius 2px
+        background var(--border-color)
+        opacity 0.55
+        z-index 3
+        transition opacity 0.45s ease, background 0.45s ease,
+                   top 0.45s ease, bottom 0.45s ease
+
+      // ---------- 悬停 / 触摸 / 子元素聚焦 ----------
+      &:hover,
+      &:focus-within,
+      &:active
+        // 用半透明的卡片色代替实色 —— 与页面底过渡更柔和、更"融合"
+        // color-mix 让它自动跟随深浅模式
+        // 半透明卡片色 —— 与页面底过渡更柔和（Stylus 不支持 color-mix，用变量代替）
+        background var(--pb-card-6) !important
+        border-color var(--pb-border)
+        box-shadow 0 26px 64px rgba(0, 0, 0, 0.42),
+                   0 1px 0 0 rgba(255, 255, 255, 0.05) inset
+        transform translateY(-4px)
+
+        &::before
+          opacity 1
+          background var(--primary-color)
+          top 1.1rem
+          bottom 1.1rem
+
+        .home-article-watermark span
+          opacity 0.13
+          transform translateY(0)
+          letter-spacing 0.1em
+
+      // 触摸设备：轻按也有反馈
+      +redefine-mobile()
+        padding-right 3.4rem
+
+    // ---------- 右侧竖排大字水印 ----------
+    .home-article-watermark
+      position absolute
+      top 0
+      right 1.2rem
+      bottom 0
+      display flex
+      flex-direction column
+      align-items center
+      justify-content center
+      gap 0.08rem
+      pointer-events none
+      user-select none
+      z-index 1
+
+      span
+        display block
+        font-size 2.75rem
+        line-height 1.06
+        font-weight 800
+        letter-spacing 0.04em
+        color var(--first-text-color)
+        // 与卡片色调融合的水印感
+        opacity 0.05
+        transform translateY(8px)
+        transition opacity 0.55s ease,
+                   transform 0.55s cubic-bezier(0.22, 0.7, 0.24, 1),
+                   letter-spacing 0.55s ease
+
+      +redefine-mobile()
+        right 0.9rem
+
+        span
+          font-size 1.7rem
