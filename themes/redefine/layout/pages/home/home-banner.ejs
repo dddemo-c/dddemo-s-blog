@@ -34,9 +34,10 @@
 
 <div class="home-banner-container flex justify-center items-center transition-fade relative">
     <% if (theme.home_banner.style !== "fixed") {%>
-    <div class="home-banner-background transition-fade absolute top-0 left-0 w-screen h-screen scale-125 sm:scale-110 box-border will-change-transform bg-cover">
+    <div class="home-banner-background transition-fade absolute top-0 left-0 w-full h-full box-border bg-cover">
         <img src="<%- url_for(theme.home_banner.image.light) %>" alt="home-banner-background" class="w-full h-full object-cover dark:hidden">
         <img src="<%- url_for(theme.home_banner.image.dark) %>" alt="home-banner-background" class="w-full h-full object-cover hidden dark:block">
+        <div class="home-banner-mask"></div>
     </div>
     <% } %>
     <div class="content mt-8 flex flex-col justify-center items-center transition-fade-down">
@@ -223,14 +224,22 @@
     </style>
     <script>
         (function(){
-            var arrow = document.querySelector('.scroll-down-arrow');
-            if (arrow) {
+            function bind() {
+                var arrow = document.querySelector('.scroll-down-arrow');
+                if (!arrow || arrow.dataset.scrollBound === '1') return;
+                arrow.dataset.scrollBound = '1';
                 arrow.addEventListener('click', function() {
-                    var target = document.querySelector('.main-content-container');
-                    if (!target) return;
+                    // 目标：让横幅带完全滚出视口（原来只滚到"带高-60"，
+                    // 带子还剩一截露在顶上，看起来像没动）
+                    var banner = document.querySelector('.home-banner-container')
+                              || document.querySelector('.page-banner');
                     var start = window.scrollY;
-                    var end = target.getBoundingClientRect().top + window.scrollY - 60;
-                    var duration = 600;
+                    var end = banner
+                        ? banner.getBoundingClientRect().bottom + window.scrollY
+                        : start + window.innerHeight;
+                    end = Math.max(0, Math.min(end, document.documentElement.scrollHeight - window.innerHeight));
+                    if (Math.abs(end - start) < 4) return;
+                    var duration = 620;
                     var startTime = performance.now();
                     function step(now) {
                         var elapsed = now - startTime;
@@ -244,6 +253,9 @@
                     requestAnimationFrame(step);
                 });
             }
+            if (document.readyState === 'complete') bind();
+            else window.addEventListener('load', bind, { once: true });
+            window.addEventListener('redefine:page:refresh', bind);
         })();
     </script>
     <script>

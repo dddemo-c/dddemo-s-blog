@@ -1,0 +1,82 @@
+<%
+/* ============================================================================
+   页面横幅带（page banner）
+   · 读取 theme.page_banner 配置
+   · 按当前页面类型选图：内置页面 → page.type → page.layout → default
+   · 主页不走这里（主页用 pages/home/home-banner）
+   · 标题使用与主页一致的打字机效果（Typed.js，参数取自 home_banner.subtitle）
+   ============================================================================ */
+var pbCfg    = theme.page_banner || {};
+var pbImages = pbCfg.images || {};
+
+var pbKey = 'default';
+if (is_home())          pbKey = 'home';
+else if (is_archive())  pbKey = 'archives';
+else if (is_tag())      pbKey = 'tags';
+else if (is_category()) pbKey = 'categories';
+else if (page.type)     pbKey = page.type;
+else if (page.layout)   pbKey = page.layout;
+
+var pbImg    = pbImages[pbKey] || pbImages['default'] || '';
+var pbActive = (pbCfg.enable !== false) && !!pbImg && !is_home();
+
+/* 标题：优先 page.title，否则按页面类型取默认文案 */
+var pbTitle = page.title || '';
+if (!pbTitle) {
+    if (is_archive())       pbTitle = __('archive');
+    else if (is_tag())      pbTitle = __('tag');
+    else if (is_category()) pbTitle = __('category');
+    else                    pbTitle = config.title || '';
+}
+
+/* 打字机参数：与主页横幅保持同一套 */
+var pbTyping    = (theme.home_banner && theme.home_banner.subtitle) || {};
+/* 打字机参数
+   ⚠️ 不要沿用主页副标题的 typing_speed(100)：
+      主页是一整句长文案，100ms/字 合适；
+      页面标题只有 2–5 个字，同样速度会一闪而过。
+   这里单独放慢，并延长起始延迟。 */
+var pbTypeSpeed  = 190;   // ms / 字
+var pbBackSpeed  = 90;
+var pbStartDelay = 700;
+var pbCursorRaw  = pbTyping.cursor_char;
+var pbCursor     = (typeof pbCursorRaw === 'string' && pbCursorRaw.length) ? pbCursorRaw : '_';
+%>
+<% if (pbActive) { %>
+<div class="page-banner" style="background-image:url('<%- url_for(pbImg) %>')">
+    <div class="page-banner__mask"></div>
+    <div class="page-banner__text">
+        <h1 class="page-banner__title"
+            data-typed-text="<%= pbTitle %>"
+            data-type-speed="<%= pbTypeSpeed %>"
+            data-back-speed="<%= pbBackSpeed %>"
+            data-start-delay="<%= pbStartDelay %>"
+            data-cursor="<%= pbCursor %>"></h1>
+    </div>
+</div>
+<script data-swup-reload-script>
+(function () {
+    var run = function () {
+        var el = document.querySelector('.page-banner__title[data-typed-text]');
+        if (!el || typeof window.Typed === 'undefined') { return; }
+        if (el.dataset.typedDone === '1') { return; }
+        el.dataset.typedDone = '1';
+        new window.Typed(el, {
+            strings: [el.getAttribute('data-typed-text') || ''],
+            typeSpeed: parseInt(el.getAttribute('data-type-speed'), 10) || 100,
+            backSpeed: parseInt(el.getAttribute('data-back-speed'), 10) || 80,
+            startDelay: parseInt(el.getAttribute('data-start-delay'), 10) || 500,
+            loop: false,
+            smartBackspace: true,
+            showCursor: true,
+            cursorChar: el.getAttribute('data-cursor') || '_'
+        });
+    };
+    var boot = function () { setTimeout(run, 120); };
+    if (document.readyState === 'complete') { boot(); }
+    else { window.addEventListener('load', boot, { once: true }); }
+    // swup 单页导航后重新执行
+    window.addEventListener('redefine:page:refresh', boot);
+})();
+</script>
+<% } %>

@@ -10,7 +10,30 @@
 	<%- partial('pages/home/home-background') %>
 	<% } %>
 
-	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+	<%
+	/* ---------------------------------------------------------------------
+	   页面横幅带（非主页）—— 对应 theme.page_banner 配置
+	   --------------------------------------------------------------------- */
+	var pbCfg  = theme.page_banner || {};
+	var pbImgs = pbCfg.images || {};
+	var pbKey  = is_tag()      ? 'tags'
+	           : is_category() ? 'categories'
+	           : is_archive()  ? 'archives'
+	           : (page.type || page.layout || 'default');
+	var pbImg  = pbImgs[pbKey] || pbImgs['default'];
+	var pbOn   = (pbCfg.enable !== false) && !!pbImg && !is_home();
+
+	/* 本页是否处于「横幅带 + 纯色底」布局（主页也算，只要首页 banner 开启） */
+	var hasBanner = is_home()
+	    ? (theme.home_banner.enable === true && !page.prev)
+	    : pbOn;
+	%>
+
+	<% if (pbOn) { %>
+	<%- partial('components/page-banner') %>
+	<% } %>
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh<%= hasBanner ? ' has-page-banner' : '' %>">
 		<div class="main-content-header">
 			<%- partial('components/header/navbar') %>
 		</div>

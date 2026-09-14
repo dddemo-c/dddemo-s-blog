@@ -1,0 +1,352 @@
+@require '../common/variables'
+
+// ============================================================================
+//  页面横幅带 + 纯色底 + 内容卡片
+//  配置来源：themes/redefine/_config.yml → page_banner
+//  ---------------------------------------------------------------------------
+//  布局：
+//    · 子页面（关于我/文章/标签/致谢）→ 内容做成上浮卡片，形成"错落"
+//    · 主页                          → 不做卡片，靠"渐隐 + 细分隔线"做出合并但分界
+//  .styl 改完 hexo g 直接生效，无需 npm 构建
+// ============================================================================
+
+// ---------------------------- 读取配置（带兜底） ----------------------------
+$pb-h-home-tmp  = hexo-config('page_banner.height.home')
+$pb-h-home      = $pb-h-home-tmp ? convert($pb-h-home-tmp) : 62vh
+
+$pb-h-tmp       = hexo-config('page_banner.height.desktop')
+$pb-h           = $pb-h-tmp ? convert($pb-h-tmp) : 56vh
+
+$pb-hm-tmp      = hexo-config('page_banner.height.mobile')
+$pb-hm          = $pb-hm-tmp ? convert($pb-hm-tmp) : 40vh
+
+$pb-overlay-tmp = hexo-config('page_banner.overlay')
+$pb-overlay     = $pb-overlay-tmp ? $pb-overlay-tmp : 0.30
+
+$pb-surf-l-tmp  = hexo-config('page_banner.surface.page_light')
+$pb-surf-l      = $pb-surf-l-tmp ? convert($pb-surf-l-tmp) : #e4e1da
+$pb-surf-d-tmp  = hexo-config('page_banner.surface.page_dark')
+$pb-surf-d      = $pb-surf-d-tmp ? convert($pb-surf-d-tmp) : #0d0f14
+
+$pb-card-l-tmp  = hexo-config('page_banner.surface.card_light')
+$pb-card-l      = $pb-card-l-tmp ? convert($pb-card-l-tmp) : #f4f2ed
+$pb-card-d-tmp  = hexo-config('page_banner.surface.card_dark')
+$pb-card-d      = $pb-card-d-tmp ? convert($pb-card-d-tmp) : #161a22
+
+$pb-ov-tmp      = hexo-config('page_banner.board.overlap')
+$pb-overlap     = $pb-ov-tmp ? convert($pb-ov-tmp) : -3rem
+
+$pb-radius-tmp  = hexo-config('page_banner.board.radius')
+$pb-radius      = $pb-radius-tmp ? convert($pb-radius-tmp) : 18px
+
+$pb-pad-tmp     = hexo-config('page_banner.board.padding')
+$pb-pad         = $pb-pad-tmp ? convert($pb-pad-tmp) : 2.5rem
+
+// 底部渐隐高度 = 横幅带高度 × 该比例
+// ⚠️ 这个值不能太大：渐隐会连同"卡片压住的那一带图"一起压暗，
+//    导致卡片与背景同色、"错落"读不出来。24% + 卡片提亮 = 最佳平衡。
+$pb-fade-ratio  = 24%
+
+// 细分隔线开关（配置 page_banner.seam.hairline）
+// ⚠️ 实测：这条 1px 线会切断渐隐、造成肉眼可见的"硬边"，默认关闭
+$pb-hair-tmp    = hexo-config('page_banner.seam.hairline')
+$pb-hair-on     = ($pb-hair-tmp == false) ? false : true
+
+
+// ============================================================================
+//  ① 纯色底（更深的一套色）+ 供下方引用的自定义属性
+//     用 .dark / .light 类切换（head.ejs 把模式类挂在 <html> 上）
+// ============================================================================
+.page-container
+  --pb-surface   $pb-surf-l
+  --pb-surface-0 rgba(red($pb-surf-l), green($pb-surf-l), blue($pb-surf-l), 0)
+  --pb-surface-5 rgba(red($pb-surf-l), green($pb-surf-l), blue($pb-surf-l), 0.5)
+  --pb-surface-8 rgba(red($pb-surf-l), green($pb-surf-l), blue($pb-surf-l), 0.8)
+  --pb-card      $pb-card-l
+  background     $pb-surf-l
+
+  .dark &
+    --pb-surface   $pb-surf-d
+    --pb-surface-0 rgba(red($pb-surf-d), green($pb-surf-d), blue($pb-surf-d), 0)
+    --pb-surface-5 rgba(red($pb-surf-d), green($pb-surf-d), blue($pb-surf-d), 0.5)
+    --pb-surface-8 rgba(red($pb-surf-d), green($pb-surf-d), blue($pb-surf-d), 0.8)
+    --pb-card      $pb-card-d
+    background     $pb-surf-d
+
+// ---------------------------------------------------------------------------
+//  ①b "字色低沉一点"
+//      深色模式下把正文/标题/次级文字整体压暗一档，减少刺眼的高对比白字
+//      想还原就把下面三行注释掉
+// ---------------------------------------------------------------------------
+.dark .page-container
+  --default-text-color #a9abb4
+  --first-text-color   #d6d7dc
+  --second-text-color  #bfc1c9
+
+
+// ============================================================================
+//  ② 横幅带
+// ============================================================================
+.page-banner
+  position relative
+  width 100%
+  height $pb-h
+  background-size cover
+  background-position center center
+  background-repeat no-repeat
+  overflow hidden
+  z-index 1
+
+  +redefine-mobile()
+    height $pb-hm
+
+  // 遮罩：保证横幅上的文字可读
+  &__mask
+    position absolute
+    top 0
+    left 0
+    right 0
+    bottom 0
+    background rgba(0, 0, 0, $pb-overlay)
+    pointer-events none
+    z-index 1
+
+  // 标题容器
+  &__text
+    position absolute
+    top 0
+    left 0
+    right 0
+    bottom 0
+    display flex
+    align-items center
+    justify-content center
+    padding 0 1.5rem
+    z-index 2
+
+  &__title
+    margin 0
+    font-size 2.6rem
+    font-weight 600
+    line-height 1.15
+    letter-spacing 0.02em
+    text-align center
+    color var(--home-banner-text-color)
+    // 亮图（如 /about/ 的白墙）上保证标题仍可读
+    text-shadow 0 1px 3px rgba(0, 0, 0, 0.55),
+                0 2px 18px rgba(0, 0, 0, 0.45)
+
+    // Typed.js 光标（与主页打字机统一）
+    .typed-cursor
+      margin-left 0.06em
+      font-weight 300
+      opacity 0.85
+      animation pb-cursor-blink 1.05s steps(1, end) infinite
+
+    +redefine-mobile()
+      font-size 1.8rem
+
+@keyframes pb-cursor-blink
+  0%, 49%
+    opacity 0.85
+  50%, 100%
+    opacity 0.15
+
+
+// ============================================================================
+//  ③ 分割层次（"合并但有分界"）—— 渐隐 + 细分隔线
+//     同时作用于子页面横幅带与主页横幅带
+// ============================================================================
+.page-banner,
+.home-banner-container
+  // 底部渐隐：高度按带宽比例，多段 alpha 让过渡平滑（不经过灰色）
+  &::after
+    content ''
+    position absolute
+    left 0
+    right 0
+    bottom 0
+    height $pb-fade-ratio
+    background linear-gradient(to bottom,
+      var(--pb-surface-0) 0%,
+      var(--pb-surface-5) 46%,
+      var(--pb-surface-8) 74%,
+      var(--pb-surface) 100%)
+    pointer-events none
+    z-index 1
+
+// 可选细分隔线：默认关闭（会切断渐隐形成硬边）
+// 想要"清晰分界"时，把 _config.yml 里 page_banner.seam.hairline 改成 true
+if $pb-hair-on
+  .page-banner,
+  .home-banner-container
+    &::before
+      content ''
+      position absolute
+      left 0
+      right 0
+      bottom 0
+      height 1px
+      background rgba(255, 255, 255, 0.07)
+      pointer-events none
+      z-index 2
+
+
+// ============================================================================
+//  ④ 布局：所有页面统一为「横幅带 + 纯色底」—— 与主页完全一致
+//     · 不做内容卡片、不做负 margin → 背景图不会被任何内容遮挡
+//     · 带子贴顶（取消导航栏预留），内容直接落在纯色底上
+//     · 带与内容之间的过渡由上面的 ::after 渐隐完成
+// ============================================================================
+.page-container
+  .main-content-container.has-page-banner
+    padding-top 0
+
+    .main-content-body
+      // 撤掉默认的 38px 上内边距
+      padding-top 0
+
+    .main-content
+      position relative
+      z-index 3
+      background transparent
+      box-shadow none
+      border-radius 0
+      margin-top 0
+      padding-top 3rem
+
+      +redefine-mobile()
+        padding-top 1.5rem
+
+
+// ============================================================================
+//  ⑦ 主页横幅带：改成"带"而不是全屏；内容压住分割层
+//     ⚠️ home-banner.styl 里有两处会撑满屏，都必须覆盖：
+//          .home-banner-container { min-height: 100vh }
+//          .content              { min-height: 90vh }
+// ============================================================================
+.home-banner-container
+  min-height $pb-h-home
+
+  +redefine-tablet()
+    min-height $pb-h-home
+
+  +redefine-mobile()
+    min-height $pb-hm
+
+  // 覆盖 .content 的 90vh，否则带会被撑到接近满屏
+  .content
+    position relative
+    z-index 3
+    min-height $pb-h-home
+
+    .description
+      // 与页面横幅标题保持一致的投影
+      text-shadow 0 1px 3px rgba(0, 0, 0, 0.55),
+                  0 2px 18px rgba(0, 0, 0, 0.45)
+
+    +redefine-tablet()
+      min-height $pb-h-home
+
+    +redefine-mobile()
+      min-height $pb-hm
+
+  // 主页横幅的遮罩（与 .page-banner__mask 对应）
+  .home-banner-mask
+    position absolute
+    top 0
+    left 0
+    right 0
+    bottom 0
+    background rgba(0, 0, 0, $pb-overlay)
+    pointer-events none
+
+  // ---------------------------------------------------------------------------
+  // ⚠️ 必须用 !important 反制 JS 的内联样式
+  //     themes/redefine/source/js/utils/layout.js:11
+  //         ctx.homeBanner_dom.style.height = `${ctx.innerHeight}px`
+  //     该脚本把视口高度直接写进 style 属性，优先级高于任何样式表的
+  //     min-height，导致横幅被撑成满屏、图片被裁切。
+  // ---------------------------------------------------------------------------
+  height $pb-h-home !important
+
+  // 下滑箭头：原来的样式让它停在横幅带正中（不像"下滑提示"），
+  // 且点击区域只有 24×36px。这里把它固定到带子底部并加大热区。
+  // 注意：用 left/right + text-align 居中，不要用 transform —— 会与
+  //       现有的 scroll-bounce 动画（也用 transform）冲突。
+  .scroll-down-arrow
+    position absolute
+    left 0
+    right 0
+    bottom 1.25rem
+    margin-top 0
+    padding 0.75rem 0
+    text-align center
+    z-index 4
+
+
+// ============================================================================
+//  ⑧ navbar：压在横幅图上时透明，滚动后贴合页面纯色 + 分割层次
+// ============================================================================
+.main-content-container.has-page-banner
+  .navbar-container
+    background transparent
+    -webkit-backdrop-filter none
+    backdrop-filter none
+    box-shadow none
+    border-bottom 1px solid transparent
+    transition background 0.45s ease, backdrop-filter 0.45s ease,
+               box-shadow 0.45s ease, border-color 0.45s ease
+
+    // 透明状态：文字用横幅标题色 + 投影，亮图/暗图都读得清
+    .logo-title
+      color var(--home-banner-text-color)
+      text-shadow 0 1px 3px rgba(0, 0, 0, 0.55)
+
+      h1
+        color var(--home-banner-text-color)
+        text-shadow 0 1px 3px rgba(0, 0, 0, 0.55)
+
+    .navbar-item
+      color var(--home-banner-text-color)
+      text-shadow 0 1px 3px rgba(0, 0, 0, 0.55)
+
+      a, i
+        color var(--home-banner-text-color)
+        text-shadow 0 1px 3px rgba(0, 0, 0, 0.55)
+
+    .icon-item
+      color var(--home-banner-text-color)
+
+      i
+        color var(--home-banner-text-color)
+        text-shadow 0 1px 3px rgba(0, 0, 0, 0.55)
+
+    .navbar-bar-middle
+      background var(--home-banner-text-color)
+
+      &::before, &::after
+        background var(--home-banner-text-color)
+
+// 滚动后（JS 在 scrollTop > navbarHeight 时给 body 加 .navbar-shrink）：
+// 背景贴合成"页面纯色"，并用一条细线 + 轻投影与内容分层
+body.navbar-shrink
+  .main-content-container.has-page-banner
+    .navbar-container
+      background var(--pb-surface)
+      -webkit-backdrop-filter blur(12px)
+      backdrop-filter blur(12px)
+      border-bottom 1px solid var(--border-color)
+      box-shadow 0 8px 28px rgba(0, 0, 0, 0.30)
+
+      .logo-title, .logo-title h1,
+      .navbar-item, .navbar-item a, .navbar-item i,
+      .icon-item, .icon-item i
+        color var(--first-text-color)
+        text-shadow none
+
+      .navbar-bar-middle
+        background var(--default-text-color)
+
+        &::before, &::after
+          background var(--default-text-color)
