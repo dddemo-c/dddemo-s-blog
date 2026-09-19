@@ -1,5 +1,6 @@
 ---
 title: 技术笔记索引
+sticky: 2
 date: 2026-05-01 15:01:00
 categories:
   - 信息学

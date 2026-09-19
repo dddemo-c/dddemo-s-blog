@@ -1,5 +1,6 @@
 ---
 title: CC-BOS 框架详解
+sticky: 2
 date: 2026-05-02 11:00:00
 mathjax: true
 categories:

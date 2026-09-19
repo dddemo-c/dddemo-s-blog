@@ -134,10 +134,10 @@ home_banner:
     light: /images/banners/home.webp # light mode
     dark: /images/banners/home.webp # dark mode
   # Home banner title
-  title: dddemo Blog
+  title: '<span class="hb-mark">dddemo</span><span class="hb-mark2">Blog</span>'
   # Home banner subtitle
   subtitle:
-    text: ["A quiet corner for code, ideas, and building things that matter."]
+    text: ["Between eternity and nothingness, I keep silent for you."]
     hitokoto:  # 一言配置
       enable: false # Whether to enable hitokoto
       show_author: false # Whether to show author
@@ -273,7 +273,7 @@ home:
   # Article date format
   article_date_format: auto # auto, relative, YYYY-MM-DD, YYYY-MM-DD HH:mm:ss etc.
   # Article excerpt length
-  excerpt_length: 200 # Max length of article excerpt
+  excerpt_length: 60  # Max length of article excerpt (60 -> 卡片内只露一句话，保持文艺)
   # Article categories visibility
   categories:
     enable: true  # Whether to enable
@@ -529,9 +529,9 @@ page_banner:
 
   # 横幅带高度
   height:
-    home:    100vh  # 主页（整屏铺满，避免下面内容露出一点点）
+    home:    59vh   # 主页：1920/2.99=642px，与全景图 2.99:1 吻合 -> cover 零裁切零放大
     desktop: 70vh   # 子页面
-    mobile:  52vh   # 移动端
+    mobile:  42vh   # 移动端
 
   # 遮罩不透明度（保证横幅上文字可读；改 0 即关闭）
   # 亮图（如 /about/ 的白墙）需要更高；0.40 是兼顾暗图与亮图的值

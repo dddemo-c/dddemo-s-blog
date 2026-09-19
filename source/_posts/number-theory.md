@@ -1,5 +1,6 @@
 ---
 title: 数论初步
+sticky: 2
 date: 2026-05-01 11:10:00
 categories:
   - 数理

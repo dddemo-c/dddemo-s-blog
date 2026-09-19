@@ -50,7 +50,7 @@ if (pbIsPost && page.date) {
       页面标题只有 2–5 个字，同样速度会一闪而过。
    这里单独放慢，并延长起始延迟。 */
 var pbTyping     = (theme.home_banner && theme.home_banner.subtitle) || {};
-var pbTypeSpeed  = 190;   // ms / 字
+var pbTypeSpeed  = 150;   // ms / 字
 var pbBackSpeed  = 90;
 var pbStartDelay = 180;   // 原来 700 —— 太慢，标题会空两秒多
 var pbCursorRaw  = pbTyping.cursor_char;
@@ -71,12 +71,14 @@ var pbCursor     = (typeof pbCursorRaw === 'string' && pbCursorRaw.length) ? pbC
         </div>
     <% } else { %>
         <%# ---------- 其他页：打字机标题 ---------- %>
+        <%# 文本直接写进 h1：SEO 可读、无 JS 时也可见；打字机启动后再接管 %>
         <h1 class="page-banner__title"
             data-typed-text="<%= pbTitle %>"
             data-type-speed="<%= pbTypeSpeed %>"
             data-back-speed="<%= pbBackSpeed %>"
             data-start-delay="<%= pbStartDelay %>"
-            data-cursor="<%= pbCursor %>"></h1>
+            data-cursor="<%= pbCursor %>"><%= pbTitle %></h1>
+        <noscript><style>.page-banner__title[data-typed-text]{visibility:visible !important}</style></noscript>
     <% } %>
     </div>
 </div>
@@ -94,6 +96,12 @@ var pbCursor     = (typeof pbCursorRaw === 'string' && pbCursorRaw.length) ? pbC
         }
         if (el.dataset.typedDone === '1') { return; }
         el.dataset.typedDone = '1';
+        // 文本已在 DOM 中 => 先显示出来，再交给 Typed 逐字重打
+        el.classList.add('is-typed');
+        // 无障碍：用户系统偏好"减少动效"时直接显示，不做打字动画
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
         new window.Typed(el, {
             strings: [el.getAttribute('data-typed-text') || ''],
             typeSpeed: parseInt(el.getAttribute('data-type-speed'), 10) || 100,

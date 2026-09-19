@@ -24,8 +24,10 @@
 	var pbOn   = (pbCfg.enable !== false) && !!pbImg && !is_home();
 
 	/* 本页是否处于「横幅带 + 纯色底」布局（主页也算，只要首页 banner 开启） */
+	/* 主页第 2 页起没有横幅图，但 navbar 仍要套用同款样式，
+	   否则会露出主题默认的橙蓝渐变 */
 	var hasBanner = is_home()
-	    ? (theme.home_banner.enable === true && !page.prev)
+	    ? (theme.home_banner.enable === true)
 	    : pbOn;
 	%>
 
@@ -89,8 +91,9 @@
 			var nav = document.querySelector('.main-content-header');
 			var bh = banner ? banner.getBoundingClientRect().height : 0;
 			var nh = nav ? nav.offsetHeight : 70;
-			// 横幅底部 - 导航栏高度 = 导航栏完全离开横幅的时刻
-			threshold = Math.max(nh, bh - nh);
+			// 有横幅：横幅底部越过导航栏底边时才变实
+			// 无横幅（如主页第 2 页起）：立刻就是实底
+			threshold = bh > 0 ? Math.max(0, bh - nh) : 0;
 		}
 
 		function onScroll() {

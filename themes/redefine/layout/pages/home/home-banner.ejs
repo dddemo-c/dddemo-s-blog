@@ -56,7 +56,7 @@
                     ? [subtitleText]
                     : []; %>
             <% if (subtitleEntries.length !== 0 || (subtitleConfig.hitokoto && subtitleConfig.hitokoto.enable)) { %>
-                <p><i id="subtitle"></i></p>
+                <p class="hb-side-note"><i id="subtitle"></i></p>
             <% } %>
         </div>
         <!-- 下滑提示箭头 -->
@@ -260,20 +260,28 @@
     </script>
     <script>
         (function(){
-            setTimeout(function() {
+            // 与 page-banner 的打字机共用同一套参数，全站手感一致
+            var TYPE_SPEED  = 55;    // ms/字（原 100：68 个字符要打 6.8s，太慢）
+            var BACK_SPEED  = 45;
+            var START_DELAY = 250;   // 原 500
+            function boot() {
                 var el = document.getElementById('subtitle');
-                if (el && typeof window.Typed !== 'undefined') {
-                    new window.Typed('#subtitle', {
-                        strings: ["A quiet corner for code, ideas, and building things that matter."],
-                        typeSpeed: 100,
-                        smartBackspace: true,
-                        backSpeed: 80,
-                        backDelay: 1500,
-                        loop: false,
-                        startDelay: 500
-                    });
-                }
-            }, 100);
+                if (!el || el.dataset.typedDone === '1') { return; }
+                if (typeof window.Typed === 'undefined') { setTimeout(boot, 50); return; }
+                el.dataset.typedDone = '1';
+                // 无障碍：偏好减少动效时直接显示文案
+                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+                new window.Typed('#subtitle', {
+                    strings: [el.textContent.trim() || "Between eternity and nothingness, I keep silent for you."],
+                    typeSpeed: TYPE_SPEED,
+                    smartBackspace: true,
+                    backSpeed: BACK_SPEED,
+                    backDelay: 1500,
+                    loop: false,
+                    startDelay: START_DELAY
+                });
+            }
+            boot();
         })();
     </script>
 </div>

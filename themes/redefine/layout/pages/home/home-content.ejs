@@ -1,4 +1,12 @@
 <div class="home-content-container">
+    <%
+    /* 文章排序完全交给 Hexo 原生的 front-matter `sticky`：
+         sticky 3 -> 公告板（永远第一）
+         sticky 2 -> 技术类文章
+         sticky 1 -> 其余置顶文章
+         未设置   -> 按时间倒序
+       改顺序只需改各篇文章的 sticky 值，不要再在模板里排序。 */
+    %>
     <ul class="home-article-list">
         <% page.posts.forEach(post => { %>
             <li class="home-article-item">
@@ -79,9 +87,24 @@
                             <%- render(post.excerpt, "markdown") %>
                         <% } else { %>
                             <%
-                                const excerptLength = theme.home.excerpt_length || 200;
+                            /* 卡片摘要：只露"一句话"。
+                               优先截到第一个句末标点；否则硬截到 excerpt_length 个字符。
+                               目的是让卡片保持留白与文艺感，不堆大段正文。 */
+                            const excerptLength = theme.home.excerpt_length || 60;
+                            let plainText = strip_html(post.content || "").replace(/\s+/g, " ").trim();
+                            // 正文常以 H1 重述标题，先去重，否则摘要会等于标题
+                            const ttl = String(post.title || "").replace(/\s+/g, " ").trim();
+                            if (ttl && plainText.indexOf(ttl) === 0) {
+                                plainText = plainText.slice(ttl.length).trim();
+                            }
+                            const stop = plainText.search(/[。！？!?]/);
+                            if (stop > 0 && stop + 1 <= excerptLength) {
+                                plainText = plainText.slice(0, stop + 1);
+                            } else if (plainText.length > excerptLength) {
+                                plainText = plainText.slice(0, excerptLength) + "…";
+                            }
                             %>
-                            <%- truncate(strip_html(post.content), {length: excerptLength}) %>
+                            <%- plainText %>
                         <% } %>
                     </div>
 

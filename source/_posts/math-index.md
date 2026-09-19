@@ -1,5 +1,6 @@
 ---
 title: 数学笔记索引
+sticky: 2
 date: 2026-05-01 15:00:00
 categories:
   - 数理

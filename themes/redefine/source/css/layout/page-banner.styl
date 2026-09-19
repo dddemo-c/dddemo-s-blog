@@ -230,6 +230,11 @@ if $pb-hair-on
 //          .home-banner-container { min-height: 100vh }
 //          .content              { min-height: 90vh }
 // ============================================================================
+.home-banner-background
+  // 全景图用 cover 会被放大 1.6x 并裁掉 40%，清晰度骤降；
+  // 用 contain + 纯色底，完整保留全景
+  background var(--pb-surface)
+
 .home-banner-container
   min-height $pb-h-home
 
@@ -295,12 +300,17 @@ if $pb-hair-on
 // ============================================================================
 .main-content-container.has-page-banner
   .navbar-container
-    background transparent
+    // 透明态也要与背景分层：顶部柔和压暗 + 底线
+    background-color transparent
+    background-image linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.40) 0%,
+      rgba(0, 0, 0, 0.16) 62%,
+      rgba(0, 0, 0, 0) 100%)
     -webkit-backdrop-filter none
     backdrop-filter none
     box-shadow none
-    border-bottom 1px solid transparent
-    transition background 0.45s ease, backdrop-filter 0.45s ease,
+    border-bottom 1px solid rgba(255, 255, 255, 0.10)
+    transition background-color 0.45s ease, background-image 0.45s ease,
                box-shadow 0.45s ease, border-color 0.45s ease
 
     // 透明状态：文字用横幅标题色 + 投影，亮图/暗图都读得清
@@ -338,11 +348,12 @@ if $pb-hair-on
 body.navbar-solid
   .main-content-container.has-page-banner
     .navbar-container
-      background var(--pb-surface)
+      background-color var(--pb-surface)
+      background-image linear-gradient(to bottom, transparent, transparent)
       -webkit-backdrop-filter blur(12px)
       backdrop-filter blur(12px)
       border-bottom 1px solid var(--border-color)
-      box-shadow 0 8px 28px rgba(0, 0, 0, 0.30)
+      box-shadow 0 12px 36px rgba(0, 0, 0, 0.45)
 
       .logo-title, .logo-title h1,
       .navbar-item, .navbar-item a, .navbar-item i,
@@ -591,17 +602,14 @@ body.navbar-solid
                    top 0.45s ease, bottom 0.45s ease
 
       // ---------- 悬停 / 触摸 / 子元素聚焦 ----------
+      // 悬停：不再出现任何卡片底，只做层次变化（竖线 + 水印 + 位移）
       &:hover,
       &:focus-within,
       &:active
-        // 用半透明的卡片色代替实色 —— 与页面底过渡更柔和、更"融合"
-        // color-mix 让它自动跟随深浅模式
-        // 半透明卡片色 —— 与页面底过渡更柔和（Stylus 不支持 color-mix，用变量代替）
-        background var(--pb-card-6) !important
-        border-color var(--pb-border)
-        box-shadow 0 26px 64px rgba(0, 0, 0, 0.42),
-                   0 1px 0 0 rgba(255, 255, 255, 0.05) inset
-        transform translateY(-4px)
+        background transparent !important
+        border-color transparent
+        box-shadow none
+        transform translateX(4px)
 
         &::before
           opacity 1
@@ -652,3 +660,1096 @@ body.navbar-solid
 
         span
           font-size 1.7rem
+
+
+// ============================================================================
+//  (12) 取消所有"单独卡片" —— 内容直接嵌入背景纯色
+//       不再有"每个都单独突出"的圆角面板，改用细线 + 留白做层次
+// ============================================================================
+.page-container
+
+  .archive-container,
+  .tag-detail-container,
+  .category-detail-container,
+  .post-page-container,
+  .page-template-container,
+  .tag-container,
+  .home-content-container,
+  .home-article-item
+    background transparent !important
+    box-shadow none !important
+
+  .archive-container
+    .archive-header
+      border-bottom none
+      text-align center
+      padding 3.2rem 0 2.6rem
+
+    .archive-header-icon
+      opacity 0.18
+
+    .archive-header-title
+      font-weight 500
+      letter-spacing 0.12em
+
+  .home-article-list
+    .home-article-item + .home-article-item
+      border-top 1px solid var(--border-color)
+      margin-top 0.5rem
+      padding-top 1.4rem
+
+    .home-article-item
+      border-color transparent
+
+
+// ============================================================================
+//  (13) 内容区所有 "*card" 一律压平 —— 真正去掉"单独卡片"
+//       之前只压平了容器类，漏掉了 .about-card / .credits-card 这类内容卡片
+// ============================================================================
+.page-container
+  .main-content
+    [class*="-card"]
+      background transparent !important
+      background-image none !important
+      box-shadow none !important
+      border-color transparent !important
+
+    // 卡片内的分隔线也一起弱化，避免留下"框"的痕迹
+    [class*="-card"] > * + *
+      border-top-color transparent !important
+
+
+// ============================================================================
+//  (14) navbar 层次感加强 + 首页卡片更文艺（水印缩小）
+//       放在最后，同优先级下覆盖上面的旧规则
+// ============================================================================
+
+// ---------- navbar 透明态：毛玻璃 + 压暗 + 细线 + 投影，做出明确"层次" ----------
+.main-content-container.has-page-banner
+  .navbar-container
+    background-color rgba(0, 0, 0, 0.24)
+    background-image linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.34) 0%,
+      rgba(0, 0, 0, 0.12) 68%,
+      rgba(0, 0, 0, 0.04) 100%)
+    -webkit-backdrop-filter blur(14px) saturate(1.15)
+    backdrop-filter blur(14px) saturate(1.15)
+    border-bottom 1px solid rgba(255, 255, 255, 0.13)
+    box-shadow 0 6px 26px rgba(0, 0, 0, 0.22)
+    transition background-color 0.45s ease, background-image 0.45s ease,
+               backdrop-filter 0.45s ease, border-color 0.45s ease,
+               box-shadow 0.45s ease
+
+// ---------- 首页卡片：编辑式排布（左竖线会"生长"）+ 更小的水印 ----------
+.page-container
+  .home-article-list
+    .home-article-item
+      padding 2.1rem 3.6rem 2.1rem 1.3rem
+      border-radius 0
+      background transparent !important
+      box-shadow none !important
+      transition padding-left 0.55s cubic-bezier(0.22, 0.7, 0.24, 1),
+                 background 0.5s ease
+
+      // 左侧竖线：平时只是一小段很淡的记号
+      &::before
+        content ''
+        position absolute
+        left 0
+        top 50%
+        transform translateY(-50%)
+        width 1px
+        height 1.1rem
+        background currentColor
+        opacity 0.2
+        transition height 0.6s cubic-bezier(0.22, 0.7, 0.24, 1),
+                   opacity 0.6s ease;
+
+      // 悬停：竖线"长"成整条并变色，内容右移让出呼吸
+      &:hover,
+      &:focus-within,
+      &:active
+        background transparent !important
+        box-shadow none !important
+        padding-left 2.3rem
+
+        &::before
+          height calc(100% - 4.2rem)
+          opacity 0.8
+          background var(--primary-color)
+
+    // 标题：轻微字距 + 悬停微移
+    .home-article-title
+      letter-spacing 0.02em
+      transition letter-spacing 0.55s cubic-bezier(0.22, 0.7, 0.24, 1),
+                 color 0.4s ease
+
+    .home-article-item:hover .home-article-title,
+    .home-article-item:focus-within .home-article-title
+      letter-spacing 0.045em
+
+    // ---------- 水印：缩小、更收敛 ----------
+    .home-article-watermark
+      right 1rem
+
+      span
+        font-size 1.35rem
+        line-height 1.22
+        font-weight 600
+        letter-spacing 0.1em
+        opacity 0.075
+        transform translateY(4px)
+        transition opacity 0.6s ease,
+                   transform 0.6s cubic-bezier(0.22, 0.7, 0.24, 1),
+                   letter-spacing 0.6s ease
+
+    .home-article-item:hover .home-article-watermark span,
+    .home-article-item:focus-within .home-article-watermark span
+      opacity 0.16
+      transform translateY(0)
+      letter-spacing 0.16em
+
+    +redefine-mobile()
+      .home-article-item
+        padding 1.6rem 2.6rem 1.6rem 1rem
+
+        &:hover, &:focus-within, &:active
+          padding-left 1.5rem
+
+      .home-article-watermark
+        right 0.7rem
+
+        span
+          font-size 1rem
+
+
+// ============================================================================
+//  (15) 去掉所有"看得见的线"，改用渐变消融 + 柔和阴影做层次
+//       目标：有层次，但没有明显的分界线
+// ============================================================================
+
+// ---------- navbar 透明态 ----------
+.main-content-container.has-page-banner
+  .navbar-container
+    background-color transparent
+    background-image linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.40) 0%,
+      rgba(0, 0, 0, 0.20) 55%,
+      rgba(0, 0, 0, 0.07) 88%,
+      rgba(0, 0, 0, 0) 100%)
+    -webkit-backdrop-filter blur(14px) saturate(1.15)
+    backdrop-filter blur(14px) saturate(1.15)
+    border-bottom 1px solid transparent          // 去掉硬线
+    box-shadow none
+    overflow visible                             // 让下面的消融层伸出去
+
+    // 向下柔和消融：代替那条分界线
+    &::after
+      content ''
+      position absolute
+      left 0
+      right 0
+      top 100%
+      height 2.4rem
+      background linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.18) 0%,
+        rgba(0, 0, 0, 0.06) 45%,
+        rgba(0, 0, 0, 0) 100%)
+      pointer-events none
+
+// ---------- navbar 实底态：只留柔和阴影，不要线 ----------
+body.navbar-solid
+  .main-content-container.has-page-banner
+    .navbar-container
+      border-bottom 1px solid transparent
+      box-shadow 0 10px 34px rgba(0, 0, 0, 0.34)
+
+      &::after
+        background none
+
+// ---------- 首页条目：去掉分隔线，改用留白 ----------
+.page-container
+  .home-article-list
+    .home-article-item + .home-article-item
+      border-top-color transparent !important
+      margin-top 1.9rem
+      padding-top 1.9rem
+
+  // ---------- 归档页：去掉 archive-header 的下边线（若还有） ----------
+  .archive-container
+    .archive-header
+      border-bottom-color transparent !important
+
+  // ---------- 通用：把内容区里残留的 1px 分割线一律弱化 ----------
+  .main-content
+    hr
+      border none
+      height 1px
+      background linear-gradient(to right,
+        transparent,
+        var(--border-color) 22%,
+        var(--border-color) 78%,
+        transparent)
+      opacity 0.7
+
+
+// ============================================================================
+//  (16) navbar 最终版：透明 -> 滚动后缩短变纯色，只保留"一点点"层次
+//       覆盖 (14)(15) 两节的加强版，把毛玻璃与硬线都收掉
+// ============================================================================
+
+// ---------- 透明态：几乎全透明，仅一丝压暗 + 一条极淡的边 ----------
+.main-content-container.has-page-banner
+  .navbar-container
+    background-color transparent
+    background-image linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.26) 0%,
+      rgba(0, 0, 0, 0.10) 58%,
+      rgba(0, 0, 0, 0) 100%)
+    -webkit-backdrop-filter blur(10px) saturate(1.05)
+    backdrop-filter blur(10px) saturate(1.05)
+    // "一点点层次感"：极淡的一条边，不是明显的分界线
+    border-bottom 1px solid rgba(255, 255, 255, 0.07)
+    box-shadow none
+    overflow visible
+    transition background-color 0.4s ease, background-image 0.4s ease,
+               backdrop-filter 0.4s ease, border-color 0.4s ease,
+               box-shadow 0.4s ease, height 0.3s ease
+
+    // 向下的极轻消融，让边线不至于突兀
+    &::after
+      content ''
+      position absolute
+      left 0
+      right 0
+      top 100%
+      height 1.6rem
+      background linear-gradient(to bottom,
+        rgba(0, 0, 0, 0.10) 0%,
+        rgba(0, 0, 0, 0) 100%)
+      pointer-events none
+
+// ---------- 滚动后：贴成页面纯色 + 柔和阴影（缩短由主题 navbarShrink.js 负责） ----------
+body.navbar-solid
+  .main-content-container.has-page-banner
+    .navbar-container
+      background-color var(--pb-surface)
+      background-image linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0))
+      -webkit-backdrop-filter none
+      backdrop-filter none
+      border-bottom 1px solid var(--border-color)
+      box-shadow 0 8px 28px rgba(0, 0, 0, 0.30)
+
+      &::after
+        background none
+
+
+// ============================================================================
+//  (17) 文章页大卡片：.article-content-container
+//       CDP 扫描确认：bg rgb(32,33,36) + shadow 0 6px 24px —— 这是全站最大的一块的卡片
+//       之前只写了 .post-page-container，漏掉了真正的类名
+// ============================================================================
+.page-container
+  .article-content-container
+    background transparent !important
+    box-shadow none !important
+    border none !important
+
+    // 直接子级的面板（作者栏 / 摘要框等）一并压平
+    > div,
+    > header,
+    > section,
+    > aside
+      background transparent !important
+      box-shadow none !important
+
+  // 文章页里的"上/下篇"等次级面板
+  .article-prev-next,
+  .article-footer,
+  .post-tools-container
+    background transparent !important
+    box-shadow none !important
+    border-color transparent !important
+
+  // 页脚那条 2px 边线收细
+  .main-content-footer
+    footer
+      border-width 1px !important
+      border-color var(--border-color) !important
+
+
+// ============================================================================
+//  (18) 文章页内层匿名面板（如引言/摘要框，bg = --third-background-color）
+//       扫描发现 #292b2f 面板仍在，用更深的规则压平；代码块完整保留
+// ============================================================================
+.page-container
+  .article-content-container
+    div:not(.code-container):not(.code-header):not(.code-body):not([class*="code"]):not(pre):not(pre div)
+      background transparent !important
+      box-shadow none !important
+
+    // 代码块与行内代码照旧
+    .code-container,
+    .code-container .code-header,
+    .code-container .code-body
+      background inherit !important
+
+
+// ============================================================================
+//  (19) 文章正文：只要不是功能容器（代码块/表格/图片/分隔线），一律压平
+//       扫描发现 776x158 的匿名面板（bg = --third-background-color）仍在，
+//       它不是 div，所以前面按 div 写的规则没命中
+// ============================================================================
+.page-container
+  .article-content-container
+    *:not(code):not(pre):not([class*="code"]):not(table):not(thead):not(tbody)
+    :not(tr):not(th):not(td):not(img):not(hr):not(.table-wrapper):not(.code-container)
+      background transparent !important
+      box-shadow none !important
+
+    // 功能容器恢复原本的外观
+    .code-container, .code-container .code-header, .code-container .code-body
+      background var(--third-background-color) !important
+
+    .code-container
+      box-shadow 0 4px 10px rgba(0, 0, 0, 0.2) !important
+
+    pre, code
+      background var(--code-background-color, rgba(255, 255, 255, 0.05)) !important
+
+
+// ============================================================================
+//  (20) 打字机收尾：文本先进 DOM 但隐藏，脚本接管后再显示
+//       避免"先闪一下完整标题，再逐字重打"的观感
+//       三重兜底：无 JS -> <noscript> 强制可见；JS 出错 -> 1.6s 后动画强制可见
+// ============================================================================
+.page-banner__title[data-typed-text]
+  visibility hidden
+  animation pb-title-reveal 0s 1.6s forwards
+
+.page-banner__title[data-typed-text].is-typed
+  visibility visible
+  animation none
+
+@keyframes pb-title-reveal
+  to
+    visibility visible
+
+
+// ============================================================================
+//  (21) 文章页：左侧导航树 + 正文排版
+// ============================================================================
+
+// ---------- 左侧导航树（TOC）----------
+.post-toc-wrap
+  position sticky
+  top ($navbar-height + $spacing-unit)
+  font-size 0.85rem
+  max-height calc(100vh - 8rem)
+  overflow-y auto
+  // 滚动条做细，不打断侧边观感
+  scrollbar-width thin
+  scrollbar-color var(--border-color) transparent
+
+  &::-webkit-scrollbar
+    width 3px
+
+  &::-webkit-scrollbar-thumb
+    background var(--border-color)
+    border-radius 2px
+
+  .post-toc
+    .toc-title
+      font-size 0.7rem
+      font-weight 500
+      letter-spacing 0.24em
+      color var(--third-text-color)
+      opacity 0.8
+      margin-bottom 1.1rem
+      transition color 0.3s ease
+
+    // 与页面横幅标题重复，去掉
+    .page-title
+      display none
+
+    ol
+      list-style none
+      margin 0
+      padding 0
+
+      // 原来的 dotted 边框太粗糙，改为极淡的实线
+      ol
+        border-left 1px solid var(--border-color)
+        padding-left 0.7rem
+        margin-left 0.25rem
+
+      > ol
+        padding-left 0
+
+    .nav-item
+      // 原来 nowrap + ellipsis -> 长中文标题被截断
+      white-space normal
+      overflow visible
+      text-overflow clip
+      word-break break-word
+      line-height 1.7          // 原来 2，太散
+      font-size 0.85rem
+      padding 0.16rem 0
+
+    .nav
+      .nav-number, .nav-text
+        color var(--third-text-color)
+        opacity 0.85
+        letter-spacing 0.01em
+        transition color 0.3s ease, opacity 0.3s ease
+
+      .active > a,
+      .active-current
+        .nav-number, .nav-text
+          color var(--primary-color) !important
+          font-weight 500        // 原来 bold，太重
+          opacity 1
+
+    // 悬停：轻微提亮，不做位移
+    .nav-item:hover
+      .nav-number, .nav-text
+        color var(--second-text-color)
+        opacity 1
+
+    // 当前项的左侧标记：细一点、短一点
+    .nav-item a > span:first-child::before
+      width 8px
+      height 1.15rem
+      border-left 2px solid var(--primary-color)
+      transform translate(-10px, 0)
+      opacity 0
+      transition opacity 0.2s ease
+
+    .nav .active-current > span:first-child::before
+      width 8px
+      height 1.15rem
+      border-left 2px solid var(--primary-color)
+      transform translate(-10px, 0)
+      opacity 1
+
+  +redefine-tablet()
+    position static
+    max-height none
+    overflow visible
+
+// ---------- 正文排版 ----------
+.page-container
+  .article-content-container
+    .markdown-body
+      line-height 1.9
+      letter-spacing 0.012em
+
+      p
+        margin 1.15em 0
+
+      h2
+        margin-top 2.6em
+        margin-bottom 0.95em
+        letter-spacing 0.02em
+
+      h3
+        margin-top 2em
+        margin-bottom 0.75em
+        letter-spacing 0.02em
+
+      h4
+        margin-top 1.7em
+        margin-bottom 0.65em
+
+      ul, ol
+        padding-left 1.35rem
+
+      li
+        margin 0.42em 0
+        line-height 1.85
+
+      // 引用：细竖线 + 稍淡的字，安静
+      blockquote
+        border-left 2px solid var(--primary-color)
+        padding 0.15rem 0 0.15rem 1.1rem
+        margin 1.6em 0
+        opacity 0.92
+
+        p
+          margin 0.45em 0
+
+      // 行内代码与代码块保持不动
+      hr
+        margin 2.6em 0
+
+      img
+        border-radius 10px
+        margin 1.6em auto
+
+
+// ============================================================================
+//  (22) 文章页左侧导航树（自定义 Git 树状 TOC）
+//       真实结构：.article-left-sidebar > .als-toc > .post-toc >
+//                 .als-git-row > (.als-git-prefix + .als-git-label)
+//       这些类原本定义在 tailwind.source.css（改它需联网跑 build:css），
+//       这里用 .page-container 提一级优先级覆盖，并补 !important 对齐原值。
+// ============================================================================
+.page-container
+
+  // ---------- 左栏稍微加宽，中文标题不再被挤扁 ----------
+  .article-left-sidebar
+    flex 0 0 250px !important
+
+  .article-right-sidebar
+    flex 0 0 210px !important
+
+  // ---------- 标题「目录」：去硬线、压低存在感 ----------
+  .als-toc-title
+    border-bottom none !important
+    font-weight 500 !important
+    letter-spacing 0.26em !important
+    text-transform uppercase !important
+    color var(--third-text-color) !important
+    opacity 0.7
+    margin-bottom 0.85rem !important
+    padding 0 0 0 0 !important
+
+  // ---------- 树节点 ----------
+  .post-toc
+
+    .als-git-row
+      display flex !important
+      align-items baseline !important
+      padding 0.15em 0 !important
+      line-height 1.62 !important
+      // 原来是 nowrap+ellipsis，中文长标题会被截成"..."
+      white-space normal !important
+      overflow visible !important
+      text-overflow clip !important
+
+    // 树形符号：退到后面，只做结构提示，不抢文字
+    .als-git-prefix
+      flex 0 0 auto
+      white-space pre
+      font-family 'Geist Mono', Courier, monospace
+      font-size 0.92em
+      color var(--third-text-color)
+      opacity 0.24
+      transition opacity 0.3s ease, color 0.3s ease
+
+    .als-git-label
+      color var(--third-text-color) !important
+      line-height 1.62
+      text-decoration none
+      white-space normal !important
+      overflow visible !important
+      text-overflow clip !important
+      word-break break-word
+      padding-left 0.45rem
+      transition color 0.3s ease, opacity 0.3s ease
+
+    // 悬停：文字提亮，符号跟着亮一点
+    .als-git-row:hover
+      .als-git-prefix
+        opacity 0.5
+      .als-git-label
+        color var(--second-text-color) !important
+
+    // 当前阅读位置
+    .als-git-row.active,
+    .als-git-row.current,
+    .als-git-row.is-active
+      .als-git-prefix
+        opacity 0.85
+        color var(--primary-color)
+      .als-git-label
+        color var(--primary-color) !important
+        font-weight 500
+
+  // ---------- 右侧栏：与左栏同样安静 ----------
+  .article-right-sidebar
+    .als-section-title
+      border-bottom none !important
+      font-weight 500 !important
+      letter-spacing 0.26em !important
+      color var(--third-text-color) !important
+      opacity 0.7
+      margin-bottom 0.85rem !important
+
+    a
+      line-height 1.7
+      transition color 0.3s ease
+
+      &:hover
+        color var(--second-text-color)
+
+  +redefine-tablet()
+    .article-left-sidebar
+      flex 0 0 100% !important
+
+
+// ============================================================================
+//  (23) 主页横幅：文艺标题 + 侧边竖排浮动装饰
+//       标题结构（由 _config.yml 的 home_banner.title 提供）：
+//         <span class="hb-mark">dddemo</span><span class="hb-mark2">Blog</span>
+//       副标题移出居中区，做成右侧竖排的"浮动水印"
+// ============================================================================
+
+.home-banner-container
+  .content
+
+    // ---------- 标题：大号细体 + 短细线 + 小号宽字距副行 ----------
+    .description
+
+      .hb-mark
+        display block
+        font-size clamp(2.4rem, 5.4vw, 4rem)
+        font-weight 300                    // 细体，安静
+        line-height 1.08
+        letter-spacing 0.17em
+        text-indent 0.17em                 // 抵消末字后的字距，视觉居中
+        color var(--home-banner-text-color)
+
+        // 标题下的短细线
+        &::after
+          content ''
+          display block
+          width 3.1rem
+          height 1px
+          margin 1.15rem auto 0
+          background currentColor
+          opacity 0.4
+
+      .hb-mark2
+        display block
+        margin-top 1.05rem
+        font-size 0.75rem
+        font-weight 500
+        letter-spacing 0.64em
+        text-indent 0.64em
+        text-transform uppercase
+        opacity 0.6
+        color var(--home-banner-text-color)
+
+    // ---------- 右侧竖排浮动装饰 ----------
+    // ---------- 标题下方的浅淡题记（居中，移动端同样友好）----------
+    //   竖排侧挂虽然好看，但在窄屏上会挤到内容，所以改回居中横排；
+    //   "浅淡"的水印质感通过 300 字重 + 大写字距 + opacity 0.5 保留。
+    .hb-side-note
+      margin 1.55rem 0 0
+      padding 0
+      writing-mode horizontal-tb
+      max-width unquote("min(76vw, 580px)")
+      font-size clamp(0.66rem, 0.78vw, 0.76rem)
+      font-weight 300
+      letter-spacing 0.24em
+      text-indent 0.24em
+      line-height 2
+      text-align center
+      color var(--home-banner-text-color)
+      opacity 0.5
+      text-shadow 0 1px 3px rgba(0, 0, 0, 0.5)
+      pointer-events none
+
+      #subtitle
+        font-style normal
+
+      .typed-cursor
+        margin-left 0.08em
+        opacity 0.8
+
+      #subtitle
+        font-style normal
+
+      .typed-cursor
+        margin-right 0.2em
+        opacity 0.8
+
+    +redefine-mobile()
+      .hb-side-note
+        display none
+
+    +redefine-tablet()
+      .hb-side-note
+        right 1rem
+        font-size 0.55rem
+
+
+// ============================================================================
+//  (24) 关于我 / 致谢：统一为「浅淡 + 文艺」
+//       与主页同一套语言：300 字重、宽字距、大行高、低对比、无硬线、无卡片底
+// ============================================================================
+.page-container
+
+  // ---------- 左上角 mac 圆点：弱化成装饰，不再是"一个窗口" ----------
+  .about-wrapper,
+  .credits-wrapper
+    .linux-corner-deco
+      opacity 0.4
+
+      .linux-dot
+        width 6px
+        height 6px
+
+    .linux-label
+      font-size 0.66rem
+      font-weight 300
+      letter-spacing 0.26em
+      color var(--third-text-color)
+      opacity 0.7
+
+  // ---------- 两页共通：正文浅淡 ----------
+  .about-page,
+  .credits-page
+    p
+      color var(--third-text-color)
+      font-weight 300
+      line-height 1.95
+      letter-spacing 0.015em
+      opacity 0.9
+
+    // 分区标题：小号 + 宽字距 + 淡，与左侧目录的「目录」同一语言
+    .about-card-header,
+    .credits-card-header
+      font-size 0.72rem
+      font-weight 500
+      letter-spacing 0.26em
+      color var(--third-text-color)
+      opacity 0.72
+      border-bottom none
+
+  // ---------- 关于我 ----------
+  .about-page
+    .about-hero-name
+      font-weight 400
+      letter-spacing 0.18em
+      opacity 0.92
+
+    .about-hero-bio
+      font-weight 300
+      letter-spacing 0.1em
+      color var(--third-text-color)
+      opacity 0.8
+
+    .about-hero-line
+      opacity 0.28
+
+    .about-avatar-frame
+      box-shadow none
+      border-color var(--border-color)
+      opacity 0.92
+
+    .about-quote-card
+      background transparent !important
+      border none
+      box-shadow none !important
+      padding 1.5rem 0
+
+    .about-quote-mark
+      font-size 1.7rem
+      opacity 0.16
+
+    .about-quote-text
+      font-weight 300
+      letter-spacing 0.14em
+      line-height 2
+      color var(--third-text-color)
+      opacity 0.85
+
+    .about-card
+      background transparent !important
+      border none
+      box-shadow none !important
+      padding 1.35rem 0
+
+    .about-card-text
+      color var(--third-text-color)
+      font-weight 300
+      line-height 1.95
+
+    .contact-item
+      opacity 0.85
+      transition opacity 0.3s ease
+
+      &:hover
+        opacity 1
+
+    .contact-item-label
+      font-weight 400
+      letter-spacing 0.12em
+
+    .contact-item-addr
+      color var(--third-text-color)
+      font-weight 300
+      opacity 0.75
+
+  // ---------- 致谢 ----------
+  .credits-page
+    .credits-title
+      font-weight 400
+      letter-spacing 0.2em
+
+    .credits-subtitle
+      font-weight 300
+      letter-spacing 0.16em
+      color var(--third-text-color)
+      opacity 0.8
+
+    .credits-divider
+      opacity 0.25
+
+    .credits-heart
+      opacity 0.35
+
+    .credits-card
+      background transparent !important
+      border none
+      box-shadow none !important
+      padding 1.35rem 0
+
+    .credits-empty
+      background transparent !important
+      border none
+      box-shadow none !important
+
+    .credits-empty-icon
+      opacity 0.3
+
+    .credits-empty-text
+      font-weight 300
+      letter-spacing 0.14em
+      color var(--third-text-color)
+      opacity 0.85
+
+    .credits-empty-hint
+      font-weight 300
+      color var(--third-text-color)
+      opacity 0.6
+      letter-spacing 0.08em
+
+    .credits-patron-card
+      background transparent !important
+      border-color var(--border-color)
+      box-shadow none !important
+      transition border-color 0.35s ease, transform 0.35s cubic-bezier(0.22, 0.7, 0.24, 1)
+
+      &:hover
+        border-color var(--second-text-color)
+        transform translateY(-2px)
+
+    .credits-patron-card-name
+      font-weight 400
+      letter-spacing 0.1em
+
+    .credits-patron-card-bio
+      color var(--third-text-color)
+      font-weight 300
+      opacity 0.78
+
+    .credits-footer-text
+      color var(--third-text-color)
+      font-weight 300
+      letter-spacing 0.1em
+      opacity 0.7
+
+
+// ============================================================================
+//  (25) 本地搜索：与全站统一为「浅淡 + 文艺」
+//       原样式在 layout/_partials/local-search.styl，这里用同级选择器后置覆盖
+// ============================================================================
+
+// 悬停/高亮用的模式感知叠加色（深色模式提亮，浅色模式压暗）
+.page-container
+  --search-hover rgba(0, 0, 0, 0.045)
+  --search-key   rgba(0, 0, 0, 0.07)
+  // 毛玻璃面板底色：半透明，让背景透上来与页面融合
+  --search-bg    rgba(226, 223, 215, 0.72)
+  --search-edge  rgba(255, 255, 255, 0.5)
+
+.dark .page-container
+  --search-hover rgba(255, 255, 255, 0.05)
+  --search-key   rgba(255, 255, 255, 0.11)
+  --search-bg    rgba(14, 17, 24, 0.68)
+  --search-edge  rgba(255, 255, 255, 0.09)
+
+.search-pop-overlay
+  background rgba(0, 0, 0, 0)
+  transition visibility 0.6s ease, background 0.6s ease, backdrop-filter 0.6s ease
+
+  &.active
+    background rgba(6, 8, 12, 0.42)
+    -webkit-backdrop-filter blur(4px)
+    backdrop-filter blur(4px)
+
+  .search-popup
+    // 毛玻璃：与背景融合，而不是一块贴在画面上的实色板
+    background var(--search-bg)
+    -webkit-backdrop-filter blur(28px) saturate(1.3)
+    backdrop-filter blur(28px) saturate(1.3)
+    border 1px solid var(--search-edge)
+    border-radius 22px
+    box-shadow 0 40px 100px rgba(0, 0, 0, 0.5),
+               0 1px 0 0 rgba(255, 255, 255, 0.06) inset
+    height auto
+    // ⚠️ Stylus 内置了 min()/max()，会执行掉 CSS 的 min()，必须 unquote
+    max-height unquote("min(58vh, 480px)")
+    // 小框：只比输入框宽一点，够放几条结果
+    width unquote("min(560px, 88vw)")
+    overflow hidden
+    // 缓慢弹出：0.85s + 轻微回弹
+    transform translateY(10px) scale(0.9)
+    opacity 0
+    transition transform 0.85s cubic-bezier(0.34, 1.3, 0.64, 1),
+               opacity 0.55s ease
+
+    +redefine-tablet()
+      width unquote("min(520px, 90vw)")
+
+    +redefine-mobile()
+      width 92vw
+      max-height 66vh
+
+  &.active .search-popup
+    transform translateY(0) scale(1)
+    opacity 1
+
+  // ---------- 顶部输入区：去掉色带，只留一条极淡的分隔 ----------
+  .search-header
+    background transparent
+    border-radius 0
+    padding 1.15rem 1.35rem 0.95rem
+    gap 0.8rem
+    align-items center
+    position relative
+
+    &::after
+      content ''
+      position absolute
+      left 1.35rem
+      right 1.35rem
+      bottom 0
+      height 1px
+      background linear-gradient(to right,
+        transparent,
+        var(--border-color) 15%,
+        var(--border-color) 85%,
+        transparent)
+
+    .search-input-field-pre
+      font-size 1.15rem
+      padding 0
+      color var(--third-text-color)
+      opacity 0.55
+      cursor default
+
+    .search-input-container
+      flex-grow 1
+      padding 0
+
+      .search-input
+        background transparent
+        border 0
+        outline 0
+        width 100%
+        font-size 1.08rem
+        font-weight 300
+        letter-spacing 0.04em
+        color var(--first-text-color)
+
+        &::placeholder
+          color var(--third-text-color)
+          opacity 0.5
+          letter-spacing 0.14em
+          font-weight 300
+
+    .popup-btn-close
+      font-size 1.15rem
+      padding 0
+      color var(--third-text-color)
+      opacity 0.55
+      transition opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 0.7, 0.24, 1)
+
+      &:hover
+        opacity 1
+        transform rotate(90deg)
+
+        .fas, .far, .fab
+          color var(--first-text-color)
+
+  // ---------- 结果区 ----------
+  #search-result
+    display block
+    height auto
+    max-height calc(min(58vh, 480px) - 3.7rem)
+    overflow-y auto
+    padding 0.55rem 0.8rem 0.9rem
+    scrollbar-width thin
+    scrollbar-color var(--border-color) transparent
+
+    &::-webkit-scrollbar
+      width 3px
+
+    &::-webkit-scrollbar-thumb
+      background var(--border-color)
+      border-radius 2px
+
+    .search-result-list
+      width 100%
+      height auto
+      font-size 1rem
+
+      li
+        // 原来是一条 dashed 虚线，改为留白 + 圆角悬停
+        border-bottom none
+        padding 0.85rem 0.75rem
+        margin 0 0 0.1rem
+        border-radius 10px
+        transition background 0.3s ease,
+                   padding-left 0.38s cubic-bezier(0.22, 0.7, 0.24, 1)
+
+        &:hover
+          background var(--search-hover)
+          padding-left 1.25rem
+
+        .search-result-title
+          font-weight 500
+          font-size 1rem
+          letter-spacing 0.02em
+          margin-bottom 0.42rem
+          padding-left 0
+          color var(--first-text-color)
+          line-height 1.6
+
+          // 去掉原来的实心小圆点
+          &::after
+            display none
+
+        .search-result
+          line-height 1.8
+          margin 0
+          padding-left 0
+          font-size 0.86rem
+          font-weight 300
+          color var(--third-text-color)
+
+        a
+          &:hover
+            color inherit
+
+        // 关键词高亮：柔和的底色块，不用虚线下划线
+        .search-keyword
+          border-bottom none
+          color var(--first-text-color)
+          font-weight 500
+          background var(--search-key)
+          border-radius 3px
+          padding 0 2px
+
+    #no-result
+      display flex
+      align-items center
+      justify-content center
+      height 100%
+      min-height 180px
+      color var(--third-text-color)
+      opacity 0.3
