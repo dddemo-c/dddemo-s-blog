@@ -11,4 +11,6 @@ tags:
   - 信息学/算法
 ---
 
+{% ad note 施工中 %}
 这是 CC 的数论笔记，coming soon...
+{% endad %}

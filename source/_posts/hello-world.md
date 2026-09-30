@@ -7,7 +7,9 @@ tags: noen
 ---
 > 我们在这里发布最新公告!
 
+{% ad info 关于这个页面 %}
 这里用来发布新功能、重要通知和其他事项。
+{% endad %}
 
 #### 2026|05|05 更新日志
   - 我们完善了网页 
@@ -34,4 +36,6 @@ tags: noen
   - 技术类文章在首页优先展示（公告板仍置顶）
 ---
 
+{% ad tip 反馈 %}
 If you find any bugs or have any suggestions, feel free to contact me at: **Sophisticated_table@outlook.com**
+{% endad %}

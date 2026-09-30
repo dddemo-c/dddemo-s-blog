@@ -1,0 +1,211 @@
+// ============================================================
+// OI Wiki 提示框 · 静态 div 版（<div class="admonition 类型">）
+//
+// 数值同样取自 OI Wiki 线上的 MkDocs Material 样式表
+//   https://oi-wiki.org/assets/stylesheets/main.bd3167ff.min.css
+// 与同目录 oiwiki.styl 是同一套尺寸，差别只在：
+//   · 没有折叠箭头（::after）
+//   · 标题条右侧不留箭头位（padding-right 12px，不是 36px）
+//   · 没有 summary 的 pointer / min-height / overflow
+//
+// 官方在 .md-typeset 里把 .admonition 和 details 写在同一组选择器上，
+// 所以两种形态除了「能不能折叠」，长得完全一样。
+//
+// 结构由 scripts/modules/oiwiki-box.js 生成；手写同名 HTML 也走这套样式。
+// ============================================================
+
+
+// ------------------------------ 尺寸 ------------------------------
+$admonition-border       = 0.1171875em   // 1.5px
+$admonition-radius       = 0.3125em      // 4px
+$admonition-radius-inner = 0.15625em     // 2px
+$admonition-pad-x        = 0.9375em      // 12px
+// Stylus 不会对 (-$var) 求值，会把 "-$var" 原样吐出来导致整条声明非法，负数单独定义
+$admonition-pad-x-neg    = -0.9375em     // -12px
+$admonition-pad-y        = 0.625em       // 8px
+$admonition-icon         = 1.5625em      // 20px
+$admonition-icon-top     = 0.625em       // 8px
+$admonition-title-pad-l  = 3.125em       // 40px
+
+
+// ------------------------------ 类型配色 ------------------------------
+admonition-color($main-color)
+    border-color $main-color
+
+    & > .admonition-title
+        background-color rgba($main-color, 0.1)
+
+        &::before
+            background-color $main-color
+
+    &:focus-within
+        box-shadow 0 0 0 0.3125em rgba($main-color, 0.1)
+
+
+// ------------------------------ 容器 ------------------------------
+.markdown-body
+    .admonition
+        background-color var(--background-color)
+        border $admonition-border solid #448aff
+        border-radius $admonition-radius
+        box-shadow none
+        color inherit
+        display flow-root
+        font-size 0.8em
+        line-height 1.6
+        margin 1.5625em 0
+        padding 0 $admonition-pad-x
+        page-break-inside avoid
+        overflow-wrap break-word
+        transition box-shadow 125ms
+
+        & > *
+            box-sizing border-box
+
+        // 最后一项的下边距撑出框底留白
+        & > :last-of-type
+            margin-bottom $admonition-pad-x
+
+
+// ------------------------------ 标题条 ------------------------------
+.markdown-body
+    .admonition
+        & > .admonition-title
+            background-color rgba(68, 138, 255, 0.1)
+            border none
+            border-radius $admonition-radius-inner $admonition-radius-inner 0 0
+            color inherit
+            font-weight 700
+            line-height 1.6
+            // 负 margin 让色条铺满容器 —— OI Wiki 的标志性观感
+            margin 0 $admonition-pad-x-neg
+            padding $admonition-pad-y $admonition-pad-x $admonition-pad-y $admonition-title-pad-l
+            position relative
+
+            // 压掉主题给 p 的默认下边距
+            &:last-of-type
+                margin-bottom 0
+
+            &::before
+                content ''
+                position absolute
+                // Material 是从顶部固定 8px，不是垂直居中
+                top $admonition-icon-top
+                left $admonition-pad-x
+                width $admonition-icon
+                height $admonition-icon
+                mask-repeat no-repeat
+                mask-position center
+                mask-size contain
+                -webkit-mask-repeat no-repeat
+                -webkit-mask-position center
+                -webkit-mask-size contain
+
+
+// ------------------------------ 框套框 ------------------------------
+// Material: .admonition .admonition, .admonition details, ... { margin: 1em 0 }
+// 用 :is() 一次覆盖两种形态的所有组合，免得写 12×12 条选择器
+.markdown-body
+    :is(.admonition, details.note, details.abstract, details.info, details.tip, details.success, details.question, details.warning, details.failure, details.danger, details.bug, details.example, details.quote)
+        :is(.admonition, details.note, details.abstract, details.info, details.tip, details.success, details.question, details.warning, details.failure, details.danger, details.bug, details.example, details.quote)
+            margin-top 1em
+            margin-bottom 1em
+
+
+// ------------------------------ 12 种类型 ------------------------------
+
+// note
+.markdown-body .admonition.note
+    admonition-color(#448aff)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m3.1 5.07c.14 0 .28.05.4.16l1.27 1.27c.23.22.23.57 0 .78l-1 1-2.05-2.05 1-1c.1-.11.24-.16.38-.16m-1.97 1.74 2.06 2.06-6.06 6.06H7.07v-2.06z%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m3.1 5.07c.14 0 .28.05.4.16l1.27 1.27c.23.22.23.57 0 .78l-1 1-2.05-2.05 1-1c.1-.11.24-.16.38-.16m-1.97 1.74 2.06 2.06-6.06 6.06H7.07v-2.06z%22/%3E%3C/svg%3E')
+
+// abstract
+.markdown-body .admonition.abstract
+    admonition-color(#00b0ff)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M17 9H7V7h10m0 6H7v-2h10m-3 6H7v-2h7M12 3a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1m7 0h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M17 9H7V7h10m0 6H7v-2h10m-3 6H7v-2h7M12 3a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1m7 0h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2%22/%3E%3C/svg%3E')
+
+// info
+.markdown-body .admonition.info
+    admonition-color(#00b8d4)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M13 9h-2V7h2m0 10h-2v-6h2m-1-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M13 9h-2V7h2m0 10h-2v-6h2m-1-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2%22/%3E%3C/svg%3E')
+
+// tip
+.markdown-body .admonition.tip
+    admonition-color(#00bfa5)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M17.66 11.2c-.23-.3-.51-.56-.77-.82-.67-.6-1.43-1.03-2.07-1.66C13.33 7.26 13 4.85 13.95 3c-.95.23-1.78.75-2.49 1.32-2.59 2.08-3.61 5.75-2.39 8.9.04.1.08.2.08.33 0 .22-.15.42-.35.5-.23.1-.47.04-.66-.12a.6.6 0 0 1-.14-.17c-1.13-1.43-1.31-3.48-.55-5.12C5.78 10 4.87 12.3 5 14.47c.06.5.12 1 .29 1.5.14.6.41 1.2.71 1.73 1.08 1.73 2.95 2.97 4.96 3.22 2.14.27 4.43-.12 6.07-1.6 1.83-1.66 2.47-4.32 1.53-6.6l-.13-.26c-.21-.46-.77-1.26-.77-1.26m-3.16 6.3c-.28.24-.74.5-1.1.6-1.12.4-2.24-.16-2.9-.82 1.19-.28 1.9-1.16 2.11-2.05.17-.8-.15-1.46-.28-2.23-.12-.74-.1-1.37.17-2.06.19.38.39.76.63 1.06.77 1 1.98 1.44 2.24 2.8.04.14.06.28.06.43.03.82-.33 1.72-.93 2.27%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M17.66 11.2c-.23-.3-.51-.56-.77-.82-.67-.6-1.43-1.03-2.07-1.66C13.33 7.26 13 4.85 13.95 3c-.95.23-1.78.75-2.49 1.32-2.59 2.08-3.61 5.75-2.39 8.9.04.1.08.2.08.33 0 .22-.15.42-.35.5-.23.1-.47.04-.66-.12a.6.6 0 0 1-.14-.17c-1.13-1.43-1.31-3.48-.55-5.12C5.78 10 4.87 12.3 5 14.47c.06.5.12 1 .29 1.5.14.6.41 1.2.71 1.73 1.08 1.73 2.95 2.97 4.96 3.22 2.14.27 4.43-.12 6.07-1.6 1.83-1.66 2.47-4.32 1.53-6.6l-.13-.26c-.21-.46-.77-1.26-.77-1.26m-3.16 6.3c-.28.24-.74.5-1.1.6-1.12.4-2.24-.16-2.9-.82 1.19-.28 1.9-1.16 2.11-2.05.17-.8-.15-1.46-.28-2.23-.12-.74-.1-1.37.17-2.06.19.38.39.76.63 1.06.77 1 1.98 1.44 2.24 2.8.04.14.06.28.06.43.03.82-.33 1.72-.93 2.27%22/%3E%3C/svg%3E')
+
+// success
+.markdown-body .admonition.success
+    admonition-color(#00c853)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59z%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59z%22/%3E%3C/svg%3E')
+
+// question
+.markdown-body .admonition.question
+    admonition-color(#64dd17)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22m15.07 11.25-.9.92C13.45 12.89 13 13.5 13 15h-2v-.5c0-1.11.45-2.11 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8a4 4 0 0 1 4-4 4 4 0 0 1 4 4 3.2 3.2 0 0 1-.93 2.25M13 19h-2v-2h2M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10c0-5.53-4.5-10-10-10%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22m15.07 11.25-.9.92C13.45 12.89 13 13.5 13 15h-2v-.5c0-1.11.45-2.11 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8a4 4 0 0 1 4-4 4 4 0 0 1 4 4 3.2 3.2 0 0 1-.93 2.25M13 19h-2v-2h2M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10c0-5.53-4.5-10-10-10%22/%3E%3C/svg%3E')
+
+// warning
+.markdown-body .admonition.warning
+    admonition-color(#ff9100)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M13 14h-2V9h2m0 9h-2v-2h2M1 21h22L12 2z%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M13 14h-2V9h2m0 9h-2v-2h2M1 21h22L12 2z%22/%3E%3C/svg%3E')
+
+// failure
+.markdown-body .admonition.failure
+    admonition-color(#ff5252)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z%22/%3E%3C/svg%3E')
+
+// danger
+.markdown-body .admonition.danger
+    admonition-color(#ff1744)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22m11.5 20 4.86-9.73H13V4l-5 9.73h3.5zM12 2c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12s-1 5.1-2.95 7.05S14.75 22 12 22s-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22m11.5 20 4.86-9.73H13V4l-5 9.73h3.5zM12 2c2.75 0 5.1 1 7.05 2.95S22 9.25 22 12s-1 5.1-2.95 7.05S14.75 22 12 22s-5.1-1-7.05-2.95S2 14.75 2 12s1-5.1 2.95-7.05S9.25 2 12 2%22/%3E%3C/svg%3E')
+
+// bug
+.markdown-body .admonition.bug
+    admonition-color(#f50057)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M11 13h2v1h-2zm10-8v6c0 5.5-3.8 10.7-9 12-5.2-1.3-9-6.5-9-12V5l9-4zm-4 5h-2.2c-.2-.6-.6-1.1-1.1-1.5l1.2-1.2-.7-.7L12.8 8H12c-.2 0-.5 0-.7.1L9.9 6.6l-.8.8 1.2 1.2c-.5.3-.9.8-1.1 1.4H7v1h2v1H7v1h2v1H7v1h2.2c.4 1.2 1.5 2 2.8 2s2.4-.8 2.8-2H17v-1h-2v-1h2v-1h-2v-1h2zm-6 2h2v-1h-2z%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M11 13h2v1h-2zm10-8v6c0 5.5-3.8 10.7-9 12-5.2-1.3-9-6.5-9-12V5l9-4zm-4 5h-2.2c-.2-.6-.6-1.1-1.1-1.5l1.2-1.2-.7-.7L12.8 8H12c-.2 0-.5 0-.7.1L9.9 6.6l-.8.8 1.2 1.2c-.5.3-.9.8-1.1 1.4H7v1h2v1H7v1h2v1H7v1h2.2c.4 1.2 1.5 2 2.8 2s2.4-.8 2.8-2H17v-1h-2v-1h2v-1h-2v-1h2zm-6 2h2v-1h-2z%22/%3E%3C/svg%3E')
+
+// example
+.markdown-body .admonition.example
+    admonition-color(#7c4dff)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M7 2v2h1v14a4 4 0 0 0 4 4 4 4 0 0 0 4-4V4h1V2zm4 14c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1m2-4c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1m1-5h-4V4h4z%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M7 2v2h1v14a4 4 0 0 0 4 4 4 4 0 0 0 4-4V4h1V2zm4 14c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1m2-4c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1m1-5h-4V4h4z%22/%3E%3C/svg%3E')
+
+// quote
+.markdown-body .admonition.quote
+    admonition-color(#9e9e9e)
+
+    & > .admonition-title::before
+        mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M14 17h3l2-4V7h-6v6h3M6 17h3l2-4V7H5v6h3z%22/%3E%3C/svg%3E')
+        -webkit-mask-image url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M14 17h3l2-4V7h-6v6h3M6 17h3l2-4V7H5v6h3z%22/%3E%3C/svg%3E')
